@@ -8,7 +8,13 @@ local col = draw.color
 col["yellow"] = { ["red"]=1.000,["green"]=1.000,["blue"]=0.000,["alpha"]=1 }
 
 ------- Functionality equivalent to ShowyEdge (https://pqrs.org/osx/ShowyEdge/index.html.en)
----- Configuration
+
+---- Configuration of indicator colors
+-- Each indicator is made of three segments, distributed evenly across the width of
+-- the screen. The table below indicates the color of each segment for a given keyboard
+-- layout. The index is the name of the layout as it appears in the input source menu.
+-- If a layout is not found, then the indicators are removed when that layout is active.
+-- (e.g. U.S. does not appear because it's my default and I don't want any indicators)
 local colors = {
    ["Spanish"] = {col.red, col.yellow, col.red},
    ["German"] = {col.black, col.red, col.yellow},
