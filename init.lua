@@ -1,5 +1,5 @@
 -- Uncomment to set non-default log level
-hs.logger.defaultLogLevel = 'debug'
+-- hs.logger.defaultLogLevel = 'debug'
 
 ----------------------------------------------------------------------
 -- Some useful variables
@@ -20,6 +20,7 @@ require("config")
 require("mouse")
 require("audio")
 require("clipboard")
+require("keyboard")
 -- Still figuring out what I could use this for
 -- require("statuslets")
 
