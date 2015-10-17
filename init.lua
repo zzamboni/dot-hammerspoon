@@ -21,6 +21,7 @@ require("mouse")
 require("audio")
 require("clipboard")
 require("keyboard")
+require("misc")
 -- Still figuring out what I could use this for
 -- require("statuslets")
 
