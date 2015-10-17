@@ -36,8 +36,6 @@ function winresize(how)
       newrect = {0,2/3,1,1/3}
    end
 
---   # This makes the window movement less smooth
---   hs.layout.apply({ app, win:title(), win:screen(), newrect, nil, nil })
    win:move(newrect)
 end
 
@@ -52,14 +50,14 @@ end
 
 -- Toggle a window between its normal size, and being maximized
 function toggle_window_maximized()
-    local win = hs.window.focusedWindow()
-    if frameCache[win:id()] then
-        win:setFrame(frameCache[win:id()])
-        frameCache[win:id()] = nil
-    else
-        frameCache[win:id()] = win:frame()
-        win:maximize()
-    end
+   local win = hs.window.focusedWindow()
+   if frameCache[win:id()] then
+      win:setFrame(frameCache[win:id()])
+      frameCache[win:id()] = nil
+   else
+      frameCache[win:id()] = win:frame()
+      win:maximize()
+   end
 end
 
 -- Move between thirds of the screen
@@ -144,4 +142,3 @@ hs.hotkey.bind({"ctrl", "alt", "cmd"}, "Up",    hs.fnutils.partial(winresize, "m
 -- Move between screens
 hs.hotkey.bind({"ctrl", "alt", "cmd"}, "Left",  hs.fnutils.partial(winmovescreen, "left"))
 hs.hotkey.bind({"ctrl", "alt", "cmd"}, "Right", hs.fnutils.partial(winmovescreen, "right"))
-
