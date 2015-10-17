@@ -9,18 +9,31 @@ col["yellow"] = { ["red"]=1.000,["green"]=1.000,["blue"]=0.000,["alpha"]=1 }
 
 ------- Functionality equivalent to ShowyEdge (https://pqrs.org/osx/ShowyEdge/index.html.en)
 
+local enableIndicator = true
+
 ---- Configuration of indicator colors
--- Each indicator is made of three segments, distributed evenly across the width of
--- the screen. The table below indicates the color of each segment for a given keyboard
--- layout. The index is the name of the layout as it appears in the input source menu.
--- If a layout is not found, then the indicators are removed when that layout is active.
--- (e.g. U.S. does not appear because it's my default and I don't want any indicators)
+
+-- Each indicator is made of an arbitrary number of segments,
+-- distributed evenly across the width of the screen. The table below
+-- indicates the colors to use for a given keyboard layout. The index
+-- is the name of the layout as it appears in the input source menu.
+-- If a layout is not found, then the indicators are removed when that
+-- layout is active.
 local colors = {
-   ["Spanish"] = {col.red, col.yellow, col.red},
+   -- Flag-like indicators
+--     ["Spanish"] = {col.red, col.yellow, col.red},
    ["German"] = {col.black, col.red, col.yellow},
+--     ["U.S."] = {col.blue, col.white, col.red, col.blue, col.white, col.red},
+   -- Solid colors
+   ["Spanish"] = {col.red},
+--   ["German"] = {col.yellow},
 }
-local indicatorHeight = 7
+
+-- height of the menu bar, or specify a fixed height in pixels
+local indicatorHeight = scr.mainScreen():frame().y - scr.mainScreen():fullFrame().y  
+-- transparency (1.0 - fully opaque)
 local indicatorAlpha = 0.3
+-- show the indicator in all spaces (this includes full-screen mode)
 local indicatorInAllSpaces = true
 
 ----------------------------------------------------------------------
@@ -32,19 +45,13 @@ function initIndicators()
       delIndicators()
    end
    ind = {}
-   local screeng = scr.mainScreen():fullFrame()
-   local width = screeng.w / 3
-   for i = 1,3,1 do
-      ind[i] = draw.rectangle(geom.rect(screeng.x+(width*(i-1)), screeng.y,
-                                        width, indicatorHeight))
-   end
 end
 
 function delIndicators()
    if ind ~= nil then
-      for i = 1,3,1 do
-         if ind[i] ~= nil then
-            ind[i]:delete()
+      for i,v in ipairs(ind) do
+         if v ~= nil then
+            v:delete()
          end
       end
       ind = nil
@@ -63,25 +70,28 @@ end
 function drawIndicators(src)
    initIndicators()
 
-   c = colors[src]
-   logger.df("Indicator definition for %s: %s", src, hs.inspect(c))
-   if c ~= nil then
-      for i = 1,3,1 do
-         ind[i]:setFillColor(c[i])
-         ind[i]:setFill(true)
-         ind[i]:setAlpha(indicatorAlpha)
-         ind[i]:setLevel(draw.windowLevels.overlay)
-         ind[i]:setStroke(false)
+   def = colors[src]
+   logger.df("Indicator definition for %s: %s", src, hs.inspect(def))
+   if def ~= nil then
+      local screeng = scr.mainScreen():fullFrame()
+      local width = screeng.w / #def
+      for i,v in ipairs(def) do
+         c = draw.rectangle(geom.rect(screeng.x+(width*(i-1)), screeng.y,
+                                      width, indicatorHeight))
+         c:setFillColor(v)
+         c:setFill(true)
+         c:setAlpha(indicatorAlpha)
+         c:setLevel(draw.windowLevels.overlay)
+         c:setStroke(false)
          if indicatorInAllSpaces then
-            ind[i]:setBehavior(draw.windowBehaviors.canJoinAllSpaces)
+            c:setBehavior(draw.windowBehaviors.canJoinAllSpaces)
          end
-         ind[i]:show()
+         c:show()
+         table.insert(ind, c)
       end
    else
       logger.df("Removing indicators for %s because there is no color definitions for it.", src)
-      for i = 1,3,1 do
-         ind[i]:delete()
-      end
+      delIndicators()
    end
 
 end
@@ -92,9 +102,11 @@ function inputSourceChange()
    drawIndicators(source)
 end
 
-initIndicators()
+if enableIndicator then
+   initIndicators()
 
--- Initial draw
-drawIndicators(getInputSource())
--- Change whenever the input source changes
-hs.keycodes.inputSourceChanged(inputSourceChange)
+   -- Initial draw
+   drawIndicators(getInputSource())
+   -- Change whenever the input source changes
+   hs.keycodes.inputSourceChanged(inputSourceChange)
+end
