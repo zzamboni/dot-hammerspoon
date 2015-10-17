@@ -4,9 +4,6 @@ local draw = require "hs.drawing"
 local geom = require "hs.geometry"
 local col = draw.color
 
--- Add colors missing from hs.drawing.color (should submit pull request soon)
-col["yellow"] = { ["red"]=1.000,["green"]=1.000,["blue"]=0.000,["alpha"]=1 }
-
 ------- Functionality equivalent to ShowyEdge (https://pqrs.org/osx/ShowyEdge/index.html.en)
 
 local enableIndicator = true
@@ -23,7 +20,16 @@ local colors = {
    -- Flag-like indicators
 --     ["Spanish"] = {col.red, col.yellow, col.red},
    ["German"] = {col.black, col.red, col.yellow},
---     ["U.S."] = {col.blue, col.white, col.red, col.blue, col.white, col.red},
+   -- Contrived example of programmatically-generated colors
+   -- ["U.S."] = (
+   --    function() res={} 
+   --       for i = 0,10,1 do
+   --          table.insert(res, col.blue)
+   --          table.insert(res, col.white)
+   --          table.insert(res, col.red)
+   --       end
+   --       return res
+   --    end)(),
    -- Solid colors
    ["Spanish"] = {col.red},
 --   ["German"] = {col.yellow},
