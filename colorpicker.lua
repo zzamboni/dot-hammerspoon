@@ -38,14 +38,14 @@ end
 
 -- Copy the name/code of the color to the clipboard, and remove the colors
 -- from the screen.
-function copyAndRemove(name, hex)
+function copyAndRemove(name, hex, tablename)
    local mods = tap.checkKeyboardModifiers()
    if mods.cmd then
-      put_string_in_clipboard(hex)
+      hs.pasteboard.setContents(hex)
    else
-      put_string_in_clipboard(name)
+      hs.pasteboard.setContents(name)
    end
-   toggleColorSamples()
+   toggleColorSamples(tablename)
 end
 
 -- Draw a single square on the screen
@@ -63,14 +63,14 @@ function drawSwatch(tablename, swatchFrame, colorname, color)
       text:setTextColor(contrastingColor(color))
       text:setTextStyle({ ["alignment"] = "center", ["size"]=16.0})
       text:setLevel(draw.windowLevels.overlay+1)
-      text:setClickCallback(nil, hs.fnutils.partial(copyAndRemove, colorname, hex))
+      text:setClickCallback(nil, hs.fnutils.partial(copyAndRemove, colorname, hex, tablename))
       text:show()
       table.insert(swatches[tablename],text)
    end
 end
 
 -- Toggle display on the screen of a grid with all the colors in the given colortable
-function toggleColorSamples(colortable, tablename)
+function toggleColorSamples(tablename, colortable)
    local screen = scr.mainScreen()
    local frame = screen:frame()
    
@@ -113,6 +113,6 @@ function toggleColorSamples(colortable, tablename)
    end
 end
 
--- Show/hide color sampler/picker
+-- Show/hide color samples
 -- Change the table and tablename if you want to handle multiple color tables
-hs.hotkey.bind({"ctrl", "alt", "cmd"}, "c",  hs.fnutils.partial(toggleColorSamples, draw.color, "default"))
+hs.hotkey.bind({"ctrl", "alt", "cmd"}, "c",  hs.fnutils.partial(toggleColorSamples,  "default", draw.color))
