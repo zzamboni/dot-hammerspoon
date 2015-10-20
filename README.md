@@ -6,7 +6,7 @@ has already replaced my use of the following apps:
 - [ClipMenu](http://www.clipmenu.com) - clipboard history, only
   supports text entries for now. See
   [clipboard.lua](clipboard.lua).
-  - By default, Ctrl-Shift-Cmd-v shows the clipboard menu.
+  - `Shift-Cmd-v` shows the clipboard menu.
 - [Breakaway](http://www.macupdate.com/app/mac/23361/breakaway) -
   automatically pause/unpause music when headphones are
   unplugged/replugged. Only for Spotify app at the moment, and it
@@ -17,12 +17,12 @@ has already replaced my use of the following apps:
   manipulation. Only some shortcuts implemented, those that I use, but
   others should be easy to add.  See
   [windows.lua](windows.lua).
-  - Ctrl-Cmd-left/right/up/down - resize the current window to the
+  - `Ctrl-Cmd-left/right/up/down` - resize the current window to the
     corresponding half of the screen.
-  - Ctrl-Alt-left/right/up/down - resize and move the current window
+  - `Ctrl-Alt-left/right/up/down` - resize and move the current window
     to the previous/next horizontal/vertical third of the screen.
-  - Ctrl-Alt-Cmd-F or Ctrl-Alt-Cmd-up - maximize the current window.
-  - Ctrl-Alt-Cmd-left/right - move the current window to the
+  - `Ctrl-Alt-Cmd-F` or `Ctrl-Alt-Cmd-up` - maximize the current window.
+  - `Ctrl-Alt-Cmd-left/right` - move the current window to the
     previous/next screen (if more than one monitor is plugged in).
 - [ShowyEdge](https://pqrs.org/osx/ShowyEdge/index.html.en) - menu bar
   coloring to indicate the currently selected keyboard layout (again,
@@ -33,19 +33,19 @@ has already replaced my use of the following apps:
 It additionally provides the following functionality:
 
 - Automatic/manual configuration reloading (config.lua)
-  - Ctrl-Alt-Cmd-r - manual reload, or when any `*.lua` file in
+  - `Ctrl-Alt-Cmd-r` - manual reload, or when any `*.lua` file in
     `~/.hammerspoon/` changes.
 - A color sampler/picker (colorpicker.lua)
-  - Ctrl-Alt-Cmd-c toggles a full-screen color picker of the colors in
+  - `Ctrl-Alt-Cmd-c` toggles a full-screen color picker of the colors in
     `hs.drawing.color` (this is more impressive with a larger list of
     colors, like the one in
     [PR#611](https://github.com/Hammerspoon/hammerspoon/pull/611/files)). Clicking
     on any color will copy its name to the clipboard, Cmd-clicking
     copies its RGB code.
 - Mouse locator (mouse.lua).
-  - Ctrl-Alt-Cmd-d draws a red circle around the mouse for 3 seconds.
+  - `Ctrl-Alt-Cmd-d` draws a red circle around the mouse for 3 seconds.
 - Skype mute/unmute (skype.lua)
-  - Ctrl-Alt-Cmd-Shift-v mutes/unmutes Skype, regardless of whether
+  - `Ctrl-Alt-Cmd-Shift-v` mutes/unmutes Skype, regardless of whether
     it's the frontmost application.
 
 It has drawn inspiration and code from many other places, including:
