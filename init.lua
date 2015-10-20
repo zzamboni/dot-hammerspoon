@@ -20,7 +20,7 @@ require("config")
 require("mouse")
 require("audio")
 require("clipboard")
-require("keyboard")
+require("keyboard_menubar_indicator")
 require("misc")
 require("colorpicker")
 -- Still figuring out what I could use this for
