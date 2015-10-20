@@ -5,18 +5,18 @@ has already replaced my use of the following apps:
 
 - [ClipMenu](http://www.clipmenu.com) - clipboard history, only
   supports text entries for now. See
-  [misc/clipboard.lua](misc/clipboard.lua).
+  [misc/clipboard.lua](clipboard.lua).
   - `Shift-Cmd-v` shows the clipboard menu.
 - [Breakaway](http://www.macupdate.com/app/mac/23361/breakaway) -
   automatically pause/unpause music when headphones are
   unplugged/replugged. Only for Spotify app at the moment, and it
   needs latest Hammerspoon built from source (which includes the audio
   device watcher). See
-  [audio/headphones_watcher.lua](audio/headphones_watcher.lua).
+  [audio/headphones_watcher.lua](headphones_watcher.lua).
 - [Spectacle](https://www.spectacleapp.com) - window
   manipulation. Only some shortcuts implemented, those that I use, but
   others should be easy to add.  See
-  [windows/manipulation.lua](windows/manipulation.lua).
+  [windows/manipulation.lua](manipulation.lua).
   - `Ctrl-Cmd-left/right/up/down` - resize the current window to the
     corresponding half of the screen.
   - `Ctrl-Alt-left/right/up/down` - resize and move the current window
@@ -28,14 +28,14 @@ has already replaced my use of the following apps:
   coloring to indicate the currently selected keyboard layout (again,
   only the indicators I use are implemented, but others are very easy
   to add). See
-  [keyboard/menubar_indicator.lua](keyboard/menubar_indicator.lua).
+  [keyboard/menubar_indicator.lua](menubar_indicator.lua).
 
 It additionally provides the following functionality:
 
-- Automatic/manual configuration reloading ([apps/hammerspoon_config_reload.lua](apps/hammerspoon_config_reload.lua))
+- Automatic/manual configuration reloading ([apps/hammerspoon_config_reload.lua](hammerspoon_config_reload.lua))
   - `Ctrl-Alt-Cmd-r` - manual reload, or when any `*.lua` file in
     `~/.hammerspoon/` changes.
-- A color sampler/picker ([misc/colorpicker.lua](misc/colorpicker.lua))
+- A color sampler/picker ([misc/colorpicker.lua](colorpicker.lua))
   - `Ctrl-Alt-Cmd-c` toggles a full-screen color picker of the colors in
     `hs.drawing.color` (this is more impressive with a larger list of
     colors, like the one in
@@ -44,7 +44,7 @@ It additionally provides the following functionality:
     copies its RGB code.
 - Mouse locator ([mouse/finder.lua](mouse/finder.lua)).
   - `Ctrl-Alt-Cmd-d` draws a red circle around the mouse for 3 seconds.
-- Skype mute/unmute ([apps/skype_mute.lua](apps/skype_mute.lua))
+- Skype mute/unmute ([apps/skype_mute.lua](skype_mute.lua))
   - `Ctrl-Alt-Cmd-Shift-v` mutes/unmutes Skype, regardless of whether
     it's the frontmost application.
 
