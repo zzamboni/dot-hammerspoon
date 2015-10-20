@@ -6,7 +6,16 @@ local col = draw.color
 
 ------- Functionality equivalent to ShowyEdge (https://pqrs.org/osx/ShowyEdge/index.html.en)
 
+-- Global enable/disable
 local enableIndicator = true
+-- Display on all monitors or just the current one?
+local allScreens = true
+-- Specify 0 to use the height of the menu bar, or specify a fixed height in pixels
+local indicatorHeight = 0
+-- transparency (1.0 - fully opaque)
+local indicatorAlpha = 0.3
+-- show the indicator in all spaces (this includes full-screen mode)
+local indicatorInAllSpaces = true
 
 ---- Configuration of indicator colors
 
@@ -18,7 +27,7 @@ local enableIndicator = true
 -- layout is active.
 local colors = {
    -- Flag-like indicators
---     ["Spanish"] = {col.red, col.yellow, col.red},
+   ["Spanish"] = {col.green, col.white, col.red},
    ["German"] = {col.black, col.red, col.yellow},
    -- Contrived example of programmatically-generated colors
    -- ["U.S."] = (
@@ -31,16 +40,9 @@ local colors = {
    --       return res
    --    end)(),
    -- Solid colors
-   ["Spanish"] = {col.red},
---   ["German"] = {col.yellow},
+   --   ["Spanish"] = {col.red},
+   --   ["German"] = {col.yellow},
 }
-
--- height of the menu bar, or specify a fixed height in pixels
-local indicatorHeight = scr.mainScreen():frame().y - scr.mainScreen():fullFrame().y  
--- transparency (1.0 - fully opaque)
-local indicatorAlpha = 0.3
--- show the indicator in all spaces (this includes full-screen mode)
-local indicatorInAllSpaces = true
 
 ----------------------------------------------------------------------
 
@@ -79,21 +81,33 @@ function drawIndicators(src)
    def = colors[src]
    logger.df("Indicator definition for %s: %s", src, hs.inspect(def))
    if def ~= nil then
-      local screeng = scr.mainScreen():fullFrame()
-      local width = screeng.w / #def
-      for i,v in ipairs(def) do
-         c = draw.rectangle(geom.rect(screeng.x+(width*(i-1)), screeng.y,
-                                      width, indicatorHeight))
-         c:setFillColor(v)
-         c:setFill(true)
-         c:setAlpha(indicatorAlpha)
-         c:setLevel(draw.windowLevels.overlay)
-         c:setStroke(false)
-         if indicatorInAllSpaces then
-            c:setBehavior(draw.windowBehaviors.canJoinAllSpaces)
+      if allScreens then
+         screens = scr.allScreens()
+      else
+         screens = { scr.mainScreen() }
+      end
+      for i,screen in ipairs(screens) do
+         local screeng = screen:fullFrame()
+         local width = screeng.w / #def
+         for i,v in ipairs(def) do
+            if indicatorHeight == 0 then
+               height = screen:frame().y - screeng.y
+            else
+               height = indicatorHeight
+            end
+            c = draw.rectangle(geom.rect(screeng.x+(width*(i-1)), screeng.y,
+                                         width, height))
+            c:setFillColor(v)
+            c:setFill(true)
+            c:setAlpha(indicatorAlpha)
+            c:setLevel(draw.windowLevels.overlay)
+            c:setStroke(false)
+            if indicatorInAllSpaces then
+               c:setBehavior(draw.windowBehaviors.canJoinAllSpaces)
+            end
+            c:show()
+            table.insert(ind, c)
          end
-         c:show()
-         table.insert(ind, c)
       end
    else
       logger.df("Removing indicators for %s because there is no color definitions for it.", src)
