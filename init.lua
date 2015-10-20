@@ -14,15 +14,14 @@ hs.ipc.cliInstall()
 ----------------------------------------------------------------------
 -- Load other files
 require("lib")
-require("windows")
-require("skype")
-require("config")
-require("mouse")
-require("audio")
-require("clipboard")
-require("keyboard_menubar_indicator")
-require("misc")
-require("colorpicker")
+require("windows.manipulation")
+require("apps.skype_mute")
+require("apps.hammerspoon_config_reload")
+require("mouse.finder")
+require("audio.headphones_watcher")
+require("misc.clipboard")
+require("misc.colorpicker")
+require("keyboard.menubar_indicator")
 -- Still figuring out what I could use this for
 -- require("statuslets")
 

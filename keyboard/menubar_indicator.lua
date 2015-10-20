@@ -10,8 +10,8 @@ local col = draw.color
 local enableIndicator = true
 -- Display on all monitors or just the current one?
 local allScreens = true
--- Specify 0 to use the height of the menu bar, or specify a fixed height in pixels
-local indicatorHeight = 0
+-- Specify 0.0-1.0 to specify a percentage of the height of the menu bar, larger values indicate a fixed height in pixels
+local indicatorHeight = 1.0
 -- transparency (1.0 - fully opaque)
 local indicatorAlpha = 0.3
 -- show the indicator in all spaces (this includes full-screen mode)
@@ -90,8 +90,8 @@ function drawIndicators(src)
          local screeng = screen:fullFrame()
          local width = screeng.w / #def
          for i,v in ipairs(def) do
-            if indicatorHeight == 0 then
-               height = screen:frame().y - screeng.y
+            if indicatorHeight >= 0.0 and indicatorHeight <= 1.0 then
+               height = indicatorHeight*(screen:frame().y - screeng.y)
             else
                height = indicatorHeight
             end
