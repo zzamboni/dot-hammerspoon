@@ -42,7 +42,7 @@ It additionally provides the following functionality:
     [PR#611](https://github.com/Hammerspoon/hammerspoon/pull/611/files)). Clicking
     on any color will copy its name to the clipboard, Cmd-clicking
     copies its RGB code.
-- Mouse locator ([mouse/finder.lua](mouse/finder.lua)).
+- Mouse locator ([mouse/locator.lua](mouse/locator.lua)).
   - `Ctrl-Alt-Cmd-d` draws a red circle around the mouse for 3 seconds.
 - Skype mute/unmute ([apps/skype_mute.lua](skype_mute.lua))
   - `Ctrl-Alt-Cmd-Shift-v` mutes/unmutes Skype, regardless of whether
