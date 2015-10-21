@@ -1,3 +1,8 @@
+-- Some useful global variables
+hostname = hs.host.localizedName()
+logger = hs.logger.new('main')
+hs_config_dir = os.getenv("HOME") .. "/.hammerspoon/"
+
 -- Display a notification
 function notify(title, message)
    hs.notify.new({title=title, informativeText=message}):send()

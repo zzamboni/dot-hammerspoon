@@ -17,3 +17,6 @@ function reloadConfig(files)
 end
 
 hs.pathwatcher.new(hs_config_dir, reloadConfig):start()
+
+---- Notify when the configuration is loaded
+notify("Hammerspoon", "Config loaded")
