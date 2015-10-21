@@ -1,35 +1,45 @@
--- Uncomment to set non-default log level
--- hs.logger.defaultLogLevel = 'debug'
+if false then
+   -- testing code, never normally executed
+   function plainInputSourceChange()
+      hs.alert.show("Input source change detected!")
+   end
+   hs.keycodes.inputSourceChanged(plainInputSourceChange)
+else
 
-----------------------------------------------------------------------
--- Some useful variables
-hostname = hs.host.localizedName()
-logger = hs.logger.new('main')
-hs_config_dir = os.getenv("HOME") .. "/.hammerspoon/"
+   -- Uncomment to set non-default log level
+   hs.logger.defaultLogLevel = 'debug'
 
-----------------------------------------------------------------------
--- Ensure the IPC command line client is available
-hs.ipc.cliInstall()
+   ----------------------------------------------------------------------
+   -- Some useful variables
+   hostname = hs.host.localizedName()
+   logger = hs.logger.new('main')
+   hs_config_dir = os.getenv("HOME") .. "/.hammerspoon/"
 
-----------------------------------------------------------------------
--- Load other files
-require("lib")
-require("windows.manipulation")
-require("apps.skype_mute")
-require("apps.hammerspoon_config_reload")
-require("mouse.locator")
-require("audio.headphones_watcher")
-require("misc.clipboard")
-require("misc.colorpicker")
-require("keyboard.menubar_indicator")
--- Still figuring out what I could use this for
--- require("statuslets")
+   ----------------------------------------------------------------------
+   -- Ensure the IPC command line client is available
+   hs.ipc.cliInstall()
 
-----------------------------------------------------------------------
----- Misc hotkeys
+   ----------------------------------------------------------------------
+   -- Load other files
+   require("lib")
+   require("windows.manipulation")
+   require("apps.skype_mute")
+   require("apps.hammerspoon_config_reload")
+   require("mouse.locator")
+   require("audio.headphones_watcher")
+   require("misc.clipboard")
+   require("misc.colorpicker")
+   require("keyboard.menubar_indicator")
+   -- Still figuring out what I could use this for
+   -- require("statuslets")
 
--- Toggle Hammerspoon Console
-hs.hotkey.bind({"cmd", "alt", "ctrl"}, 'y', hs.toggleConsole)
+   ----------------------------------------------------------------------
+   ---- Misc hotkeys
 
----- Notify at the end when the configuration is loaded
-notify("Hammerspoon", "Config loaded")
+   -- Toggle Hammerspoon Console
+   hs.hotkey.bind({"cmd", "alt", "ctrl"}, 'y', hs.toggleConsole)
+
+   ---- Notify at the end when the configuration is loaded
+   notify("Hammerspoon", "Config loaded")
+
+end

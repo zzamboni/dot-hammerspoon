@@ -41,4 +41,7 @@ function audiodevwatch(dev_uid, event_name, event_scope, event_element)
    end
 end
 
-hs.audiodevice.defaultOutputDevice():watcherCallback(audiodevwatch):watcherStart()
+for i,dev in ipairs(hs.audiodevice.allOutputDevices()) do
+   dev:watcherCallback(audiodevwatch):watcherStart()
+   logger.df("Setting up watcher for audio device %s", dev:name())
+end
