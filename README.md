@@ -9,6 +9,7 @@ of my existing
 ### Instructions
 
 1. Check out this repository onto your `~/.hammerspoon` directory:
+
    ```
    git clone https://github.com/zzamboni/oh-my-hammerspoon.git ~/.hammerspoon
    ```
