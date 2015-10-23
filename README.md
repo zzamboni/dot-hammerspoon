@@ -6,7 +6,14 @@ Very early work in progress, at the moment it's just a restructuring
 of my existing
 [Hammerspoon configuration files](http://github.com/zzamboni/hammerspoon-config).
 
-Instructions: Edit init.lua to enable/disable the plugins you want.
+### Instructions
+
+1. Check out this repository onto your `~/.hammerspoon` directory:
+   ```
+   git clone https://github.com/zzamboni/oh-my-hammerspoon.git ~/.hammerspoon
+   ```
+2. Edit `init.lua` to enable/disable the plugins you want (at the
+   moment they are all enabled by default).
 
 ### Functionality included
 
