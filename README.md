@@ -1,7 +1,16 @@
-# My config files for [Hammerspoon](http://www.hammerspoon.org)
+# Oh-my-Hammerspoon!
 
-This repository contains my config files for Hammerspoon. This config
-has already replaced my use of the following apps:
+## A configuration framework for [Hammerspoon](http://www.hammerspoon.org)
+
+Very early work in progress, at the moment it's just a restructuring
+of my existing
+[Hammerspoon configuration files](zzamboni/hammerspoon-config).
+
+Instructions: Edit init.lua to enable/disable the plugins you want.
+
+### Functionality included
+
+This config has already replaced my use of the following apps:
 
 - [ClipMenu](http://www.clipmenu.com) - clipboard history, only
   supports text entries for now. See
@@ -50,7 +59,8 @@ It additionally provides the following functionality:
 
 It has drawn inspiration and code from many other places, including:
 
-- https://github.com/victorso/.hammerspoon/blob/master/tools/clipboard.lua
-- https://github.com/cmsj/hammerspoon-config/
-- https://github.com/Hammerspoon/hammerspoon/wiki/Sample-Configurations
-  
+- [victorso's clipboard manager](victorso/.hammerspoon)
+- [cmsj's hammerspoon config](cmsj/hammerspoon-config)
+- [Hammerspoon's sample configurations page](https://github.com/Hammerspoon/hammerspoon/wiki/Sample-Configurations)
+- [oh-my-zsh](robbyrussell/oh-my-zsh) and
+  [oh-my-fish](oh-my-fish/oh-my-fish) for the name inspiration :)
