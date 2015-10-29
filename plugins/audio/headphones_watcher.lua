@@ -1,47 +1,49 @@
---- Audio-related stuff
+--- Pause/unpause playing music
+
+local mod={}
+
+local spotify=require("hs.spotify")
+local audio=require("hs.audiodevice")
 
 local spotify_was_playing = false
 
 -- Testing the new audiodevice watcher
+--[[
 function audiowatch(arg)
    logger.df("Audiowatch arg: %s", arg)
 end
 
-hs.audiodevice.watcher.setCallback(audiowatch)
-hs.audiodevice.watcher.start()
-
-function spotify_pause()
-   logger.df("Pausing Spotify")
-   hs.spotify.pause()
-end
-function spotify_play()
-   logger.df("Playing Spotify")
-   hs.spotify.play()
-end
+audio.watcher.setCallback(audiowatch)
+audio.watcher.start()
+--]]
 
 -- Per-device watcher to detect headphones in/out
 function audiodevwatch(dev_uid, event_name, event_scope, event_element)
    logger.df("Audiodevwatch args: %s, %s, %s, %s", dev_uid, event_name, event_scope, event_element)
-   dev = hs.audiodevice.findDeviceByUID(dev_uid)
+   dev = audio.findDeviceByUID(dev_uid)
    if event_name == 'jack' then
       if dev:jackConnected() then
          if spotify_was_playing then
-            spotify_play()
+            spotify.play()
             notify("Headphones plugged", "Spotify restarted")
          end
       else
          -- Cache current state to know whether we should resume
          -- when the headphones are connected again
-         spotify_was_playing = hs.spotify.isPlaying()
+         spotify_was_playing = spotify.isPlaying()
          if spotify_was_playing then
-            spotify_pause()
+            spotify.pause()
             notify("Headphones unplugged", "Spotify paused")
          end
       end
    end
 end
 
-for i,dev in ipairs(hs.audiodevice.allOutputDevices()) do
-   dev:watcherCallback(audiodevwatch):watcherStart()
-   logger.df("Setting up watcher for audio device %s", dev:name())
+function mod.init()
+   for i,dev in ipairs(audio.allOutputDevices()) do
+      dev:watcherCallback(audiodevwatch):watcherStart()
+      logger.df("Setting up watcher for audio device %s", dev:name())
+   end
 end
+
+return mod
