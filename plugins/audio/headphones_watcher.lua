@@ -23,15 +23,20 @@ function audiodevwatch(dev_uid, event_name, event_scope, event_element)
    dev = audio.findDeviceByUID(dev_uid)
    if event_name == 'jack' then
       if dev:jackConnected() then
+         logger.d("Headphones connected")
          if spotify_was_playing then
+            logger.d("Playing Spotify")
             notify("Headphones plugged", "Playing Spotify")
             spotify.play()
          end
       else
+         logger.d("Headphones disconnected")
          -- Cache current state to know whether we should resume
          -- when the headphones are connected again
          spotify_was_playing = spotify.isPlaying()
+         logger.df("spotify_was_playing=%s", spotify_was_playing)
          if spotify_was_playing then
+            logger.d("Pausing Spotify")
             notify("Headphones unplugged", "Pausing Spotify")
             spotify.pause()
          end
