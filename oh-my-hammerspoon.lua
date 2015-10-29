@@ -45,5 +45,8 @@ function omh_go()
    load_plugins()
 end
 
+-- Load local code if it exists
+pcall(function() require("init-local") end)
+
 ---- Notify when the configuration is loaded
 notify("Oh my Hammerspoon!", "Config loaded")
