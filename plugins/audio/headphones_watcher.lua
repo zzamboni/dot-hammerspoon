@@ -24,16 +24,16 @@ function audiodevwatch(dev_uid, event_name, event_scope, event_element)
    if event_name == 'jack' then
       if dev:jackConnected() then
          if spotify_was_playing then
+            notify("Headphones plugged", "Playing Spotify")
             spotify.play()
-            notify("Headphones plugged", "Spotify restarted")
          end
       else
          -- Cache current state to know whether we should resume
          -- when the headphones are connected again
          spotify_was_playing = spotify.isPlaying()
          if spotify_was_playing then
+            notify("Headphones unplugged", "Pausing Spotify")
             spotify.pause()
-            notify("Headphones unplugged", "Spotify paused")
          end
       end
    end
