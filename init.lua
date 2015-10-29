@@ -1,6 +1,3 @@
--- Uncomment to set non-default log level
--- hs.logger.defaultLogLevel = 'debug'
-
 require("oh-my-hammerspoon")
 
 OMH_PLUGINS = {
