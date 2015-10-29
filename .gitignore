@@ -1,3 +1,5 @@
+init-local.lua
+
 # Compiled Lua sources
 luac.out
 
