@@ -1,9 +1,13 @@
 ---- Skype stuff
+local mod={}
 
+mod.config={
+   ["skype_mute_key"]={{"alt", "cmd", "ctrl", "shift"}, 'v'}
+}
 -- From https://github.com/cmsj/hammerspoon-config/blob/master/init.lua#L139
 
 -- Toggle Skype between muted/unmuted, whether it is focused or not
-function toggleSkypeMute()
+function mod.toggleSkypeMute()
     local skype = hs.appfinder.appFromName("Skype")
     if not skype then
         return
@@ -24,4 +28,8 @@ function toggleSkypeMute()
     end
 end
 
-hs.hotkey.bind({"alt", "cmd", "ctrl", "shift"}, 'v', toggleSkypeMute)
+function mod.init()
+   hs.hotkey.bind(mod.config.skype_mute_key[1], mod.config.skype_mute_key[2], mod.toggleSkypeMute)
+end
+
+return mod
