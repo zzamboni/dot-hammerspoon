@@ -1,6 +1,8 @@
 -- Uncomment to set non-default log level
 -- hs.logger.defaultLogLevel = 'debug'
 
+require("oh-my-hammerspoon")
+
 OMH_PLUGINS = {
    "windows.manipulation",
    "apps.skype_mute",
@@ -14,4 +16,4 @@ OMH_PLUGINS = {
    "apps.hammerspoon_config_reload",
 }
 
-require("oh-my-hammerspoon")
+omh_go()
