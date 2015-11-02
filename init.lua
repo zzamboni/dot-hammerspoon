@@ -11,6 +11,7 @@ OMH_PLUGINS = {
    "apps.hammerspoon_toggle_console",
    "apps.hammerspoon_install_cli",
    "apps.hammerspoon_config_reload",
+   "apps.universal_archive",
 }
 
 omh_go()
