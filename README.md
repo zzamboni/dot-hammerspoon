@@ -2,9 +2,7 @@
 
 ## A configuration framework for [Hammerspoon](http://www.hammerspoon.org)
 
-Very early work in progress, at the moment it's just a restructuring
-of my existing
-[Hammerspoon configuration files](http://github.com/zzamboni/hammerspoon-config).
+Very early work in progress, feedback very welcome.
 
 ### Instructions
 
@@ -15,6 +13,8 @@ of my existing
    ```
 2. Edit `init.lua` to enable/disable the plugins you want (at the
    moment they are all enabled by default).
+3. Copy `init-local-sample.lua` to `init-local.lua` and modify to
+   change plugin configuration parameters or add your own arbitrary code.
 
 ### Functionality included
 
@@ -49,6 +49,10 @@ This config has already replaced my use of the following apps:
 
 It additionally provides the following functionality:
 
+- "Universal Archive"
+  ([universal_archive.lua](plugins/apps/universal_archive.lua)) for
+  archiving the current item in different applications. At the moment
+  Evernote and Mail.app are supported.
 - Automatic/manual configuration reloading ([hammerspoon_config_reload.lua](plugins/apps/hammerspoon_config_reload.lua))
   - `Ctrl-Alt-Cmd-r` - manual reload, or when any `*.lua` file in
     `~/.hammerspoon/` changes.
