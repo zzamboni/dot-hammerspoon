@@ -1,6 +1,6 @@
 --[[
    From https://github.com/victorso/.hammerspoon/blob/master/tools/clipboard.lua
-   Modified by Diego Zamboni
+   Converted to plugin by Diego Zamboni
 
    This is my attempt to implement a jumpcut replacement in Lua/Hammerspoon.
    It monitors the clipboard/pasteboard for changes, and stores the strings you copy to the transfer area.
@@ -12,12 +12,31 @@
    -> Ng irc suggestion: hs.settings.set("jumpCutReplacementHistory", clipboard_history)
 ]]--
 
--- Feel free to change those settings
-local frequency = 0.8 -- Speed in seconds to check for clipboard changes. If you check too frequently, you will loose performance, if you check sparsely you will loose copies
-local hist_size = 100 -- How many items to keep on history
-local label_length = 70 -- How wide (in characters) the dropdown menu should be. Copies larger than this will have their label truncated and end with "…" (unicode for elipsis ...)
-local honor_clearcontent = false --asmagill request. If any application clears the pasteboard, we also remove it from the history https://groups.google.com/d/msg/hammerspoon/skEeypZHOmM/Tg8QnEj_N68J
-local pasteOnSelect = false -- Auto-type on click
+local mod={}
+
+-- Feel free to change these settings
+mod.config = {
+   -- Key binding
+   ["clipboard_menu_key"] = { {"cmd", "shift"}, "v" },
+   -- Speed in seconds to check for clipboard changes. If you check
+   -- too frequently, you will loose performance, if you check
+   -- sparsely you will loose copies
+   ["frequency"] = 0.8,
+   -- How many items to keep on history
+   ["hist_size"] = 100,
+   -- How wide (in characters) the dropdown menu should be. Copies
+   -- larger than this will have their label truncated and end with
+   -- "…" (unicode for elipsis ...)
+   ["label_length"] = 70,
+   --asmagill request. If any application clears the pasteboard, we
+   --also remove it from the history
+   --https://groups.google.com/d/msg/hammerspoon/skEeypZHOmM/Tg8QnEj_N68J
+   ["honor_clearcontent"] = false,
+   -- Auto-type on click
+   ["paste_on_select"] = false,
+   -- Show item count in the menu item
+   ["show_menu_counter"] = true,
+}
 
 -- Don't change anything bellow this line
 local jumpcut = hs.menubar.new()
@@ -31,16 +50,15 @@ local clipboard_history = settings.get("so.victor.hs.jumpcut") or {} --If no his
 
 -- Append a history counter to the menu
 function setTitle()
-   if (#clipboard_history == 0) then
+   if (#clipboard_history == 0 or mod.config.show_menu_counter == false) then
       jumpcut:setTitle("✂") -- Unicode magic
    else
-      jumpcut:setTitle("✂") -- Unicode magic
-      --      jumpcut:setTitle("✂ ("..#clipboard_history..")") -- updates the menu counter
+      jumpcut:setTitle("✂ ("..#clipboard_history..")") -- updates the menu counter
    end
 end
 
 function putOnPaste(string,key)
-   if (pasteOnSelect) then
+   if (mod.config.paste_on_select) then
       hs.eventtap.keyStrokes(string)
       pasteboard.setContents(string)
       last_change = pasteboard.changeCount()
@@ -73,7 +91,7 @@ end
 
 function pasteboardToClipboard(item)
    -- Loop to enforce limit on qty of elements in history. Removes the oldest items
-   while (#clipboard_history >= hist_size) do
+   while (#clipboard_history >= mod.config.hist_size) do
       table.remove(clipboard_history,1)
    end
    table.insert(clipboard_history, item)
@@ -89,8 +107,8 @@ populateMenu = function(key)
       table.insert(menuData, {title="None", disabled = true}) -- If the history is empty, display "None"
    else
       for k,v in pairs(clipboard_history) do
-         if (string.len(v) > label_length) then
-            table.insert(menuData,1, {title=string.sub(v,0,label_length).."…", fn = function() putOnPaste(v,key) end }) -- Truncate long strings
+         if (string.len(v) > mod.config.label_length) then
+            table.insert(menuData,1, {title=string.sub(v,0,mod.config.label_length).."…", fn = function() putOnPaste(v,key) end }) -- Truncate long strings
          else
             table.insert(menuData,1, {title=v, fn = function() putOnPaste(v,key) end })
          end -- end if else
@@ -99,7 +117,7 @@ populateMenu = function(key)
    -- footer
    table.insert(menuData, {title="-"})
    table.insert(menuData, {title="Clear All", fn = function() clearAll() end })
-   if (key.alt == true or pasteOnSelect) then
+   if (key.alt == true or mod.config.paste_on_select) then
       table.insert(menuData, {title="Direct Paste Mode ✍", disabled=true})
    end
    return menuData
@@ -111,7 +129,7 @@ function storeCopy()
    if (now > last_change) then
       current_clipboard = pasteboard.getContents()
       -- asmagill requested this feature. It prevents the history from keeping items removed by password managers
-      if (current_clipboard == nil and honor_clearcontent) then
+      if (current_clipboard == nil and mod.config.honor_clearcontent) then
          clearLastItem()
       else
          pasteboardToClipboard(current_clipboard)
@@ -120,11 +138,15 @@ function storeCopy()
    end
 end
 
---Checks for changes on the pasteboard. Is it possible to replace with eventtap?
-timer = hs.timer.new(frequency, storeCopy)
-timer:start()
+function mod.init()
+   --Checks for changes on the pasteboard. Is it possible to replace with eventtap?
+   timer = hs.timer.new(mod.config.frequency, storeCopy)
+   timer:start()
 
-setTitle() --Avoid wrong title if the user already has something on his saved history
-jumpcut:setMenu(populateMenu)
+   setTitle() --Avoid wrong title if the user already has something on his saved history
+   jumpcut:setMenu(populateMenu)
 
-hs.hotkey.bind({"cmd", "shift"}, "v", function() jumpcut:popupMenu(hs.mouse.getAbsolutePosition()) end)
+   hs.hotkey.bind(mod.config.clipboard_menu_key[1], mod.config.clipboard_menu_key[2], function() jumpcut:popupMenu(hs.mouse.getAbsolutePosition()) end)
+end
+
+return mod
