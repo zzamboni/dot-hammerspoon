@@ -15,7 +15,7 @@ local tap  = require('hs.eventtap')
 
 mod.config={
    ["colortable_keys"] = {
-      ["default"] = { draw.color, {"ctrl", "alt", "cmd"}, "c" }
+      ["default"] = { draw.color.x11, {"ctrl", "alt", "cmd"}, "c" }
    }
 }
 
@@ -70,9 +70,8 @@ function drawSwatch(tablename, swatchFrame, colorname, color)
    table.insert(swatches[tablename], swatch)
    if colorname ~= "" then
       local hex = string.format("%02x%02x%02x", math.floor(255*color.red), math.floor(255*color.green), math.floor(255*color.blue))
-      local text = draw.text(swatchFrame, string.format("%s\n#%s", colorname, hex))
-      text:setTextColor(contrastingColor(color))
-      text:setTextStyle({ ["alignment"] = "center", ["size"]=16.0})
+      local str = hs.styledtext.new(string.format("%s\n#%s", colorname, hex), { ["paragraphStyle"] = {["alignment"] = "center"}, ["font"]={["size"]=16.0}, ["color"]=contrastingColor(color) })
+      local text = hs.drawing.text(swatchFrame, str)
       text:setLevel(draw.windowLevels.overlay+1)
       text:setClickCallback(nil, hs.fnutils.partial(copyAndRemove, colorname, hex, tablename))
       text:show()
@@ -103,7 +102,7 @@ function toggleColorSamples(tablename, colortable)
       table.sort(keys)
 
       -- Scale number of rows/columns according to the screen's aspect ratio
-      local rows = math.ceil(math.sqrt(#keys)*(frame.w/frame.h))
+      local rows = math.floor(math.sqrt(#keys)*(frame.w/frame.h))
       local columns = math.ceil(math.sqrt(#keys)/(frame.w/frame.h))
       local hsize = math.floor(frame.w / columns)
       local vsize = math.floor(frame.h / rows)
@@ -117,7 +116,8 @@ function toggleColorSamples(tablename, colortable)
             local color = colortable[colorname]
             drawSwatch(tablename,swatchFrame,colorname,color)
          else  -- or with a gray swatch to fill up the rectangle
-            drawSwatch(tablename,swatchFrame,"",draw.color.gray)
+            local gray = { ["red"]=0.500,["green"]=0.500,["blue"]=0.500,["alpha"]=1 }
+            drawSwatch(tablename,swatchFrame,"",gray)
          end
       end
       indicators_shown = true
