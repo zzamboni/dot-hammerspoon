@@ -1,12 +1,23 @@
+--- Color picker
+---- Diego Zamboni <diego@zzamboni.org>
+
 -- Display a sample/picker of all the colors defined in hs.drawing.color
 -- (or any other color table, see the binding at the end).
 -- The same keybinding toggles the color display. Clicking on any color
 -- will copy its name to the clipboard, cmd-click will copy its RGB code.
 
+local mod={}
+
 local draw = require('hs.drawing')
 local scr  = require('hs.screen')
 local geom = require('hs.geometry')
 local tap  = require('hs.eventtap')
+
+mod.config={
+   ["colortable_keys"] = {
+      ["default"] = { draw.color, {"ctrl", "alt", "cmd"}, "c" }
+   }
+}
 
 -- This is where the drawing objects are stored. After first use, the
 -- created objects are cached (only shown/hidden as needed) so that
@@ -113,6 +124,12 @@ function toggleColorSamples(tablename, colortable)
    end
 end
 
--- Show/hide color samples
--- Change the table and tablename if you want to handle multiple color tables
-hs.hotkey.bind({"ctrl", "alt", "cmd"}, "c",  hs.fnutils.partial(toggleColorSamples,  "default", draw.color))
+function mod.init()
+   -- Show/hide color samples
+   -- Change the table and tablename if you want to handle multiple color tables
+   for k,v in pairs(mod.config.colortable_keys) do
+      hs.hotkey.bind(v[2], v[3], hs.fnutils.partial(toggleColorSamples,  k, v[1]))
+   end
+end
+
+return mod
