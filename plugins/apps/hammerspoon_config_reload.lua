@@ -1,4 +1,6 @@
 ---- Configuration file management
+---- Original code from http://www.hammerspoon.org/go/#fancyreload
+
 local mod={}
 
 mod.config = {

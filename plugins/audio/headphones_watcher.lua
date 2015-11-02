@@ -1,4 +1,6 @@
 --- Pause/unpause playing music
+---- Diego Zamboni <diego@zzamboni.org>
+--- Needs Hammerspoon built with audio-device watcher capabilities (not released yet)
 
 local mod={}
 

@@ -1,4 +1,6 @@
 -- Window management
+--- Diego Zamboni <diego@zzamboni.org>
+
 local winmod = {}
 
 winmod.config = {

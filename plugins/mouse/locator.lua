@@ -1,4 +1,5 @@
--- Find my mouse pointer
+--- Find my mouse pointer
+---- Original code from https://github.com/cmsj/hammerspoon-config/blob/master/init.lua#L428
 
 local mod={}
 

@@ -1,4 +1,10 @@
--- Evernote stuff
+--- Universal Archive
+---- Diego Zamboni <diego@zzamboni.org>
+--- Handles "archive current item" for multiple applications.
+--- Currently Evernote and Mail.app are supported.
+--- For Evernote, also allows specifying other keybindings for
+--- archiving directly to different notebooks.
+
 
 local mod={}
 

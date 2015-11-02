@@ -1,4 +1,6 @@
 ---- Skype stuff
+---- Original code from https://github.com/cmsj/hammerspoon-config/blob/master/init.lua#L142
+
 local mod={}
 
 mod.config={
