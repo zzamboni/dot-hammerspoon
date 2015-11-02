@@ -8,14 +8,23 @@
 
 local mod={}
 
+require("omh-lib")
+
 local draw = require('hs.drawing')
 local scr  = require('hs.screen')
 local geom = require('hs.geometry')
 local tap  = require('hs.eventtap')
+local choosermenu = nil
 
 mod.config={
-   ["colortable_keys"] = {
-      ["default"] = { draw.color.x11, {"ctrl", "alt", "cmd"}, "c" }
+   colorpicker_key = { {"ctrl", "alt", "cmd"}, "c" },
+   colorpicker_in_menubar = true,
+   colorpicker_menubar_title = "\u{1F308}", -- Rainbow Emoji: http://emojipedia.org/rainbow/ 
+   colorpicker_individual_table_keys = false,
+   colortable_keys = {
+      x11 =         { draw.color.x11, {"ctrl", "alt", "cmd"}, "x" },
+      hammerspoon = { draw.color.hammerspoon, {"ctrl", "alt", "cmd"}, "h" },
+      ansi =        { draw.color.ansiTerminalColors, {"ctrl", "alt", "cmd"}, "a" }
    }
 }
 
@@ -31,14 +40,19 @@ local indicators_shown = {}
 
 -- Algorithm to choose whether white/black as the most contrasting to a given
 -- color, from http://gamedev.stackexchange.com/a/38561/73496
-function contrastingColor(c)
-   local L = 0.2126*(c.red*c.red) + 0.7152*(c.green*c.green) + 0.0722*(c.blue*c.blue)
+function contrastingColor(color)
    local black = { ["red"]=0.000,["green"]=0.000,["blue"]=0.000,["alpha"]=1 }
    local white = { ["red"]=1.000,["green"]=1.000,["blue"]=1.000,["alpha"]=1 }
-   if L>0.5 then
-      return black
+   local c=draw.color.asRGB(color)
+   if type(c) == "table" then
+      local L = 0.2126*(c.red*c.red) + 0.7152*(c.green*c.green) + 0.0722*(c.blue*c.blue)
+      if L>0.5 then
+         return black
+      else
+         return white
+      end
    else
-      return white
+      return black
    end
 end
 
@@ -60,17 +74,23 @@ function copyAndRemove(name, hex, tablename)
 end
 
 -- Draw a single square on the screen
-function drawSwatch(tablename, swatchFrame, colorname, color)
+function drawSwatch(tablename, swatchFrame, colorname, col)
    local swatch = draw.rectangle(swatchFrame)
    swatch:setFill(true)
-   swatch:setFillColor(color)
+   swatch:setFillColor(col)
    swatch:setStroke(false)
    swatch:setLevel(draw.windowLevels.overlay)
    swatch:show()
    table.insert(swatches[tablename], swatch)
    if colorname ~= "" then
-      local hex = string.format("%02x%02x%02x", math.floor(255*color.red), math.floor(255*color.green), math.floor(255*color.blue))
-      local str = hs.styledtext.new(string.format("%s\n#%s", colorname, hex), { ["paragraphStyle"] = {["alignment"] = "center"}, ["font"]={["size"]=16.0}, ["color"]=contrastingColor(color) })
+      color=draw.color.asRGB(col)
+      local hex
+      if type(color) == "table" then
+         hex = "#" .. string.format("%02x%02x%02x", math.floor(255*color.red), math.floor(255*color.green), math.floor(255*color.blue))
+      else
+         hex = ""
+      end
+      local str = hs.styledtext.new(string.format("%s\n%s", colorname, hex), { ["paragraphStyle"] = {["alignment"] = "center"}, ["font"]={["size"]=16.0}, ["color"]=contrastingColor(col) })
       local text = hs.drawing.text(swatchFrame, str)
       text:setLevel(draw.windowLevels.overlay+1)
       text:setClickCallback(nil, hs.fnutils.partial(copyAndRemove, colorname, hex, tablename))
@@ -95,11 +115,8 @@ function toggleColorSamples(tablename, colortable)
       indicators_shown = not indicators_shown
    else  -- display them
       swatches[tablename] = {}
-      keys = {}
-
       -- Create sorted list of colors
-      for colorname,color in pairs(colortable) do table.insert(keys, colorname) end
-      table.sort(keys)
+      keys = sortedkeys(colortable)
 
       -- Scale number of rows/columns according to the screen's aspect ratio
       local rows = math.floor(math.sqrt(#keys)*(frame.w/frame.h))
@@ -124,12 +141,28 @@ function toggleColorSamples(tablename, colortable)
    end
 end
 
+function mod.choosetable()
+   local tab={}
+   local lists=draw.color.lists()
+   local keys=sortedkeys(lists)
+   for i,v in ipairs(keys) do
+      table.insert(tab, {title = v, fn = hs.fnutils.partial(toggleColorSamples, v, lists[v])})
+   end
+   return tab
+end
+
 function mod.init()
    -- Show/hide color samples
    -- Change the table and tablename if you want to handle multiple color tables
-   for k,v in pairs(mod.config.colortable_keys) do
-      hs.hotkey.bind(v[2], v[3], hs.fnutils.partial(toggleColorSamples,  k, v[1]))
+   if mod.config.colorpicker_individual_table_keys then
+      for k,v in pairs(mod.config.colortable_keys) do
+         hs.hotkey.bind(v[2], v[3], hs.fnutils.partial(toggleColorSamples,  k, v[1]))
+      end
    end
+   choosermenu = hs.menubar.new(mod.config.colorpicker_in_menubar)
+   choosermenu:setTitle(mod.config.colorpicker_menubar_title)
+   choosermenu:setMenu(mod.choosetable)
+   hs.hotkey.bind(mod.config.colorpicker_key[1], mod.config.colorpicker_key[2], function() choosermenu:popupMenu(hs.mouse.getAbsolutePosition()) end)
 end
 
 return mod

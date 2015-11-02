@@ -20,3 +20,11 @@ function chooseContrastingColor(c)
       return white
    end
 end
+
+function sortedkeys(tab)
+   local keys={}
+   -- Create sorted list of keys
+   for k,v in pairs(tab) do table.insert(keys, k) end
+   table.sort(keys)
+   return keys
+end
