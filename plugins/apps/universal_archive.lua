@@ -4,7 +4,7 @@ local mod={}
 
 mod.config={
    ["archive_key"] = { {"Ctrl", "Cmd"}, "a" },
-   ["evernote_archive_notebook"] = ".Archive",
+   ["evernote_archive_notebook"] = "Archive",
    ["evernote_other_archives"] = {},
    ["archive_notifications"] = true,
    -- Do not change these unless you know what you are doing
