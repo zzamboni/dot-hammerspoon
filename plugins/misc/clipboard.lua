@@ -17,25 +17,25 @@ local mod={}
 -- Feel free to change these settings
 mod.config = {
    -- Key binding
-   ["clipboard_menu_key"] = { {"cmd", "shift"}, "v" },
+   clipboard_menu_key = { {"cmd", "shift"}, "v" },
    -- Speed in seconds to check for clipboard changes. If you check
    -- too frequently, you will loose performance, if you check
    -- sparsely you will loose copies
-   ["frequency"] = 0.8,
+   frequency = 0.8,
    -- How many items to keep on history
-   ["hist_size"] = 100,
+   hist_size = 100,
    -- How wide (in characters) the dropdown menu should be. Copies
    -- larger than this will have their label truncated and end with
    -- "…" (unicode for elipsis ...)
-   ["label_length"] = 70,
+   label_length = 70,
    --asmagill request. If any application clears the pasteboard, we
    --also remove it from the history
    --https://groups.google.com/d/msg/hammerspoon/skEeypZHOmM/Tg8QnEj_N68J
-   ["honor_clearcontent"] = false,
+   honor_clearcontent = false,
    -- Auto-type on click
-   ["paste_on_select"] = false,
+   paste_on_select = false,
    -- Show item count in the menu item
-   ["show_menu_counter"] = true,
+   show_menu_counter = true,
 }
 
 -- Don't change anything bellow this line
@@ -50,7 +50,8 @@ local clipboard_history = settings.get("so.victor.hs.jumpcut") or {} --If no his
 
 -- Append a history counter to the menu
 function setTitle()
-   if (#clipboard_history == 0 or mod.config.show_menu_counter == false) then
+   if ((#clipboard_history == 0) or (mod.config.show_menu_counter == false)) then
+      -- Clipboard Emoji: http://emojipedia.org/clipboard/
       jumpcut:setTitle("\u{1F4CB}") -- Unicode magic
    else
       jumpcut:setTitle("\u{1F4CB} ("..#clipboard_history..")") -- updates the menu counter
