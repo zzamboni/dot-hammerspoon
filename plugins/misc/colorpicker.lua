@@ -15,11 +15,15 @@ local scr  = require('hs.screen')
 local geom = require('hs.geometry')
 local tap  = require('hs.eventtap')
 local choosermenu = nil
+local have_colorlists = false
+if type(hs.drawing.color.lists) == "function" then
+   have_colorlists = true
+end
 
 mod.config={
    colorpicker_key = { {"ctrl", "alt", "cmd"}, "c" },
    colorpicker_in_menubar = true,
-   colorpicker_menubar_title = "\u{1F308}", -- Rainbow Emoji: http://emojipedia.org/rainbow/ 
+   colorpicker_menubar_title = "\u{1F308}", -- Rainbow Emoji: http://emojipedia.org/rainbow/
    colorpicker_individual_table_keys = false,
    colortable_keys = {
       x11 =         { draw.color.x11, {"ctrl", "alt", "cmd"}, "x" },
@@ -43,7 +47,10 @@ local indicators_shown = {}
 function contrastingColor(color)
    local black = { ["red"]=0.000,["green"]=0.000,["blue"]=0.000,["alpha"]=1 }
    local white = { ["red"]=1.000,["green"]=1.000,["blue"]=1.000,["alpha"]=1 }
-   local c=draw.color.asRGB(color)
+   local c=color
+   if have_colorlists then
+      c=draw.color.asRGB(color)
+   end
    if type(c) == "table" then
       local L = 0.2126*(c.red*c.red) + 0.7152*(c.green*c.green) + 0.0722*(c.blue*c.blue)
       if L>0.5 then
@@ -83,15 +90,25 @@ function drawSwatch(tablename, swatchFrame, colorname, col)
    swatch:show()
    table.insert(swatches[tablename], swatch)
    if colorname ~= "" then
-      color=draw.color.asRGB(col)
+      color=col
+      if have_colorlists then
+         color=draw.color.asRGB(col)
+      end
       local hex
       if type(color) == "table" then
          hex = "#" .. string.format("%02x%02x%02x", math.floor(255*color.red), math.floor(255*color.green), math.floor(255*color.blue))
       else
          hex = ""
       end
-      local str = hs.styledtext.new(string.format("%s\n%s", colorname, hex), { ["paragraphStyle"] = {["alignment"] = "center"}, ["font"]={["size"]=16.0}, ["color"]=contrastingColor(col) })
-      local text = hs.drawing.text(swatchFrame, str)
+      local text
+      if have_colorlists then
+         local str = hs.styledtext.new(string.format("%s\n%s", colorname, hex), { ["paragraphStyle"] = {["alignment"] = "center"}, ["font"]={["size"]=16.0}, ["color"]=contrastingColor(col) })
+         text = hs.drawing.text(swatchFrame, str)
+      else
+         text = draw.text(swatchFrame, string.format("%s\n#%s", colorname, hex))
+         text:setTextColor(contrastingColor(color))
+         text:setTextStyle({ ["alignment"] = "center", ["size"]=16.0})
+      end
       text:setLevel(draw.windowLevels.overlay+1)
       text:setClickCallback(nil, hs.fnutils.partial(copyAndRemove, colorname, hex, tablename))
       text:show()
@@ -154,15 +171,19 @@ end
 function mod.init()
    -- Show/hide color samples
    -- Change the table and tablename if you want to handle multiple color tables
-   if mod.config.colorpicker_individual_table_keys then
-      for k,v in pairs(mod.config.colortable_keys) do
-         hs.hotkey.bind(v[2], v[3], hs.fnutils.partial(toggleColorSamples,  k, v[1]))
+   if have_colorlists then
+      if mod.config.colorpicker_individual_table_keys then
+         for k,v in pairs(mod.config.colortable_keys) do
+            hs.hotkey.bind(v[2], v[3], hs.fnutils.partial(toggleColorSamples,  k, v[1]))
+         end
       end
+      choosermenu = hs.menubar.new(mod.config.colorpicker_in_menubar)
+      choosermenu:setTitle(mod.config.colorpicker_menubar_title)
+      choosermenu:setMenu(mod.choosetable)
+      hs.hotkey.bind(mod.config.colorpicker_key[1], mod.config.colorpicker_key[2], function() choosermenu:popupMenu(hs.mouse.getAbsolutePosition()) end)
+   else
+      hs.hotkey.bind(mod.config.colorpicker_key[1], mod.config.colorpicker_key[2], hs.fnutils.partial(toggleColorSamples, "default", hs.drawing.color))
    end
-   choosermenu = hs.menubar.new(mod.config.colorpicker_in_menubar)
-   choosermenu:setTitle(mod.config.colorpicker_menubar_title)
-   choosermenu:setMenu(mod.choosetable)
-   hs.hotkey.bind(mod.config.colorpicker_key[1], mod.config.colorpicker_key[2], function() choosermenu:popupMenu(hs.mouse.getAbsolutePosition()) end)
 end
 
 return mod
