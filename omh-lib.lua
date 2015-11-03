@@ -21,6 +21,7 @@ function chooseContrastingColor(c)
    end
 end
 
+-- Return the sorted keys of a table
 function sortedkeys(tab)
    local keys={}
    -- Create sorted list of keys
