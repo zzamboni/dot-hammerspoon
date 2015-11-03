@@ -4,18 +4,18 @@
 local winmod = {}
 
 winmod.config = {
-   ["left_half"]   = { {"ctrl",        "cmd"}, "Left" },
-   ["right_half"]  = { {"ctrl",        "cmd"}, "Right" },
-   ["top_half"]    = { {"ctrl",        "cmd"}, "Up" },
-   ["bottom_half"] = { {"ctrl",        "cmd"}, "Down" },
-   ["third_left"]  = { {"ctrl", "alt"       }, "Left" },
-   ["third_right"] = { {"ctrl", "alt"       }, "Right" },
-   ["third_up"]    = { {"ctrl", "alt"       }, "Up" },
-   ["third_down"]  = { {"ctrl", "alt"       }, "Down" },
-   ["max_toggle"]  = { {"ctrl", "alt", "cmd"}, "F" },
-   ["max"]         = { {"ctrl", "alt", "cmd"}, "Up" },
-   ["screen_left"] = { {"ctrl", "alt", "cmd"}, "Left" },
-   ["screen_right"]= { {"ctrl", "alt", "cmd"}, "Right" },
+   left_half   = { {"ctrl",        "cmd"}, "Left" },
+   right_half  = { {"ctrl",        "cmd"}, "Right" },
+   top_half    = { {"ctrl",        "cmd"}, "Up" },
+   bottom_half = { {"ctrl",        "cmd"}, "Down" },
+   third_left  = { {"ctrl", "alt"       }, "Left" },
+   third_right = { {"ctrl", "alt"       }, "Right" },
+   third_up    = { {"ctrl", "alt"       }, "Up" },
+   third_down  = { {"ctrl", "alt"       }, "Down" },
+   max_toggle  = { {"ctrl", "alt", "cmd"}, "F" },
+   max         = { {"ctrl", "alt", "cmd"}, "Up" },
+   screen_left = { {"ctrl", "alt", "cmd"}, "Left" },
+   screen_right= { {"ctrl", "alt", "cmd"}, "Right" },
 }
 
 -- Window cache for window maximize toggler

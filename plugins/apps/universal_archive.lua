@@ -9,13 +9,14 @@
 local mod={}
 
 mod.config={
-   ["archive_key"] = { {"Ctrl", "Cmd"}, "a" },
-   ["evernote_archive_notebook"] = "Archive",
-   ["evernote_other_archives"] = {},
-   ["archive_notifications"] = true,
+   archive_key = { {"Ctrl", "Cmd"}, "a" },
+   evernote_archive_notebook = "Archive",
+   evernote_other_archives = {},
+   archive_notifications = true,
    -- Do not change these unless you know what you are doing
-   ["evernote_delay_before_typing"] = 0.2,
+   evernote_delay_before_typing = 0.2,
 }
+
 local event=require("hs.eventtap")
 local clock = os.clock
 function sleep(n)  -- seconds

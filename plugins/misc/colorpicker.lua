@@ -45,8 +45,8 @@ local indicators_shown = {}
 -- Algorithm to choose whether white/black as the most contrasting to a given
 -- color, from http://gamedev.stackexchange.com/a/38561/73496
 function contrastingColor(color)
-   local black = { ["red"]=0.000,["green"]=0.000,["blue"]=0.000,["alpha"]=1 }
-   local white = { ["red"]=1.000,["green"]=1.000,["blue"]=1.000,["alpha"]=1 }
+   local black = { red=0.000,green=0.000,blue=0.000,alpha=1 }
+   local white = { red=1.000,green=1.000,blue=1.000,alpha=1 }
    local c=color
    if have_colorlists then
       c=draw.color.asRGB(color)
@@ -102,12 +102,12 @@ function drawSwatch(tablename, swatchFrame, colorname, col)
       end
       local text
       if have_colorlists then
-         local str = hs.styledtext.new(string.format("%s\n%s", colorname, hex), { ["paragraphStyle"] = {["alignment"] = "center"}, ["font"]={["size"]=16.0}, ["color"]=contrastingColor(col) })
+         local str = hs.styledtext.new(string.format("%s\n%s", colorname, hex), { paragraphStyle = {alignment = "center"}, font={size=16.0}, color=contrastingColor(col) } )
          text = hs.drawing.text(swatchFrame, str)
       else
          text = draw.text(swatchFrame, string.format("%s\n#%s", colorname, hex))
          text:setTextColor(contrastingColor(color))
-         text:setTextStyle({ ["alignment"] = "center", ["size"]=16.0})
+         text:setTextStyle({ alignment = "center", size=16.0})
       end
       text:setLevel(draw.windowLevels.overlay+1)
       text:setClickCallback(nil, hs.fnutils.partial(copyAndRemove, colorname, hex, tablename))
@@ -150,7 +150,7 @@ function toggleColorSamples(tablename, colortable)
             local color = colortable[colorname]
             drawSwatch(tablename,swatchFrame,colorname,color)
          else  -- or with a gray swatch to fill up the rectangle
-            local gray = { ["red"]=0.500,["green"]=0.500,["blue"]=0.500,["alpha"]=1 }
+            local gray = { red=0.500,green=0.500,blue=0.500,alpha=1 }
             drawSwatch(tablename,swatchFrame,"",gray)
          end
       end

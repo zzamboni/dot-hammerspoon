@@ -4,10 +4,10 @@
 local mod={}
 
 mod.config={
-   ["color"] = {["red"]=1,["blue"]=0,["green"]=0,["alpha"]=1},
-   ["linewidth"] = 5,
-   ["diameter"] = 80,
-   ["mouse_locate_key"] = { {"cmd","alt","ctrl"}, "D" }
+   color = {red=1,blue=0,green=0,alpha=1},
+   linewidth = 5,
+   diameter = 80,
+   mouse_locate_key = { {"cmd","alt","ctrl"}, "D" }
 }
 
 local mouseCircle = nil

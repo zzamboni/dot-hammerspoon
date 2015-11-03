@@ -4,8 +4,8 @@
 local mod={}
 
 mod.config = {
-   ["auto_reload"]=true,
-   ["manual_reload_key"]={{"cmd", "alt", "ctrl"}, "R"}
+   auto_reload = true,
+   manual_reload_key = {{"cmd", "alt", "ctrl"}, "R"}
 }
 
 -- Automatic config reload if any files in ~/.hammerspoon change

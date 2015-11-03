@@ -6,8 +6,8 @@
 local mod={}
 
 mod.config={
-   ["control_spotify"] = true,
-   ["control_itunes"]  = true,
+   control_spotify = true,
+   control_itunes  = true,
 }
 
 local spotify=require("hs.spotify")

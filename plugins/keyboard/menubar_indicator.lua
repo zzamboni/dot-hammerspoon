@@ -12,15 +12,15 @@ local col = draw.color
 
 mod.config = {
    -- Global enable/disable
-   ["enableIndicator"] = true,
+   enableIndicator = true,
    -- Display on all monitors or just the current one?
-   ["allScreens"] = true,
+   allScreens = true,
    -- Specify 0.0-1.0 to specify a percentage of the height of the menu bar, larger values indicate a fixed height in pixels
-   ["indicatorHeight"] = 1.0,
+   indicatorHeight = 1.0,
    -- transparency (1.0 - fully opaque)
-   ["indicatorAlpha"] = 0.3,
+   indicatorAlpha = 0.3,
    -- show the indicator in all spaces (this includes full-screen mode)
-   ["indicatorInAllSpaces"] = true,
+   indicatorInAllSpaces = true,
 
    ---- Configuration of indicator colors
 
@@ -30,10 +30,10 @@ mod.config = {
    -- is the name of the layout as it appears in the input source menu.
    -- If a layout is not found, then the indicators are removed when that
    -- layout is active.
-   ["colors"] = {
+   colors = {
       -- Flag-like indicators
-      ["Spanish"] = {col.green, col.white, col.red},
-      ["German"] = {col.black, col.red, col.yellow},
+      Spanish = {col.green, col.white, col.red},
+      German = {col.black, col.red, col.yellow},
       -- Contrived example of programmatically-generated colors
       -- ["U.S."] = (
       --    function() res={} 
@@ -45,8 +45,8 @@ mod.config = {
       --       return res
       --    end)(),
       -- Solid colors
-      --   ["Spanish"] = {col.red},
-      --   ["German"] = {col.yellow},
+      --   Spanish = {col.red},
+      --   German = {col.yellow},
    },
 }
 

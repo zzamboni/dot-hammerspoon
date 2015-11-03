@@ -4,7 +4,7 @@
 local mod={}
 
 mod.config={
-   ["skype_mute_key"]={{"alt", "cmd", "ctrl", "shift"}, 'v'}
+   skype_mute_key = {{"alt", "cmd", "ctrl", "shift"}, 'v'}
 }
 -- From https://github.com/cmsj/hammerspoon-config/blob/master/init.lua#L139
 
