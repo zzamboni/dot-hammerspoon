@@ -37,6 +37,7 @@ end
 -- Specify config parameters for a plugin. First name
 -- is the name as specified in OMH_PLUGINS, second is a table.
 function omh_config(name, config)
+   logger.df("omh_config, name=%s, config=%s", name, hs.inspect(config))
    OMH_CONFIG[name]=config
 end
 
@@ -46,7 +47,13 @@ function omh_go()
 end
 
 -- Load local code if it exists
-pcall(function() require("init-local") end)
+local status, err = pcall(function() require("init-local") end)
+if not status then
+   -- A 'no file' error is OK, but anything else needs to be reported
+   if string.find(err, 'no file') == nil then
+      error(err)
+   end
+end
 
 ---- Notify when the configuration is loaded
 notify("Oh my Hammerspoon!", "Config loaded")
