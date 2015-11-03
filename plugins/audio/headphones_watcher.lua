@@ -1,6 +1,7 @@
 --- Pause/unpause playing music
 ---- Diego Zamboni <diego@zzamboni.org>
---- Needs Hammerspoon built with audio-device watcher capabilities (not released yet)
+--- Needs Hammerspoon built with audio-device watcher capabilities
+--- (not released yet), but checks for the features so it won't crash.
 
 local mod={}
 
@@ -15,16 +16,6 @@ local audio=require("hs.audiodevice")
 
 local spotify_was_playing = false
 local itunes_was_playing = false
-
--- Testing the new audiodevice watcher
---[[
-function audiowatch(arg)
-   logger.df("Audiowatch arg: %s", arg)
-end
-
-audio.watcher.setCallback(audiowatch)
-audio.watcher.start()
---]]
 
 -- Per-device watcher to detect headphones in/out
 function audiodevwatch(dev_uid, event_name, event_scope, event_element)
@@ -67,8 +58,12 @@ end
 
 function mod.init()
    for i,dev in ipairs(audio.allOutputDevices()) do
-      dev:watcherCallback(audiodevwatch):watcherStart()
-      logger.df("Setting up watcher for audio device %s", dev:name())
+      if dev.watcherCallback ~= nil then
+         dev:watcherCallback(audiodevwatch):watcherStart()
+         logger.df("Setting up watcher for audio device %s", dev:name())
+      else
+         logger.w("Skipping audio device watcher setup because you have an older version of Hammerspoon")
+      end
    end
 end
 
