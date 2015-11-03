@@ -51,9 +51,9 @@ local clipboard_history = settings.get("so.victor.hs.jumpcut") or {} --If no his
 -- Append a history counter to the menu
 function setTitle()
    if (#clipboard_history == 0 or mod.config.show_menu_counter == false) then
-      jumpcut:setTitle("✂") -- Unicode magic
+      jumpcut:setTitle("\u{1F4CB}") -- Unicode magic
    else
-      jumpcut:setTitle("✂ ("..#clipboard_history..")") -- updates the menu counter
+      jumpcut:setTitle("\u{1F4CB} ("..#clipboard_history..")") -- updates the menu counter
    end
 end
 
