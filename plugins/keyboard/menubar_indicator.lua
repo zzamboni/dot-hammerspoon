@@ -73,9 +73,9 @@ function delIndicators()
 end
 
 function getInputSource()
-   ok, result = as.applescript('tell application "System Events" to tell process "SystemUIServer" to get the value of the first menu bar item of menu bar 1 whose description is "text input"')
-   if ok then
-      return result
+   result = hs.json.decode(os.capture("/usr/bin/defaults read ~/Library/Preferences/com.apple.HIToolbox.plist AppleSelectedInputSources | /usr/bin/plutil -convert json - -o -"))
+   if type(result) == "table" then
+      return result[1]["KeyboardLayout Name"]
    else
       return nil
    end
