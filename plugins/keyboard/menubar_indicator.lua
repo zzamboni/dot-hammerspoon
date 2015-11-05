@@ -9,6 +9,8 @@ local scr = require "hs.screen"
 local draw = require "hs.drawing"
 local geom = require "hs.geometry"
 local col = draw.color
+local timer
+local prevlayout
 
 mod.config = {
    -- Global enable/disable
@@ -21,6 +23,12 @@ mod.config = {
    indicatorAlpha = 0.3,
    -- show the indicator in all spaces (this includes full-screen mode)
    indicatorInAllSpaces = true,
+
+   -- enable a timer as a workaround to the current bug that prevents keyboard-layout
+   -- events from being generated sometimes. If so, how frequently should the timer fire?
+   -- https://github.com/Hammerspoon/hammerspoon/issues/615
+   enable_timer = true,
+   timer_frequency = 0.5,
 
    ---- Configuration of indicator colors
 
@@ -128,6 +136,14 @@ function inputSourceChange()
    drawIndicators(source)
 end
 
+function drawIfChanged()
+   source = getInputSource()
+   if source ~= prevlayout then
+      drawIndicators(source)
+      prevlayout = source
+   end
+end
+
 function mod.init()
    if mod.config.enableIndicator then
       initIndicators()
@@ -136,6 +152,10 @@ function mod.init()
       drawIndicators(getInputSource())
       -- Change whenever the input source changes
       hs.keycodes.inputSourceChanged(inputSourceChange)
+      if mod.config.enable_timer then
+         timer = hs.timer.new(mod.config.timer_frequency, drawIfChanged)
+         timer:start()
+      end
    end
 end
 
