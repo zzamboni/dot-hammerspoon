@@ -36,11 +36,14 @@ mod.config = {
    paste_on_select = false,
    -- Show item count in the menu item
    show_menu_counter = true,
+   -- Show menu in the menubar
+   show_in_menubar = true,
+   -- Title to show on the menubar, if enabled above
+   menubar_title = "\u{1F4CB}",
 }
 
 -- Don't change anything bellow this line
-local jumpcut = hs.menubar.new()
-jumpcut:setTooltip("Clipboard history")
+local jumpcut
 local pasteboard = require("hs.pasteboard") -- http://www.hammerspoon.org/docs/hs.pasteboard.html
 local settings = require("hs.settings") -- http://www.hammerspoon.org/docs/hs.settings.html
 local last_change = pasteboard.changeCount() -- displays how many times the pasteboard owner has changed // Indicates a new copy has been made
@@ -52,9 +55,9 @@ local clipboard_history = settings.get("so.victor.hs.jumpcut") or {} --If no his
 function setTitle()
    if ((#clipboard_history == 0) or (mod.config.show_menu_counter == false)) then
       -- Clipboard Emoji: http://emojipedia.org/clipboard/
-      jumpcut:setTitle("\u{1F4CB}") -- Unicode magic
+      jumpcut:setTitle(mod.config.menubar_title) -- Unicode magic
    else
-      jumpcut:setTitle("\u{1F4CB} ("..#clipboard_history..")") -- updates the menu counter
+      jumpcut:setTitle(mod.config.menubar_title .. " ("..#clipboard_history..")") -- updates the menu counter
    end
 end
 
@@ -140,6 +143,9 @@ function storeCopy()
 end
 
 function mod.init()
+   jumpcut = hs.menubar.new(mod.config.show_in_menubar)
+   jumpcut:setTooltip("Clipboard history")
+
    --Checks for changes on the pasteboard. Is it possible to replace with eventtap?
    timer = hs.timer.new(mod.config.frequency, storeCopy)
    timer:start()
