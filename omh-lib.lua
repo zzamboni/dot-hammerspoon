@@ -1,3 +1,5 @@
+omh={}
+
 -- Some useful global variables
 hostname = hs.host.localizedName()
 logger = hs.logger.new('oh-my-hs')
@@ -42,3 +44,10 @@ function os.capture(cmd, raw)
   s = string.gsub(s, '[\n\r]+', ' ')
   return s
 end
+
+-- Bind a key, simply a bridge between the OMH config format and hs.hotkey.bind
+function omh.bind(keyspec, fun)
+   hs.hotkey.bind(keyspec[1], keyspec[2], fun)
+end
+
+return omh
