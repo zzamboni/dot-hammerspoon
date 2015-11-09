@@ -81,7 +81,7 @@ function delIndicators()
 end
 
 function getInputSource()
-   result = hs.json.decode(os.capture("/usr/bin/defaults read ~/Library/Preferences/com.apple.HIToolbox.plist AppleSelectedInputSources | /usr/bin/plutil -convert json - -o -"))
+   local result = hs.json.decode(omh.capture("/usr/bin/defaults read ~/Library/Preferences/com.apple.HIToolbox.plist AppleSelectedInputSources | /usr/bin/plutil -convert json - -o -"))
    if type(result) == "table" then
       return result[1]["KeyboardLayout Name"]
    else

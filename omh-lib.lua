@@ -34,15 +34,31 @@ end
 
 -- Capture command output
 -- From http://stackoverflow.com/a/326715/5562
-function os.capture(cmd, raw)
-  local f = assert(io.popen(cmd, 'r'))
-  local s = assert(f:read('*a'))
-  f:close()
-  if raw then return s end
-  s = string.gsub(s, '^%s+', '')
-  s = string.gsub(s, '%s+$', '')
-  s = string.gsub(s, '[\n\r]+', ' ')
-  return s
+-- function capture(cmd, raw)
+--   local f = assert(io.popen(cmd, 'r'))
+--   local s = assert(f:read('*a'))
+--   f:close()
+--   if raw then return s end
+--   s = string.gsub(s, '^%s+', '')
+--   s = string.gsub(s, '%s+$', '')
+--   s = string.gsub(s, '[\n\r]+', ' ')
+--   return s
+-- end
+
+-- Reimplemented version of capture() because sometimes Lua
+-- fails with "interrupted system call" when using io.popen() on OS X
+function omh.capture(cmd, raw)
+   local tmpfile = os.tmpname()
+   os.execute(cmd .. ">" .. tmpfile)
+   local f=io.open(tmpfile)
+   local s=f:read("*a")
+   f:close()
+   os.remove(tmpfile)
+   if raw then return s end
+   s = string.gsub(s, '^%s+', '')
+   s = string.gsub(s, '%s+$', '')
+   s = string.gsub(s, '[\n\r]+', ' ')
+   return s
 end
 
 -- Bind a key, simply a bridge between the OMH config format and hs.hotkey.bind
