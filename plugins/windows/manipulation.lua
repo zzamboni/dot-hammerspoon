@@ -193,24 +193,24 @@ function winmod.bindKeys()
    local c=winmod.config
 
    -- Halves of the screen
-   hs.hotkey.bind(c.left_half[1],   c.left_half[2],     winmod.leftHalf)
-   hs.hotkey.bind(c.right_half[1],  c.right_half[2],    winmod.rightHalf)
-   hs.hotkey.bind(c.top_half[1],    c.top_half[2],      winmod.topHalf)
-   hs.hotkey.bind(c.bottom_half[1], c.bottom_half[2],   winmod.bottomHalf)
+   omh.bind(c.left_half, winmod.leftHalf)
+   omh.bind(c.right_half, winmod.rightHalf)
+   omh.bind(c.top_half, winmod.topHalf)
+   omh.bind(c.bottom_half, winmod.bottomHalf)
                                                         
    -- Thirds of the screen                              
-   hs.hotkey.bind(c.third_left[1], c.third_left[2],     winmod.oneThirdLeft)
-   hs.hotkey.bind(c.third_right[1], c.third_right[2],   winmod.oneThirdRight)
-   hs.hotkey.bind(c.third_up[1], c.third_up[2],         winmod.oneThirdUp)
-   hs.hotkey.bind(c.third_down[1], c.third_down[2],     winmod.onethirdDown)
+   omh.bind(c.third_left, winmod.oneThirdLeft)
+   omh.bind(c.third_right, winmod.oneThirdRight)
+   omh.bind(c.third_up, winmod.oneThirdUp)
+   omh.bind(c.third_down, winmod.onethirdDown)
                                                         
    -- Maximized                                         
-   hs.hotkey.bind(c.max_toggle[1], c.max_toggle[2],     winmod.toggleMaximized)
-   hs.hotkey.bind(c.max[1], c.max[2],                   winmod.maximize)
+   omh.bind(c.max_toggle, winmod.toggleMaximized)
+   omh.bind(c.max, winmod.maximize)
                                                         
    -- Move between screens                              
-   hs.hotkey.bind(c.screen_left[1], c.screen_left[2],   winmod.oneScreenLeft)
-   hs.hotkey.bind(c.screen_right[1], c.screen_right[2], winmod.oneScreenRight)
+   omh.bind(c.screen_left, winmod.oneScreenLeft)
+   omh.bind(c.screen_right, winmod.oneScreenRight)
 end
 
 --- Initialize the module
