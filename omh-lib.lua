@@ -47,6 +47,7 @@ end
 
 -- Reimplemented version of capture() because sometimes Lua
 -- fails with "interrupted system call" when using io.popen() on OS X
+-- This is ugly, don't use it! Better use hs.task
 function omh.capture(cmd, raw)
    local tmpfile = os.tmpname()
    os.execute(cmd .. ">" .. tmpfile)

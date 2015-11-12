@@ -10,7 +10,8 @@ local draw = require "hs.drawing"
 local geom = require "hs.geometry"
 local col = draw.color
 local timer
-local prevlayout
+local prevlayout = nil
+local task = nil
 
 mod.config = {
    -- Global enable/disable
@@ -27,8 +28,8 @@ mod.config = {
    -- enable a timer as a workaround to the current bug that prevents keyboard-layout
    -- events from being generated sometimes. If so, how frequently should the timer fire?
    -- https://github.com/Hammerspoon/hammerspoon/issues/615
-   enable_timer = true,
-   timer_frequency = 0.5,
+   enable_timer = false,
+   timer_frequency = 1,
 
    ---- Configuration of indicator colors
 
@@ -80,68 +81,83 @@ function delIndicators()
    end
 end
 
-function getInputSource()
-   local result = hs.json.decode(omh.capture("/usr/bin/defaults read ~/Library/Preferences/com.apple.HIToolbox.plist AppleSelectedInputSources | /usr/bin/plutil -convert json - -o -"))
-   if type(result) == "table" then
-      return result[1]["KeyboardLayout Name"]
+--[[
+   Get the output from the defaults command, extract the keyboard layout and call
+   the provided callback with the layout name.
+
+   Sample output expected in "out":
+      (
+              {
+              InputSourceKind = "Keyboard Layout";
+              "KeyboardLayout ID" = 0;
+              "KeyboardLayout Name" = "U.S.";
+          }
+      )
+--]]
+function getInputSourceCallback(callback, code, out, err)
+   task=nil
+   if code == 0 then
+      local _,layout = string.match(out, [["KeyboardLayout Name"%s*=%s*("?)(.*)%1;]])
+      callback(layout)
    else
-      return nil
+      logger.ef("getInputSourceCallback called with an error code %s, stdout='%s', stderr='%s'", code, out, err)
+   end
+end
+
+-- Callback function will be called with the name of the currently-active keyboard layout
+function passLayoutTo(callback)
+   if task == nil then -- don't fire if there's already a task in progress
+      task=hs.task.new("/usr/bin/defaults", hs.fnutils.partial(getInputSourceCallback, callback), {"read", os.getenv("HOME") .. "/Library/Preferences/com.apple.HIToolbox.plist", "AppleSelectedInputSources"})
+      task:start()
    end
 end
 
 function drawIndicators(src)
-   initIndicators()
+   if src ~= prevlayout then
+      initIndicators()
 
-   def = mod.config.colors[src]
-   logger.df("Indicator definition for %s: %s", src, hs.inspect(def))
-   if def ~= nil then
-      if mod.config.allScreens then
-         screens = scr.allScreens()
-      else
-         screens = { scr.mainScreen() }
-      end
-      for i,screen in ipairs(screens) do
-         local screeng = screen:fullFrame()
-         local width = screeng.w / #def
-         for i,v in ipairs(def) do
-            if mod.config.indicatorHeight >= 0.0 and mod.config.indicatorHeight <= 1.0 then
-               height = mod.config.indicatorHeight*(screen:frame().y - screeng.y)
-            else
-               height = mod.config.indicatorHeight
-            end
-            c = draw.rectangle(geom.rect(screeng.x+(width*(i-1)), screeng.y,
-                                         width, height))
-            c:setFillColor(v)
-            c:setFill(true)
-            c:setAlpha(mod.config.indicatorAlpha)
-            c:setLevel(draw.windowLevels.overlay)
-            c:setStroke(false)
-            if mod.config.indicatorInAllSpaces then
-               c:setBehavior(draw.windowBehaviors.canJoinAllSpaces)
-            end
-            c:show()
-            table.insert(ind, c)
+      def = mod.config.colors[src]
+      logger.df("Indicator definition for %s: %s", src, hs.inspect(def))
+      if def ~= nil then
+         if mod.config.allScreens then
+            screens = scr.allScreens()
+         else
+            screens = { scr.mainScreen() }
          end
+         for i,screen in ipairs(screens) do
+            local screeng = screen:fullFrame()
+            local width = screeng.w / #def
+            for i,v in ipairs(def) do
+               if mod.config.indicatorHeight >= 0.0 and mod.config.indicatorHeight <= 1.0 then
+                  height = mod.config.indicatorHeight*(screen:frame().y - screeng.y)
+               else
+                  height = mod.config.indicatorHeight
+               end
+               c = draw.rectangle(geom.rect(screeng.x+(width*(i-1)), screeng.y,
+                                            width, height))
+               c:setFillColor(v)
+               c:setFill(true)
+               c:setAlpha(mod.config.indicatorAlpha)
+               c:setLevel(draw.windowLevels.overlay)
+               c:setStroke(false)
+               if mod.config.indicatorInAllSpaces then
+                  c:setBehavior(draw.windowBehaviors.canJoinAllSpaces)
+               end
+               c:show()
+               table.insert(ind, c)
+            end
+         end
+      else
+         logger.df("Removing indicators for %s because there is no color definitions for it.", src)
+         delIndicators()
       end
-   else
-      logger.df("Removing indicators for %s because there is no color definitions for it.", src)
-      delIndicators()
    end
 
+   prevlayout = src
 end
 
-function inputSourceChange()
-   source = getInputSource()
-   logger.df("New input source: " .. source)
-   drawIndicators(source)
-end
-
-function drawIfChanged()
-   source = getInputSource()
-   if source ~= prevlayout then
-      drawIndicators(source)
-      prevlayout = source
-   end
+function getLayoutAndDrawIndicators()
+   passLayoutTo(drawIndicators)
 end
 
 function mod.init()
@@ -149,11 +165,11 @@ function mod.init()
       initIndicators()
 
       -- Initial draw
-      drawIndicators(getInputSource())
+      getLayoutAndDrawIndicators()
       -- Change whenever the input source changes
-      hs.keycodes.inputSourceChanged(inputSourceChange)
+      hs.keycodes.inputSourceChanged(getLayoutAndDrawIndicators)
       if mod.config.enable_timer then
-         timer = hs.timer.new(mod.config.timer_frequency, drawIfChanged)
+         timer = hs.timer.new(mod.config.timer_frequency, getLayoutAndDrawIndicators)
          timer:start()
       end
    end
