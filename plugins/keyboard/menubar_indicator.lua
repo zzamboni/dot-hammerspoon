@@ -8,6 +8,10 @@ local as = require "hs.applescript"
 local scr = require "hs.screen"
 local draw = require "hs.drawing"
 local geom = require "hs.geometry"
+local tasks = require "hs.task"
+local fn = require "hs.fnutils"
+local keyc = require "hs.keycodes"
+local timers = require "hs.timer"
 local col = draw.color
 local timer
 local prevlayout = nil
@@ -107,7 +111,7 @@ end
 -- Callback function will be called with the name of the currently-active keyboard layout
 function passLayoutTo(callback)
    if task == nil then -- don't fire if there's already a task in progress
-      task=hs.task.new("/usr/bin/defaults", hs.fnutils.partial(getInputSourceCallback, callback), {"read", os.getenv("HOME") .. "/Library/Preferences/com.apple.HIToolbox.plist", "AppleSelectedInputSources"})
+      task=tasks.new("/usr/bin/defaults", fn.partial(getInputSourceCallback, callback), {"read", os.getenv("HOME") .. "/Library/Preferences/com.apple.HIToolbox.plist", "AppleSelectedInputSources"})
       task:start()
    end
 end
@@ -167,9 +171,9 @@ function mod.init()
       -- Initial draw
       getLayoutAndDrawIndicators()
       -- Change whenever the input source changes
-      hs.keycodes.inputSourceChanged(getLayoutAndDrawIndicators)
+      keyc.inputSourceChanged(getLayoutAndDrawIndicators)
       if mod.config.enable_timer then
-         timer = hs.timer.new(mod.config.timer_frequency, getLayoutAndDrawIndicators)
+         timer = timers.new(mod.config.timer_frequency, getLayoutAndDrawIndicators)
          timer:start()
       end
    end
