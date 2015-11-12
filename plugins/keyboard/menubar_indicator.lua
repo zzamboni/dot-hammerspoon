@@ -32,8 +32,8 @@ mod.config = {
    -- enable a timer as a workaround to the current bug that prevents keyboard-layout
    -- events from being generated sometimes. If so, how frequently should the timer fire?
    -- https://github.com/Hammerspoon/hammerspoon/issues/615
-   enable_timer = false,
-   timer_frequency = 1,
+   enable_timer = true,
+   timer_frequency = 0.5,
 
    ---- Configuration of indicator colors
 
