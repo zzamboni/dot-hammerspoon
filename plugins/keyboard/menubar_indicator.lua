@@ -173,6 +173,7 @@ function mod.init()
       -- Change whenever the input source changes
       keyc.inputSourceChanged(getLayoutAndDrawIndicators)
       if mod.config.enable_timer then
+         logger.i("Enabling timer workaround for menubar indicator")
          timer = timers.new(mod.config.timer_frequency, getLayoutAndDrawIndicators)
          timer:start()
       end
