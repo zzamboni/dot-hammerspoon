@@ -101,7 +101,7 @@ end
 function getInputSourceCallback(callback, code, out, err)
    task=nil
    if code == 0 then
-      local _,layout = string.match(out, [["KeyboardLayout Name"%s*=%s*("?)(.*)%1;]])
+      local _,layout = string.match(out, [["KeyboardLayout Name"%s*=%s*("?)(.-)%1;]])
       callback(layout)
    else
       logger.ef("getInputSourceCallback called with an error code %s, stdout='%s', stderr='%s'", code, out, err)
