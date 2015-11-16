@@ -23,13 +23,12 @@ end
 
 function mod.init()
    if mod.config.auto_reload then
+      logger.df("Setting up config auto-reload watcher on %s", hs_config_dir)
       hs.pathwatcher.new(hs_config_dir, reloadConfig):start()
    end
 
    -- Manual config reload
-   if type(mod.config.manual_reload_key) == "table" then
-      hs.hotkey.bind(mod.config.manual_reload_key[1], mod.config.manual_reload_key[2], hs.reload)
-   end
+   omh.bind(mod.config.manual_reload_key, hs.reload)
 end
 
 return mod
