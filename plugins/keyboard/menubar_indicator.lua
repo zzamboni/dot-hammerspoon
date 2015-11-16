@@ -8,7 +8,9 @@ local as = require "hs.applescript"
 local scr = require "hs.screen"
 local draw = require "hs.drawing"
 local geom = require "hs.geometry"
-local tasks = require "hs.task"
+if hs.task ~= nil then
+   local tasks = require "hs.task"
+end
 local fn = require "hs.fnutils"
 local keyc = require "hs.keycodes"
 local timers = require "hs.timer"
@@ -165,18 +167,22 @@ function getLayoutAndDrawIndicators()
 end
 
 function mod.init()
-   if mod.config.enableIndicator then
-      initIndicators()
+   if hs.task ~= nil then
+      if mod.config.enableIndicator then
+         initIndicators()
 
-      -- Initial draw
-      getLayoutAndDrawIndicators()
-      -- Change whenever the input source changes
-      keyc.inputSourceChanged(getLayoutAndDrawIndicators)
-      if mod.config.enable_timer then
-         logger.i("Enabling timer workaround for menubar indicator")
-         timer = timers.new(mod.config.timer_frequency, getLayoutAndDrawIndicators)
-         timer:start()
+         -- Initial draw
+         getLayoutAndDrawIndicators()
+         -- Change whenever the input source changes
+         keyc.inputSourceChanged(getLayoutAndDrawIndicators)
+         if mod.config.enable_timer then
+            logger.i("Enabling timer workaround for menubar indicator")
+            timer = timers.new(mod.config.timer_frequency, getLayoutAndDrawIndicators)
+            timer:start()
+         end
       end
+   else
+      logger.w("Sorry, menubar_indicator needs hs.task, your version of Hammerspoon is too old")
    end
 end
 
