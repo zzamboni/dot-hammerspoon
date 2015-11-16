@@ -8,8 +8,9 @@ local as = require "hs.applescript"
 local scr = require "hs.screen"
 local draw = require "hs.drawing"
 local geom = require "hs.geometry"
+local tasks = nil
 if hs.task ~= nil then
-   local tasks = require "hs.task"
+   tasks = require "hs.task"
 end
 local fn = require "hs.fnutils"
 local keyc = require "hs.keycodes"
