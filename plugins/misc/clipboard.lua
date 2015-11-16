@@ -61,17 +61,21 @@ function setTitle()
    end
 end
 
-function putOnPaste(string,key)
+function putOnPaste(value,key)
+   if type(value) == "string" then
+      pasteboard.setContents(value)
+   else
+      if pasteboard.setImageContents ~= nil then
+         pasteboard.setImageContents(value)
+      end
+   end
+   last_change = pasteboard.changeCount()
+
    if (mod.config.paste_on_select) then
-      hs.eventtap.keyStrokes(string)
-      pasteboard.setContents(string)
-      last_change = pasteboard.changeCount()
+      hs.eventtap.keyStroke({"cmd"}, "v")
    else
       if (key.alt == true) then -- If the option/alt key is active when clicking on the menu, perform a "direct paste", without changing the clipboard
-         hs.eventtap.keyStrokes(string) -- Defeating paste blocking http://www.hammerspoon.org/go/#pasteblock
-      else
-         pasteboard.setContents(string)
-         last_change = pasteboard.changeCount() -- Updates last_change to prevent item duplication when putting on paste
+         hs.eventtap.keyStroke({"cmd"}, "v") -- Defeating paste blocking http://www.hammerspoon.org/go/#pasteblock
       end
    end
 end
@@ -111,10 +115,14 @@ populateMenu = function(key)
       table.insert(menuData, {title="None", disabled = true}) -- If the history is empty, display "None"
    else
       for k,v in pairs(clipboard_history) do
-         if (string.len(v) > mod.config.label_length) then
+         if (type(v) == "string" and string.len(v) > mod.config.label_length) then
             table.insert(menuData,1, {title=string.sub(v,0,mod.config.label_length).."…", fn = function() putOnPaste(v,key) end }) -- Truncate long strings
          else
-            table.insert(menuData,1, {title=v, fn = function() putOnPaste(v,key) end })
+            if type(v) == "userdata" then
+               table.insert(menuData,1, {title="<<<image>>>", fn = function() putOnPaste(v,key) end })
+            else
+               table.insert(menuData,1, {title=v, fn = function() putOnPaste(v,key) end })
+            end
          end -- end if else
       end-- end for
    end-- end if else
@@ -132,10 +140,16 @@ function storeCopy()
    now = pasteboard.changeCount()
    if (now > last_change) then
       current_clipboard = pasteboard.getContents()
+      logger.df("current_clipboard (text) = %s", current_clipboard)
+      if (current_clipboard == nil) and (pasteboard.getImageContents ~= nil) then
+         pcall(function() current_clipboard = pasteboard.getImageContents() end)
+         logger.df("current_clipboard (image) = %s", current_clipboard)
+      end
       -- asmagill requested this feature. It prevents the history from keeping items removed by password managers
       if (current_clipboard == nil and mod.config.honor_clearcontent) then
          clearLastItem()
       else
+         logger.df("Adding %s to clipboard history", current_clipboard)
          pasteboardToClipboard(current_clipboard)
       end
       last_change = now
