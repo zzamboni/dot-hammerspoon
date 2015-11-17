@@ -25,13 +25,13 @@ function audiodevwatch(dev_uid, event_name, event_scope, event_element)
       if dev:jackConnected() then
          logger.d("Headphones connected")
          if mod.config.control_spotify and spotify_was_playing then
-            logger.d("Playing Spotify")
-            notify("Headphones plugged", "Playing Spotify")
+            logger.d("Resuming playback in Spotify")
+            notify("Headphones plugged", "Resuming Spotify playback")
             spotify.play()
          end
          if mod.config.control_itunes and itunes_was_playing then
-            logger.d("Playing iTunes")
-            notify("Headphones plugged", "Playing iTunes")
+            logger.d("Resuming playback in iTunes")
+            notify("Headphones plugged", "Resuming iTunes playback")
             itunes.play()
          end
       else
@@ -39,8 +39,8 @@ function audiodevwatch(dev_uid, event_name, event_scope, event_element)
          -- Cache current state to know whether we should resume
          -- when the headphones are connected again
          spotify_was_playing = spotify.isPlaying()
-         logger.df("spotify_was_playing=%s", spotify_was_playing)
          itunes_was_playing = itunes.isPlaying()
+         logger.df("spotify_was_playing=%s", spotify_was_playing)
          logger.df("itunes_was_playing=%s", itunes_was_playing)
          if mod.config.control_spotify and spotify_was_playing then
             logger.d("Pausing Spotify")
