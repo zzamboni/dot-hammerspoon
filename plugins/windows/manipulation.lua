@@ -78,7 +78,7 @@ end
 -- Toggle current window between its normal size, and being maximized
 function winmod.toggleMaximized()
    local win = hs.window.focusedWindow()
-   if win == nil then
+   if (win == nil) or (win:id() == nil) then
       return
    end
    if frameCache[win:id()] then
