@@ -2,6 +2,7 @@
 ---- Original code from http://www.hammerspoon.org/go/#fancyreload
 
 local mod={}
+local configFileWatcher = nil
 
 mod.config = {
    auto_reload = true,
@@ -24,7 +25,8 @@ end
 function mod.init()
    if mod.config.auto_reload then
       logger.df("Setting up config auto-reload watcher on %s", hs_config_dir)
-      hs.pathwatcher.new(hs_config_dir, reloadConfig):start()
+      configFileWatcher = hs.pathwatcher.new(hs_config_dir, reloadConfig)
+      configFileWatcher:start()
    end
 
    -- Manual config reload
