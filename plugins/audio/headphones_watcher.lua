@@ -17,6 +17,8 @@ local audio=require("hs.audiodevice")
 local spotify_was_playing = false
 local itunes_was_playing = false
 
+local devs = {}
+
 -- Per-device watcher to detect headphones in/out
 function audiodevwatch(dev_uid, event_name, event_scope, event_element)
    logger.df("Audiodevwatch args: %s, %s, %s, %s", dev_uid, event_name, event_scope, event_element)
@@ -59,8 +61,9 @@ end
 function mod.init()
    for i,dev in ipairs(audio.allOutputDevices()) do
       if dev.watcherCallback ~= nil then
-         dev:watcherCallback(audiodevwatch):watcherStart()
-         logger.df("Setting up watcher for audio device %s", dev:name())
+         logger.df("Setting up watcher for audio device %s (UID %s)", dev:name(), dev:uid())
+         devs[dev:uid()]=dev:watcherCallback(audiodevwatch)
+         devs[dev:uid()]:watcherStart()
       else
          logger.w("Skipping audio device watcher setup because you have an older version of Hammerspoon")
       end
