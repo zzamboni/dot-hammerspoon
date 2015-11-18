@@ -1,7 +1,7 @@
 --- Pause/unpause playing music
 ---- Diego Zamboni <diego@zzamboni.org>
---- Needs Hammerspoon built with audio-device watcher capabilities
---- (not released yet), but checks for the features so it won't crash.
+--- Needs Hammerspoon with audio-device watcher capabilities
+--- (0.9.43 or later), but checks for the features so it won't crash.
 
 local mod={}
 
