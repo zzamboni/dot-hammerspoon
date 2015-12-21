@@ -15,7 +15,12 @@ end
 local fn = require "hs.fnutils"
 local keyc = require "hs.keycodes"
 local timers = require "hs.timer"
-local col = draw.color
+local col
+if draw.color.x11 ~= nil then
+   col = draw.color.x11
+else
+   col = draw.color
+end
 local timer
 local prevlayout = nil
 local task = nil
