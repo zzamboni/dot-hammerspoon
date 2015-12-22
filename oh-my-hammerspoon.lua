@@ -26,6 +26,7 @@ function load_plugins()
          end
          -- If it has an init() function, call it
          if type(mod.init) == "function" then
+            logger.i(string.format("Initializing plugin %s", plugin))
             mod.init()
          end
       end

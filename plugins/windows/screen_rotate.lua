@@ -16,55 +16,77 @@ local mod={}
 mod.config={
    toggle_rotate_modifier = { "Ctrl", "Cmd", "Alt"},
    toggle_rotate_keys = {
-      [hs.screen.allScreens()[2]] = "f15",
+      [".*"] = "f15"
 -- e.g.
 --                 ["HP Z24i"] = "f13",
 --                 ["SyncMaster"] = "f15",
    },
+    -- Lua patterns for screens that shouldn't be rotated, even if they match one of the patterns
+   screens_to_skip = { "Color LCD" },
    rotating_angles = { 0, 90 }, -- normal, rotated
    rotated = { },
 }
 
 mod.screens={}
 
+local fn = require("hs.fnutils")
+local screen = require("hs.screen")
+
 function mod.setRotation(scrname, rotate)
    logger.df("mod.setRotation(%s, %s)", scrname, rotate)
-   mod.config.rotated[scrname]=rotate
-   mod.screens[scrname]:rotate(mod.config.rotating_angles[mod.config.rotated[scrname] and 2 or 1])
+   if mod.screens[scrname] ~= nil then
+      mod.config.rotated[scrname]=rotate
+      mod.screens[scrname]:rotate(mod.config.rotating_angles[mod.config.rotated[scrname] and 2 or 1])
+   end
 end
 
 function mod.toggleRotation(scrname)
    logger.df("mod.toggleRotation(%s)", scrname)
-   mod.setRotation(scrname, not mod.config.rotated[scrname])
+   mod.findScreens()
+   if mod.screens[scrname] ~= nil then
+      logger.i(string.format("Rotating screen '%s' (matching key '%s')", mod.screens[scrname]:name(), scrname))
+      mod.setRotation(scrname, not mod.config.rotated[scrname])
+   else
+      logger.wf("Rotation triggered, but I didn't find any screen matching '%s' - skipping", scrname)
+   end
+end
+
+function filteredScreenFind(scr)
+   local scrs = { screen.find(scr) }
+   for i,s in ipairs(scrs) do
+      local match = false
+      for j,p in ipairs(mod.config.screens_to_skip) do
+         if string.match(s:name(), p) then
+            match = true
+         end
+      end
+      if not match then
+         return s
+      end
+   end
+   return nil
+end
+
+function mod.findScreens()
+   for k,v in pairs(mod.config.toggle_rotate_keys) do
+      local scr = filteredScreenFind(k)
+      mod.screens[k] = scr
+      if scr ~= nil then
+         scrname = scr:name()
+         logger.df("Found screen %s (matching key '%s'), setting up for rotation", scrname, k)
+         local mode = scr:currentMode()
+         -- Determine if the screen is currently rotated
+         mod.setRotation(k, mode.h > mode.w)
+      else
+         logger.df("Found no screen matching '%s', skipping rotation", k)
+      end
+   end
 end
 
 function mod.init()
    for k,v in pairs(mod.config.toggle_rotate_keys) do
-      local scr = hs.screen.find(k)
-      if scr ~= nil then
-         scrname = scr:name()
-         mod.screens[scrname] = scr
-         logger.df("Setting up rotation for screen %s with key %s", scrname, v)
-         local mode = scr:currentMode()
-         -- Determine if the screen is currently rotated
-         mod.setRotation(scrname, mode.h > mode.w)
-         omh.bind({ mod.config.toggle_rotate_modifier, v }, hs.fnutils.partial(mod.toggleRotation, scrname))
-      end
-   end
-
-   if type(mod.config.rotating_screen) == "string" then
-      mod.config.rotating_screen=hs.screen.find(mod.config.rotating_screen)
-   end
-   logger.df("rotating_screen: %s", mod.config.rotating_screen)
-   if mod.config.rotating_screen ~= nil then
-      logger.d("Setting up screen rotation")
-      local mode = mod.config.rotating_screen:currentMode()
-      -- Determine if the screen is currently rotated
-      mod.setRotation(mode.h > mode.w)
-      logger.d("Setting up keybinding for screen rotation")
-      omh.bind(mod.config.toggle_rotate_key, mod.toggleRotation)
-   else
-      logger.d("No rotating screen found, skipping setup")
+      logger.df("Setting up screen binding rotation for screen matching '%s' with key %s", k, v)
+      omh.bind({ mod.config.toggle_rotate_modifier, v }, fn.partial(mod.toggleRotation, k))
    end
 end
 

@@ -13,7 +13,8 @@ OMH_PLUGINS = {
    "misc.colorpicker",
    "keyboard.menubar_indicator",
    "apps.universal_archive",
-   "windows.screen_rotate"
+   "windows.screen_rotate",
+   "apps.evernote"
 }
 
 omh_go()
