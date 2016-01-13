@@ -30,4 +30,20 @@ omh_config("misc.colorpicker",
               colorpicker_in_menubar = false,
            })
 
+omh_config("misc.url_handling",
+           {
+              patterns = {
+                { "https?://gmail.com", "com.google.Chrome" },
+                { "https?://en.wikipedia.org", "org.epichrome.app.Wikipedia" },
+              }
+           })
+
+omh_config("windows.screen_rotate",
+           {
+              toggle_rotate_keys = {
+                 ["HP Z24i"] = "f13",
+                 ["SyncMaster"] = "f15",
+              }
+           })
+
 --]]

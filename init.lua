@@ -14,7 +14,8 @@ OMH_PLUGINS = {
    "keyboard.menubar_indicator",
    "apps.universal_archive",
    "windows.screen_rotate",
-   "apps.evernote"
+   "apps.evernote",
+   "misc.url_handling"
 }
 
 omh_go()
