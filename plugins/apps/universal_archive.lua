@@ -18,11 +18,6 @@ mod.config={
 }
 
 local event=require("hs.eventtap")
-local clock = os.clock
-function sleep(n)  -- seconds
-   local t0 = clock()
-   while clock() - t0 <= n do end
-end
 
 function mod.evernoteArchive(where)
    local ev = hs.appfinder.appFromName("Evernote")
@@ -35,7 +30,7 @@ function mod.evernoteArchive(where)
       if mod.config.archive_notifications then
          notify("Evernote", "Archiving note to " .. dest)
       end
-      sleep(mod.config.evernote_delay_before_typing)
+      omh.sleep(mod.config.evernote_delay_before_typing)
       event.keyStrokes(dest .. "\n")
    else
       notify("Hammerspoon", "Something went wrong, couldn't find Evernote menu item for archiving")

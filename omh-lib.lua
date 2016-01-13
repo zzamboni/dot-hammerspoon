@@ -67,4 +67,11 @@ function omh.bind(keyspec, fun)
    hs.hotkey.bind(keyspec[1], keyspec[2], fun)
 end
 
+-- Sleep for (possibly fractional) number of seconds
+local clock = os.clock
+function omh.sleep(n)  -- seconds
+   local t0 = clock()
+   while clock() - t0 <= n do end
+end
+
 return omh
