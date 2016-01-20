@@ -41,11 +41,13 @@ mod.config = {
    -- Title to show on the menubar, if enabled above
    menubar_title = "\u{1F4CB}",
    -- Use hs.menubar or hs.chooser?
-   use_chooser = true,
+   use_chooser = (hs.chooser ~= nil),
 }
 
 -- Chooser/menu object
 mod.selectorobj = nil
+-- Cache for focused window to work around the current window losing focus after the chooser comes up
+mod.prevFocusedWindow = nil
 
 -- Don't change anything bellow this line
 local pasteboard = require("hs.pasteboard") -- http://www.hammerspoon.org/docs/hs.pasteboard.html
@@ -68,11 +70,18 @@ function setTitle()
 end
 
 function putOnPaste(value,key)
+   if mod.prevFocusedWindow ~= nil then
+      mod.prevFocusedWindow:focus()
+   end
    if value == nil then return end
    if type(value) == "string" then
       pasteboard.setContents(value)
    else if type(value) == "table" then
-         pasteboard.setContents(value.text)
+         if value.image ~= nil then
+            pasteboard.setImageContents(value.image)
+         else
+            pasteboard.setContents(value.text)
+         end
         else
            if pasteboard.setImageContents ~= nil then
               pasteboard.setImageContents(value)
@@ -102,7 +111,7 @@ end
 -- Clears the last added to the history
 function clearLastItem()
    table.remove(clipboard_history,#clipboard_history)
-   settings.set("so.victor.hs.jumpcut",clipboard_history)
+--   settings.set("so.victor.hs.jumpcut",clipboard_history)
    now = pasteboard.changeCount()
    setTitle()
 end
@@ -113,7 +122,7 @@ function pasteboardToClipboard(item)
       table.remove(clipboard_history,1)
    end
    table.insert(clipboard_history, item)
-   settings.set("so.victor.hs.jumpcut",clipboard_history) -- updates the saved history
+--   settings.set("so.victor.hs.jumpcut",clipboard_history) -- updates the saved history
    setTitle() -- updates the menu counter
 end
 
@@ -129,7 +138,7 @@ populateMenubar = function(key)
             table.insert(menuData,1, {title=string.sub(v,0,mod.config.label_length).."…", fn = function() putOnPaste(v,key) end }) -- Truncate long strings
          else
             if type(v) == "userdata" then
-               table.insert(menuData,1, {title="<<<image>>>", fn = function() putOnPaste(v,key) end })
+               table.insert(menuData,1, {title="(image)", fn = function() putOnPaste(v,key) end })
             else
                table.insert(menuData,1, {title=v, fn = function() putOnPaste(v,key) end })
             end
@@ -155,7 +164,7 @@ populateChooser = function(key)
             table.insert(menuData,1, {text=v, subText=""}) -- Truncate long strings
          else
             if type(v) == "userdata" then
-               table.insert(menuData,1, {text="<<<image>>>", subText = "", image=v })
+               table.insert(menuData,1, {text="(image)", subText = "", image=v })
             else
                table.insert(menuData,1, {text=v, subText = ""})
             end
@@ -198,8 +207,11 @@ function mod.init()
       mod.selectorobj:choices(populateChooser)
       omh.bind(mod.config.clipboard_menu_key,
                function()
+                  logger.d("Refreshing chooser choices")
+                  mod.selectorobj:refreshChoicesCallback()
+                  logger.d("Storing currently focused window")
+                  mod.prevFocusedWindow = hs.window.focusedWindow()
                   logger.d("Calling mod.selectorobj:show()")
-                  mod.selectorobj:hide()
                   mod.selectorobj:show()
                end
       )
