@@ -44,8 +44,10 @@ mod.config = {
    use_chooser = true,
 }
 
+-- Chooser/menu object
+mod.selectorobj = nil
+
 -- Don't change anything bellow this line
-jumpcut = nil
 local pasteboard = require("hs.pasteboard") -- http://www.hammerspoon.org/docs/hs.pasteboard.html
 local settings = require("hs.settings") -- http://www.hammerspoon.org/docs/hs.settings.html
 local last_change = pasteboard.changeCount() -- displays how many times the pasteboard owner has changed // Indicates a new copy has been made
@@ -58,9 +60,9 @@ function setTitle()
    if not mod.config.use_chooser then
       if ((#clipboard_history == 0) or (mod.config.show_menu_counter == false)) then
          -- Clipboard Emoji: http://emojipedia.org/clipboard/
-         jumpcut:setTitle(mod.config.menubar_title) -- Unicode magic
+         mod.selectorobj:setTitle(mod.config.menubar_title) -- Unicode magic
       else
-         jumpcut:setTitle(mod.config.menubar_title .. " ("..#clipboard_history..")") -- updates the menu counter
+         mod.selectorobj:setTitle(mod.config.menubar_title .. " ("..#clipboard_history..")") -- updates the menu counter
       end
    end
 end
@@ -192,20 +194,20 @@ end
 
 function mod.init()
    if mod.config.use_chooser then
-      jumpcut = hs.chooser.new(putOnPaste)
-      jumpcut:choices(populateChooser)
+      mod.selectorobj = hs.chooser.new(putOnPaste)
+      mod.selectorobj:choices(populateChooser)
       omh.bind(mod.config.clipboard_menu_key,
                function()
-                  logger.d("Calling jumpcut:show()")
-                  jumpcut:hide()
-                  jumpcut:show()
+                  logger.d("Calling mod.selectorobj:show()")
+                  mod.selectorobj:hide()
+                  mod.selectorobj:show()
                end
       )
    else
-      jumpcut = hs.menubar.new(mod.config.show_in_menubar)
-      jumpcut:setTooltip("Clipboard history")
-      jumpcut:setMenu(populateMenubar)
-      omh.bind(mod.config.clipboard_menu_key, function() jumpcut:popupMenu(hs.mouse.getAbsolutePosition()) end)
+      mod.selectorobj = hs.menubar.new(mod.config.show_in_menubar)
+      mod.selectorobj:setTooltip("Clipboard history")
+      mod.selectorobj:setMenu(populateMenubar)
+      omh.bind(mod.config.clipboard_menu_key, function() mod.selectorobj:popupMenu(hs.mouse.getAbsolutePosition()) end)
    end
 
    --Checks for changes on the pasteboard. Is it possible to replace with eventtap?
