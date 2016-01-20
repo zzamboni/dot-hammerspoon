@@ -215,6 +215,7 @@ end
 
 --- Initialize the module
 function winmod.init()
+   hs.window.setFrameCorrectness = true
    winmod.bindKeys()
 end
 
