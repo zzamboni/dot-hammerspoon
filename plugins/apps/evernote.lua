@@ -16,7 +16,7 @@
 local mod = {}
 
 mod.config = {
-   open_note_key = { {'Cmd', 'Alt', 'Ctrl'}, 'o'},
+   open_note_key = { {'cmd', 'alt', 'ctrl'}, 'o'},
    modifiers_for_tagging = {'cmd', 'alt', 'ctrl'},
    keys_for_open_and_tag = {
 -- e.g.
@@ -44,8 +44,10 @@ function mod.openNoteInWindow()
       as.applescript([[tell application "Evernote"
 	set _sel to selection -- Gets the Note(s) Selected in Evernote
 	if _sel ≠ {} then
-		set aNote to first item of _sel -- Get ONLY the 1st Note
-		open note window with aNote
+--		set aNote to first item of _sel -- Get ONLY the 1st Note
+                repeat with aNote in _sel
+		    open note window with aNote
+                end repeat
 	end if
 end tell]])
    end   
