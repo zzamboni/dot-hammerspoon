@@ -29,7 +29,7 @@ This config has already replaced my use of the following apps:
   expression matching. Great if you use site-specific browsers created
   with [Epichrome](https://github.com/dmarmor/epichrome) or
   [Fluid](http://fluidapp.com). See
-  [url_handling.lua](https://github.com/zzamboni/oh-my-hammerspoon/blob/master/plugins/misc/url_handling.lua).
+  [url_handling.lua](plugins/misc/url_handling.lua).
 - [Breakaway](http://www.macupdate.com/app/mac/23361/breakaway) -
   automatically pause/unpause music when headphones are
   unplugged/replugged. Only for Spotify app at the moment, and it
