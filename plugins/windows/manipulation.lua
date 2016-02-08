@@ -68,11 +68,13 @@ function winmod.moveCurrentWindowToScreen(how)
    if win == nil then
       return
    end
+   hs.window.setFrameCorrectness = true
    if how == "left" then
       win:moveOneScreenWest()
    elseif how == "right" then
       win:moveOneScreenEast()
    end
+   hs.window.setFrameCorrectness = false
 end
 
 -- Toggle current window between its normal size, and being maximized
@@ -139,7 +141,9 @@ function winmod.bottomHalf()
 end
 
 function winmod.maximize()
+   hs.window.setFrameCorrectness = true
    winmod.resizeCurrentWindow("max")
+   hs.window.setFrameCorrectness = false
 end
 
 function winmod.oneThirdLeft()
@@ -215,7 +219,6 @@ end
 
 --- Initialize the module
 function winmod.init()
-   hs.window.setFrameCorrectness = true
    winmod.bindKeys()
 end
 
