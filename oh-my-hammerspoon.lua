@@ -1,11 +1,15 @@
 package.path = package.path .. ';plugins/?.lua'
 require("omh-lib")
 
-local plugin_cache={}
-OMH_PLUGINS={}
-OMH_CONFIG={}
+omh.plugin_cache={}
+local OMH_PLUGINS={}
+local OMH_CONFIG={}
 
-function load_plugins()
+function load_plugins(plugins)
+   plugins = plugins or {}
+   for i,p in ipairs(plugins) do
+      table.insert(OMH_PLUGINS, p)
+   end
    for i,plugin in ipairs(OMH_PLUGINS) do
       logger.df("Loading plugin %s", plugin)
       -- First, load the plugin
@@ -31,7 +35,7 @@ function load_plugins()
          end
       end
       -- Cache the module
-      plugin_cache[plugin] = mod
+      omh.plugin_cache[plugin] = mod
    end
 end
 
@@ -43,8 +47,8 @@ function omh_config(name, config)
 end
 
 -- Load and configure the plugins
-function omh_go()
-   load_plugins()
+function omh_go(plugins)
+   load_plugins(plugins)
 end
 
 -- Load local code if it exists
