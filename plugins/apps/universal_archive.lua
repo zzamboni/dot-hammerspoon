@@ -12,11 +12,9 @@ mod.config={
    archive_key = { {"Ctrl", "Cmd"}, "a" },
    evernote_archive_notebook = "Archive",
    evernote_other_archives = {},
-   outlook_archive_folder = "Archive",
    archive_notifications = true,
    -- Do not change these unless you know what you are doing
    evernote_delay_before_typing = 0.2,
-   outlook_delay_before_typing = 0.2,
 }
 
 local event=require("hs.eventtap")
@@ -35,7 +33,7 @@ function mod.evernoteArchive(where)
       omh.sleep(mod.config.evernote_delay_before_typing)
       event.keyStrokes(dest .. "\n")
    else
-      notify("Hammerspoon", "Something went wrong, couldn't find Evernote's menu item for archiving")
+      notify("Hammerspoon", "Something went wrong, couldn't find Evernote menu item for archiving")
    end
 end
 
@@ -46,40 +44,12 @@ function mod.mailArchive()
       if mod.config.archive_notifications then
          notify("Mail", "Archiving message")
       end
-   else
-      notify("Hammerspoon", "Something went wrong, couldn't find Mail's menu item for archiving")
-   end
-end
-
---- Archive current message in Spark
-function mod.sparkArchive()
-   local spark = hs.appfinder.appFromName("Spark")
-   if spark:selectMenuItem({"Message", "Archive"}) then
-      if mod.config.archive_notifications then
-         notify("Spark", "Archiving message")
-      end
-   else
-      notify("Hammerspoon", "Something went wrong, couldn't find Spark's menu item for archiving")
-   end
-end
-
---- Archive current message in Outlook
-function mod.outlookArchive(where)
-   local outlook = hs.appfinder.appFromName("Microsoft Outlook")
-   if outlook:selectMenuItem({"Message", "Move", mod.config.outlook_archive_folder}) then
-      if mod.config.archive_notifications then
-         notify("Outlook", "Archiving message")
-      end
-   else
-      notify("Hammerspoon", "Something went wrong, couldn't find Outlook's menu item for archiving")
    end
 end
 
 function mod.universalArchive(where)
    local ev = hs.appfinder.appFromName("Evernote")
    local mail = hs.appfinder.appFromName("Mail")
-   local spark = hs.appfinder.appFromName("Spark")
-   local outlook = hs.appfinder.appFromName("Microsoft Outlook")
 
    if ev ~= nil and ev:isFrontmost() then
       -- Archiving Evernote notes
@@ -87,12 +57,6 @@ function mod.universalArchive(where)
    elseif mail ~= nil and mail:isFrontmost() then
       -- Archiving Mail messages
       mod.mailArchive()
-   elseif spark ~= nil and spark:isFrontmost() then
-      -- Archiving Mail messages in Spark
-      mod.sparkArchive()
-   elseif outlook ~= nil and outlook:isFrontmost() then
-      -- Archiving Outlook messages
-      mod.outlookArchive()
    else
       notify("Hammerspoon", "I don't know how to archive in " .. hs.application.frontmostApplication():name())
    end

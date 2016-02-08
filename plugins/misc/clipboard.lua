@@ -111,7 +111,7 @@ end
 -- Clears the last added to the history
 function clearLastItem()
    table.remove(clipboard_history,#clipboard_history)
-   settings.set("so.victor.hs.jumpcut",clipboard_history)
+--   settings.set("so.victor.hs.jumpcut",clipboard_history)
    now = pasteboard.changeCount()
    setTitle()
 end
@@ -122,7 +122,7 @@ function pasteboardToClipboard(item)
       table.remove(clipboard_history,1)
    end
    table.insert(clipboard_history, item)
-   settings.set("so.victor.hs.jumpcut",clipboard_history) -- updates the saved history
+--   settings.set("so.victor.hs.jumpcut",clipboard_history) -- updates the saved history
    setTitle() -- updates the menu counter
 end
 
@@ -161,7 +161,7 @@ populateChooser = function(key)
    else
       for k,v in pairs(clipboard_history) do
          if (type(v) == "string") then
-            table.insert(menuData,1, {text=v, subText=""})
+            table.insert(menuData,1, {text=v, subText=""}) -- Truncate long strings
          else
             if type(v) == "userdata" then
                table.insert(menuData,1, {text="(image)", subText = "", image=v })
@@ -213,7 +213,8 @@ function mod.init()
                   mod.prevFocusedWindow = hs.window.focusedWindow()
                   logger.d("Calling mod.selectorobj:show()")
                   mod.selectorobj:show()
-               end)
+               end
+      )
    else
       mod.selectorobj = hs.menubar.new(mod.config.show_in_menubar)
       mod.selectorobj:setTooltip("Clipboard history")

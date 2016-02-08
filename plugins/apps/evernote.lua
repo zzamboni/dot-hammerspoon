@@ -28,7 +28,7 @@ mod.config = {
    },
 }
 
-local as = require("hs.osascript")
+local as = require("hs.applescript")
 local event=require("hs.eventtap")
 local fn=require("hs.fnutils")
 local app=require("hs.appfinder")

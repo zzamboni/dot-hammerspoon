@@ -13,7 +13,6 @@ omh_go({
       "misc.colorpicker",
       "keyboard.menubar_indicator",
       "apps.universal_archive",
-      "apps.universal_omnifocus",
       "windows.screen_rotate",
       "apps.evernote",
       "misc.url_handling",

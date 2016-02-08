@@ -20,16 +20,10 @@ Very early work in progress, feedback very welcome.
 
 This config has already replaced my use of the following apps:
 
-- [ClipMenu](http://www.clipmenu.com) - clipboard history, supporting
-  both text and image entries. See 
+- [ClipMenu](http://www.clipmenu.com) - clipboard history, only
+  supports text entries for now. See
   [clipboard.lua](plugins/misc/clipboard.lua).
   - `Shift-Cmd-v` shows the clipboard menu.
-- [Choosy](https://www.choosyosx.com) and other URL dispatchers -
-  allows opening URLs in different applications depending on regular
-  expression matching. Great if you use site-specific browsers created
-  with [Epichrome](https://github.com/dmarmor/epichrome) or
-  [Fluid](http://fluidapp.com). See
-  [url_handling.lua](plugins/misc/url_handling.lua).
 - [Breakaway](http://www.macupdate.com/app/mac/23361/breakaway) -
   automatically pause/unpause music when headphones are
   unplugged/replugged. Only for Spotify app at the moment, and it
