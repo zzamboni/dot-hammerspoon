@@ -12,9 +12,11 @@ mod.config={
    archive_key = { {"Ctrl", "Cmd"}, "a" },
    evernote_archive_notebook = "Archive",
    evernote_other_archives = {},
+   outlook_archive_notebook = "Archive",
    archive_notifications = true,
    -- Do not change these unless you know what you are doing
    evernote_delay_before_typing = 0.2,
+   outlook_delay_before_typing = 0.2,
 }
 
 local event=require("hs.eventtap")
@@ -47,9 +49,30 @@ function mod.mailArchive()
    end
 end
 
+--- Archive current message in Outlook
+function mod.outlookArchive(where)
+   local outlook = hs.appfinder.appFromName("Microsoft Outlook")
+   if outlook:selectMenuItem({"Message", "Move", "Choose Folder..."}) then
+      local dest = where 
+      if dest == nil then
+         dest = mod.config.outlook_archive_notebook
+      end
+      if mod.config.archive_notifications then
+         notify("Outlook", "Archiving note to " .. dest)
+      end
+      omh.sleep(mod.config.outlook_delay_before_typing)
+      event.keyStrokes(dest)
+      omh.sleep(mod.config.outlook_delay_before_typing)
+      event.keyStrokes("\n")
+   else
+      notify("Hammerspoon", "Something went wrong, couldn't find Outlook menu item for archiving")
+   end
+end
+
 function mod.universalArchive(where)
    local ev = hs.appfinder.appFromName("Evernote")
    local mail = hs.appfinder.appFromName("Mail")
+   local outlook = hs.appfinder.appFromName("Microsoft Outlook")
 
    if ev ~= nil and ev:isFrontmost() then
       -- Archiving Evernote notes
@@ -57,6 +80,9 @@ function mod.universalArchive(where)
    elseif mail ~= nil and mail:isFrontmost() then
       -- Archiving Mail messages
       mod.mailArchive()
+   elseif outlook ~= nil and outlook:isFrontmost() then
+      -- Archiving Outlook messages
+      mod.outlookArchive()
    else
       notify("Hammerspoon", "I don't know how to archive in " .. hs.application.frontmostApplication():name())
    end
