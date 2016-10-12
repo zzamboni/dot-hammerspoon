@@ -14,7 +14,18 @@ mod.config = {
    },
    -- Bundle ID for default URL handler
    default_handler = "com.apple.Safari",
+   -- Handle Slack-redir URLs specially so that we apply the rule on the destination URL
+   decode_slack_redir_urls = true,
 }
+
+-- Decode URLs
+local hex_to_char = function(x)
+   return string.char(tonumber(x, 16))
+end
+
+local unescape = function(url)
+   return url:gsub("%%(%x%x)", hex_to_char)
+end
 
 -- Attempt at getting an app ID from either an ID or the app name. Not fully debugged yet.
 function getAppId(app, launch)
@@ -60,23 +71,31 @@ end
 
 function mod.customHttpCallback(scheme, host, params, fullUrl)
    logger.df("Handling URL %s", fullUrl)
+   local url = fullUrl
+   if mod.config.decode_slack_redir_urls then
+      local newUrl = string.match(url, 'https://slack.redir.net/.*url=(.*)')
+      if newUrl then
+         url = unescape(newUrl)
+         logger.df("Got slack-redir URL, target URL: %s", url)
+      end
+   end
    for i,pair in ipairs(mod.config.patterns) do
       local p = pair[1]
       local app = pair[2]
-      logger.df("Matching %s against %s", fullUrl, p)
-      if string.match(fullUrl, p) then
+      logger.df("Matching %s against %s", url, p)
+      if string.match(url, p) then
          logger.df("  Match! Opening with %s", app)
          -- id = getAppId(app, true)
          id = app
          if id ~= nil then
-            hs.urlevent.openURLWithBundle(fullUrl, id)
+            hs.urlevent.openURLWithBundle(url, id)
             return
          else
             logger.wf("I could not find an application that matches '%s', falling through to default handler", app)
          end
       end
    end
-   hs.urlevent.openURLWithBundle(fullUrl, mod.config.default_handler)
+   hs.urlevent.openURLWithBundle(url, mod.config.default_handler)
 end
 
 function mod.init()
