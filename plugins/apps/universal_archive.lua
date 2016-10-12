@@ -62,8 +62,9 @@ function mod.outlookArchive(where)
       end
       omh.sleep(mod.config.outlook_delay_before_typing)
       event.keyStrokes(dest)
-      omh.sleep(mod.config.outlook_delay_before_typing)
-      event.keyStrokes("\n")
+      -- Commented out because Outlook crashes with these
+      --omh.sleep(mod.config.outlook_delay_before_typing)
+      --event.keyStrokes("\n")
    else
       notify("Hammerspoon", "Something went wrong, couldn't find Outlook menu item for archiving")
    end
