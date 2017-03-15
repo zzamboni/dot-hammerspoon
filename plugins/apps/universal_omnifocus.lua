@@ -9,20 +9,18 @@ mod.config={
    of_key = { {"ctrl", "cmd", "alt"}, "t" }, 
    of_notifications = true,
    of_scripts = {
-      -- Sample structure, you need to provide your own scripts
-      -- script is mandatory, itemname is optional, defaults to "item".
-      -- ["Microsoft Outlook"] = {
-      --    script = "/Users/taazadi1/Library/Scripts/Applications/Outlook/Send to OmniFocus with attached message.scpt",
-      --    itemname = "message"
-      -- },
-      -- ["Evernote"] = {
-      --    script = "/Users/taazadi1/Library/Scripts/Applications/Evernote/Send selected notes to Omnifocus.scpt",
-      --    itemname = "note"
-      -- },
-      -- ["Google Chrome"] = {
-      --    script = "/Users/taazadi1/Library/Scripts/Applications/Chrome/Save current Chrome tab to Omnifocus.scpt",
-      --    itemname = "tab"
-      -- },
+      ["Microsoft Outlook"] = {
+         script = hs_config_dir .. "scripts/outlook-to-omnifocus.scpt",
+         itemname = "message"
+      },
+      ["Evernote"] = {
+         script = hs_config_dir .. "scripts/evernote-to-omnifocus.scpt",
+         itemname = "note"
+      },
+      ["Google Chrome"] = {
+         script = hs_config_dir .. "scripts/chrome-to-omnifocus.scpt",
+         itemname = "tab"
+      },
    }
 }
 
