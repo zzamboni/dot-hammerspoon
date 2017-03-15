@@ -10,15 +10,15 @@ mod.config={
    of_notifications = true,
    of_scripts = {
       ["Microsoft Outlook"] = {
-         script = hs_config_dir .. "scripts/outlook-to-omnifocus.scpt",
+         script = hs_config_dir .. "scripts/outlook-to-omnifocus.applescript",
          itemname = "message"
       },
       ["Evernote"] = {
-         script = hs_config_dir .. "scripts/evernote-to-omnifocus.scpt",
+         script = hs_config_dir .. "scripts/evernote-to-omnifocus.applescript",
          itemname = "note"
       },
       ["Google Chrome"] = {
-         script = hs_config_dir .. "scripts/chrome-to-omnifocus.scpt",
+         script = hs_config_dir .. "scripts/chrome-to-omnifocus.applescript",
          itemname = "tab"
       },
    }
