@@ -24,25 +24,20 @@ mod.config={
    }
 }
 
-local event=require("hs.eventtap")
 local app=require("hs.application")
-
-function mod.file_to_OF(appname, obj)
-   if obj.script == nil then
-      notify("Hammerspoon", "You need to configure of_scripts[" .. appname .. "].script before filing to Omnifocus from " .. appname)
-   else
-      notify("Chrome", "Creating OmniFocus inbox item based on the current " .. (obj.itemname or "item"))
-      os.execute("/usr/bin/osascript '" .. obj.script .. "'")
-   end
-end
 
 function mod.universalOF()
    local curapp = app.frontmostApplication()
    local appname = curapp:name()
    logger.df("appname = %s", appname)
-
-   if mod.config.of_scripts[appname] ~= nil then
-      mod.file_to_OF(appname, mod.config.of_scripts[appname])
+   local obj = mod.config.of_scripts[appname]
+   if obj ~= nil then
+      if obj.script == nil then
+         notify("Hammerspoon", "You need to configure of_scripts[" .. appname .. "].script before filing to Omnifocus from " .. appname)
+      else
+         notify("Chrome", "Creating OmniFocus inbox item based on the current " .. (obj.itemname or "item"))
+         os.execute("/usr/bin/osascript '" .. obj.script .. "'")
+      end
    else
       notify("Hammerspoon", "I don't know how to file to Omnifocus from " .. appname)
    end
