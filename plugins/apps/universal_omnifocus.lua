@@ -5,79 +5,48 @@
 
 local mod={}
 
-local appf=require("hs.appfinder")
-
 mod.config={
-   of_key = { {"ctrl", "cmd", "alt"}, "t" },
+   of_key = { {"ctrl", "cmd", "alt"}, "t" }, 
    of_notifications = true,
-   outlook_OF_script = nil,
-   mail_OF_script = nil,
-   evernote_OF_script = nil,
-   chrome_OF_script = nil,
+   of_scripts = {
+      -- Sample structure, you need to provide your own scripts
+      -- script is mandatory, itemname is optional, defaults to "item".
+      -- ["Microsoft Outlook"] = {
+      --    script = "/Users/taazadi1/Library/Scripts/Applications/Outlook/Send to OmniFocus with attached message.scpt",
+      --    itemname = "message"
+      -- },
+      -- ["Evernote"] = {
+      --    script = "/Users/taazadi1/Library/Scripts/Applications/Evernote/Send selected notes to Omnifocus.scpt",
+      --    itemname = "note"
+      -- },
+      -- ["Google Chrome"] = {
+      --    script = "/Users/taazadi1/Library/Scripts/Applications/Chrome/Save current Chrome tab to Omnifocus.scpt",
+      --    itemname = "tab"
+      -- },
+   }
 }
 
 local event=require("hs.eventtap")
+local app=require("hs.application")
 
---- Archive current message in Mail.app
-function mod.mailOF()
-   if mod.config.mail_OF_script == nil then
-      notify("Hammerspoon", "You need to configure mail_OF_script before filing to Omnifocus from Mail")
+function mod.file_to_OF(appname, obj)
+   if obj.script == nil then
+      notify("Hammerspoon", "You need to configure of_scripts[" .. appname .. "].script before filing to Omnifocus from " .. appname)
    else
-      notify("Mail", "Creating OmniFocus inbox item based on the selected email")
-      os.execute("/usr/bin/osascript '" .. mod.config.mail_OF_script .. "'")
-   end
-end
-
---- File current Outlook message to Omnifocus
-function mod.outlookOF()
-   if mod.config.outlook_OF_script == nil then
-      notify("Hammerspoon", "You need to configure outlook_OF_script before filing to Omnifocus from Outlook")
-   else
-      notify("Outlook", "Creating OmniFocus inbox item based on the selected email")
-      os.execute("/usr/bin/osascript '" .. mod.config.outlook_OF_script .. "'")
-   end
-end
-
---- File selected Evernote notes to Omnifocus
-function mod.evernoteOF()
-   if mod.config.evernote_OF_script == nil then
-      notify("Hammerspoon", "You need to configure evernote_OF_script before filing to Omnifocus from Evernote")
-   else
-      notify("Evernote", "Creating OmniFocus inbox item based on the selected notes")
-      os.execute("/usr/bin/osascript '" .. mod.config.evernote_OF_script .. "'")
-   end
-end
-
---- File selected Evernote notes to Omnifocus
-function mod.chromeOF()
-   if mod.config.chrome_OF_script == nil then
-      notify("Hammerspoon", "You need to configure chrome_OF_script before filing to Omnifocus from Chrome")
-   else
-      notify("Chrome", "Creating OmniFocus inbox item based on the current tab")
-      os.execute("/usr/bin/osascript '" .. mod.config.chrome_OF_script .. "'")
+      notify("Chrome", "Creating OmniFocus inbox item based on the current " .. (obj.itemname or "item"))
+      os.execute("/usr/bin/osascript '" .. obj.script .. "'")
    end
 end
 
 function mod.universalOF()
-   local ev = appf.appFromName("Evernote")
-   local mail = appf.appFromName("Mail")
-   local outlook = appf.appFromName("Microsoft Outlook")
-   local chrome = appf.appFromName("Google Chrome")
+   local curapp = app.frontmostApplication()
+   local appname = curapp:name()
+   logger.df("appname = %s", appname)
 
-   if ev ~= nil and ev:isFrontmost() then
-      -- Archiving Evernote notes
-      mod.evernoteOF()
-   elseif mail ~= nil and mail:isFrontmost() then
-      -- Archiving Mail messages
-      mod.mailOF()
-   elseif outlook ~= nil and outlook:isFrontmost() then
-      -- Archiving Outlook messages
-      mod.outlookOF()
-   elseif chrome ~= nil and chrome:isFrontmost() then
-      -- Archiving Outlook messages
-      mod.chromeOF()
+   if mod.config.of_scripts[appname] ~= nil then
+      mod.file_to_OF(appname, mod.config.of_scripts[appname])
    else
-      notify("Hammerspoon", "I don't know how to file to Omnifocus from " .. hs.application.frontmostApplication():name())
+      notify("Hammerspoon", "I don't know how to file to Omnifocus from " .. appname)
    end
 end
 
