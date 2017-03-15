@@ -13,7 +13,7 @@ mod.config = {
 function reloadConfig(files)
    doReload = false
    for _,file in pairs(files) do
-      if file:sub(-4) == ".lua" then
+      if file:sub(-4) == ".lua" and file:sub(0,2) ~= ".#" then
          doReload = true
       end
    end
