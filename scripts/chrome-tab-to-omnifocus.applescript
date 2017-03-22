@@ -1,5 +1,5 @@
 (*
-◸ Veritrope.com
+Veritrope.com
 Chrome URLs List to OmniFocus
 VERSION 1.1
 June 15, 2014
@@ -17,7 +17,7 @@ June 15, 2014
     BASED ON THIS SAFARI/EVERNOTE SCRIPT:
     http://veritrope.com/code/export-all-safari-tabs-to-evernote/
 
-    …AND THIS SAFARI/OMNIFOCUS SCRIPT:
+    AND THIS SAFARI/OMNIFOCUS SCRIPT:
     http://veritrope.com/code/safari-tab-list-to-omnifocus/
 
     WITH GREAT THANKS TO BRETT TERPSTRA, ZETTT, AND GORDON!
@@ -76,6 +76,5 @@ my notification_Center(tabTitle)
 
 --NOTIFICATION CENTER
 on notification_Center(tabTitle)
-	display notification "Successfully Exported Tab " & tabTitle & ¬
-		" to OmniFocus" with title "Send Chrome Tab to OmniFocus" subtitle "◸ Veritrope.com"
+	display notification "Successfully Exported Tab " & tabTitle & " to OmniFocus" with title "Send Chrome Tab to OmniFocus" subtitle "Veritrope.com"
 end notification_Center
