@@ -35,7 +35,7 @@ function mod.universalOF()
       if obj.script == nil then
          notify("Hammerspoon", "You need to configure of_scripts[" .. appname .. "].script before filing to Omnifocus from " .. appname)
       else
-         notify("Chrome", "Creating OmniFocus inbox item based on the current " .. (obj.itemname or "item"))
+         notify("Hammerspoon", "Creating OmniFocus inbox item based on the current " .. (obj.itemname or "item"))
          os.execute("/usr/bin/osascript '" .. obj.script .. "'")
       end
    else
