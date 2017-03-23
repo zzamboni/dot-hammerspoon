@@ -79,7 +79,6 @@ property NewTask : {}
 *)
 
 --LET'S GO!
---log "Go"
 try
 	--CHECK FOR GROWL SWITCH
 	if growlSwitch is "ON" then my startGrowl()
@@ -626,7 +625,6 @@ on item_Process(selectedItems)
 				end if
 				
 				--CREATE IN OMNIFOCUS
-				--log "Creating task in OF"
 				tell application "OmniFocus"
 					tell the first document
 						set NewTask to make new inbox task with properties {name:OFTitle, note:theContent, flagged:theFlag, due date:theDueDate, completion date:theCompletionDate, defer date:theStartDate}
@@ -634,13 +632,10 @@ on item_Process(selectedItems)
 				end tell
 				
 				--ATTACH VCARD (IF PRESENT)
-				--log "before the_vCard"
 				if the_vCard is not {} then my vCard_Attach(the_vCard, theProps, NewTask)
 				
 				--IF ATTACHMENTS PRESENT, RUN ATTACHMENT SUBROUTINE
-				--log "before message_Attach "
 				my message_Attach(theAttachments, theProps, NewTask, selectedItem)
-				--log "after message_Attach"
 				
 				--ITEM HAS FINISHED! COUNT IT AS A SUCCESS AND RESET ATTACHMENTS!
 				set successCount to successCount + 1
@@ -754,17 +749,12 @@ end write_File
 --FOLDER EXISTS
 on f_exists(ExportFolder)
 	try
-		--log "f_exists(" & ExportFolder & ")"
 		--		set myPath to (path to home folder)
 		get ExportFolder as alias
-		--log "ExportFolder=" & ExportFolder
 		set SaveLoc to ExportFolder
-                --log "SaveLoc=" & SaveLoc
 	on error
-		--log "on error, will create " & (POSIX path of ExportFolder)
 		do shell script "/bin/mkdir -p '" & (POSIX path of ExportFolder) & "'"
 		-- tell application "Finder" to make new folder with properties {name:"Temp Export From Outlook"}
-		--log "after make folder"
 	end try
 end f_exists
 
@@ -779,27 +769,19 @@ end vCard_Attach
 
 --ATTACHMENT PROCESSING
 on message_Attach(theAttachments, theProps, NewTask, theMsg)
-	--log "in message_Attach"
-	--log "theMsg=" & theMsg
 	if attachSwitch is "ON" then
-		--log "attachSwitch is ON"
 		tell application id "com.microsoft.Outlook"
 			--MAKE SURE TEXT ITEM DELIMITERS ARE DEFAULT
 			set AppleScript's text item delimiters to ""
 			
 			--TEMP FILES PROCESSED ON THE DESKTOP
 			set ExportFolder to ((current identity folder) & "Temp Export From Outlook:") as string
-			--log "ExportFolder=" & ExportFolder
 			set SaveLoc to my f_exists(ExportFolder)
-                        --log "after f_exists"
-			--log "SaveLoc=" & SaveLoc
 			
 			--Attach original message
 			set subj to subject of theMsg
 			set textPath to ExportFolder & (my clean_Title(subj) & ".eml") as string
-			--log " textPath=" & textPath & " - about to save theMsg"
 			save theMsg in (textPath)
-			--log "saved theMsg in textPath"
 			tell application "OmniFocus"
 				tell the note of NewTask
 					make new file attachment with properties {file name:file textPath, embedded:true}
@@ -807,12 +789,10 @@ on message_Attach(theAttachments, theProps, NewTask, theMsg)
 			end tell
 			--set trash_Folder to path to trash folder from user domain
 			--do shell script "mv " & quoted form of POSIX path of theFileName & space & quoted form of POSIX path of trash_Folder
-			--log "after attach original message"
 			
 			
 			if theAttachments is not {} then
 				--PROCESS THE ATTCHMENTS
-				--log "Processing attachments"
 				set attCount to 0
 				repeat with theAttachment in theAttachments
 					set theFileName to (ExportFolder & theAttachment's name)
