@@ -5,10 +5,13 @@
 
 local mod={}
 
+local event=require('hs.eventtap')
+local fnu=require('hs.fnutils')
+
 mod.config={
-   of_key = { {"ctrl", "cmd", "alt"}, "t" }, 
+   of_keys = {{ {"ctrl", "cmd", "alt"}, "t" }},
    of_notifications = true,
-   of_scripts = {
+   of_actions = {
       ["Microsoft Outlook"] = {
          script = hs_config_dir .. "scripts/outlook-to-omnifocus.applescript",
          itemname = "message"
@@ -30,13 +33,17 @@ function mod.universalOF()
    local curapp = app.frontmostApplication()
    local appname = curapp:name()
    logger.df("appname = %s", appname)
-   local obj = mod.config.of_scripts[appname]
+   local obj = mod.config.of_actions[appname]
    if obj ~= nil then
-      if obj.script == nil then
-         notify("Hammerspoon", "You need to configure of_scripts[" .. appname .. "].script before filing to Omnifocus from " .. appname)
-      else
+      if obj.script ~= nil then
          notify("Hammerspoon", "Creating OmniFocus inbox item based on the current " .. (obj.itemname or "item"))
          os.execute("/usr/bin/osascript '" .. obj.script .. "'")
+      elseif obj.fn ~= nil then
+         notify("Hammerspoon", "Creating OmniFocus inbox item based on the current " .. (obj.itemname or "item"))
+         logger.df("obj.fn=%s", obj.fn)
+         fnu.partial(obj.fn)
+      else
+         notify("Hammerspoon", "You need to configure of_actions[" .. appname .. "].script/fn before filing to Omnifocus from " .. appname)
       end
    else
       notify("Hammerspoon", "I don't know how to file to Omnifocus from " .. appname)
@@ -44,7 +51,9 @@ function mod.universalOF()
 end
 
 function mod.init()
-   hs.hotkey.bind(mod.config.of_key[1], mod.config.of_key[2], hs.fnutils.partial(mod.universalOF, nil))
+   for i,kp in ipairs(mod.config.of_keys) do
+      hs.hotkey.bind(kp[1], kp[2], hs.fnutils.partial(mod.universalOF, nil))
+   end
 end
 
 return mod
