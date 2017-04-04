@@ -24,10 +24,21 @@ mod.config={
          script = hs_config_dir .. "scripts/chrome-to-omnifocus.applescript",
          itemname = "tab"
       },
+      ["Mail"] = {
+         script = hs_config_dir .. "scripts/mail-to-omnifocus.applescript",
+         itemname = "message"
+      }
    }
 }
 
 local app=require("hs.application")
+
+function mod.mailOF()
+   local mail = hs.appfinder.appFromName("Mail")
+   if not mail:selectMenuItem({"Mail", "Services", "OmniFocus 2: Send to Inbox"}) then
+      notify("Hammerspoon", "Something went wrong, couldn't find Mail's menu item for archiving")
+   end
+end
 
 function mod.universalOF()
    local curapp = app.frontmostApplication()
