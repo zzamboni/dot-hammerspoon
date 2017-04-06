@@ -1,31 +1,36 @@
 --- Universal Add to Omnifocus
 ---- Diego Zamboni <diego@zzamboni.org>
 --- Handles "send current item to OmniFocus" for multiple applications.
---- Currently Mail.app and Outlook are supported.
+--- The following applications are supported:
+--- - Outlook - AppleScript included in ~/.hammerspoon/scripts/, based on code from Veritrope.com
+--- - Evernote - AppleScript included in ~/.hammerspoon/scripts/, based on code from www.asianefficiency.com
+--- - Mail - AppleScript included in ~/.hammerspoon/scripts/, based on https://discourse.omnigroup.com/t/mail-to-quick-entry-applescript/500
+--- - Chrome and any Chrome-based apps (such as SSBs created by Epichrome) - AppleScript embedded in the code below, based on original as_script from Veitrope.com. For these, set apptype = "chromeapp" to trigger the correct behavior.
 
 local mod={}
 
 local event=require('hs.eventtap')
 local fnu=require('hs.fnutils')
+local osa=require('hs.osascript')
 
 mod.config={
    of_keys = {{ {"ctrl", "cmd", "alt"}, "t" }},
-   of_notifications = true,
+   of_notifications = false,
    of_actions = {
       ["Microsoft Outlook"] = {
-         script = hs_config_dir .. "scripts/outlook-to-omnifocus.applescript",
+         as_scriptfile = hs_config_dir .. "scripts/outlook-to-omnifocus.applescript",
          itemname = "message"
       },
       ["Evernote"] = {
-         script = hs_config_dir .. "scripts/evernote-to-omnifocus.applescript",
+         as_scriptfile = hs_config_dir .. "scripts/evernote-to-omnifocus.applescript",
          itemname = "note"
       },
       ["Google Chrome"] = {
-         script = hs_config_dir .. "scripts/chrome-to-omnifocus.applescript",
+         apptype = "chromeapp",
          itemname = "tab"
       },
       ["Mail"] = {
-         script = hs_config_dir .. "scripts/mail-to-omnifocus.applescript",
+         as_scriptfile = hs_config_dir .. "scripts/mail-to-omnifocus.applescript",
          itemname = "message"
       }
    }
@@ -46,15 +51,35 @@ function mod.universalOF()
    logger.df("appname = %s", appname)
    local obj = mod.config.of_actions[appname]
    if obj ~= nil then
-      if obj.script ~= nil then
-         notify("Hammerspoon", "Creating OmniFocus inbox item based on the current " .. (obj.itemname or "item"))
-         os.execute("/usr/bin/osascript '" .. obj.script .. "'")
-      elseif obj.fn ~= nil then
-         notify("Hammerspoon", "Creating OmniFocus inbox item based on the current " .. (obj.itemname or "item"))
-         logger.df("obj.fn=%s", obj.fn)
-         fnu.partial(obj.fn)
+      local itemname = (obj.itemname or "item")
+      if (not (obj.as_scriptfile or obj.as_script or obj.fn or obj.apptype)) then
+         notify("Hammerspoon", "You need to configure of_actions[" .. appname .. "].as_scriptfile/as_script/fn/apptype before filing to Omnifocus from " .. appname)
       else
-         notify("Hammerspoon", "You need to configure of_actions[" .. appname .. "].script/fn before filing to Omnifocus from " .. appname)
+         if mod.config.of_notifications then
+            notify("Hammerspoon", "Creating OmniFocus inbox item based on the current " .. itemname)
+         end
+         if obj.apptype == "chromeapp" then
+            obj.as_script = [[set urlList to {}
+                   set currentTab to 0
+                   tell application "]] .. appname .. [["
+	             set chromeWindow to the front window
+	             set t to active tab of chromeWindow
+	             set tabTitle to (title of t)
+	             set tabURL to (URL of t)
+                   end tell
+                   tell front document of application "OmniFocus"
+	             make new inbox task with properties {name:("Review: " & tabTitle), note:tabURL as text}
+                   end tell
+                   display notification "Successfully exported ]] .. itemname .. [[ '" & tabTitle & "' to OmniFocus" with title "Send ]] .. itemname .. [[ to OmniFocus"]]
+         end
+         if obj.as_scriptfile ~= nil then
+            os.execute("/usr/bin/osascript '" .. obj.as_scriptfile .. "'")
+         elseif obj.as_script ~= nil then
+            osa.applescript(obj.as_script)
+         elseif obj.fn ~= nil then
+            logger.df("obj.fn=%s", obj.fn)
+            fnu.partial(obj.fn)
+         end
       end
    else
       notify("Hammerspoon", "I don't know how to file to Omnifocus from " .. appname)
