@@ -2,7 +2,13 @@
 
 ## A configuration framework for [Hammerspoon](http://www.hammerspoon.org)
 
-Very early work in progress, feedback very welcome.
+[Hammerspoon](http://www.hammerspoon.org) is one of the most-used
+utilities on my Mac. This package allows you to manage "plugins" that
+can be enabled and configured independently.
+
+So far, Oh-my-Hammerspoon only contains plugins that I personally find
+useful or interesting, but please feel free to contribute both code
+and ideas.
 
 ### Instructions
 
