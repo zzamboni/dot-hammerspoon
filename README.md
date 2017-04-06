@@ -70,10 +70,13 @@ It additionally provides the following functionality:
 - Universal "send to OmniFocus"
   ([universal_omnifocus.lua](plugins/apps/universal_omnifocus.lua))
   for sending the current item to OmniFocus from different
-  applications - it needs corresponding AppleScript programs for each
-  application. Included are scripts for Microsoft Outlook, Chrome, and
-  Evernote, under the [scripts/](scripts/) directory. These scripts
-  are loaded automatically by the plugin, but you can add your own and
+  applications - it supports execution of AppleScript files or
+  embedded code, Lua functions, and hard-coded support for certain
+  types of applications. Scripts for Microsoft Outlook, Mail.app and
+  Evernote are included under the [scripts/](scripts/) directory, and
+  built-in support for Chrome and Chrome-based apps (for example, SSBs
+  created using [https://github.com/dmarmor/epichrome](Epichrome)) by
+  using the `apptype="chromeapp"` parameter. You can add your own and
   configure them in `init-local.lua`.
 - Screen rotation shortcuts
   ([screen_rotate.lua](plugins/windows/screen_rotate.lua)) allows
