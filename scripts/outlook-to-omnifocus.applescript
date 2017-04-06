@@ -18,27 +18,27 @@ More details on the script information page.
 1.00  FINAL (UPDATED GROWL CODE)
 1.00  BETA 1 - ASSORTED BUG FIXES
 0.99  REVISED GROWL CODE
-0.98  INITIAL RELEASE 
+0.98  INITIAL RELEASE
 
 // RECOMMENDED INSTALLATION INSTRUCTIONS:
 1.) Save this script to ~/Documents/Microsoft User Data/Outlook Script Menu Items (Or Its Equivalent in Localized Language);
 (You can navigate quickly to this folder by selecting:
  Outlook's Script Menu => About This Menu... => Open Folder)
 
-2.) Give it a filename that enables a keyboard shortcut to be used. 
-    
+2.) Give it a filename that enables a keyboard shortcut to be used.
+
 Example:
 Saving the script with the name "Send to OmniFocus\mO.scpt" lets you press Cmd-O to send items to Evernote!
 
 3.) Enjoy!
 
 // TERMS OF USE:
-This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License. 
+This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
 To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/3.0/ or send a letter to Creative Commons, 444 Castro Street, Suite 900, Mountain View, California, 94041, USA.
 
 *)
 
-(* 
+(*
 ======================================
 // USER SWITCHES (YOU CAN CHANGE THESE!)
 ======================================
@@ -48,12 +48,12 @@ To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-
 --TO OSX'S NOTIFICATION CENTER (DEFAULT IS "OFF")
 property growlSwitch : "OFF"
 
---SET THIS TO "OFF" IF YOU PREFER TO DISABLE 
+--SET THIS TO "OFF" IF YOU PREFER TO DISABLE
 --ATTACHMENT PROCESSING (DEFAULT IS "ON")
 property attachSwitch : "ON"
 
 
-(* 
+(*
 ======================================
 // OTHER PROPERTIES (USE CAUTION WHEN CHANGING)
 ======================================
@@ -72,77 +72,81 @@ property list_Props : {}
 property SaveLoc : ""
 property NewTask : {}
 
-(* 
+(*
 ======================================
-// MAIN PROGRAM 
+// MAIN PROGRAM
 ======================================
 *)
 
---LET'S GO!
-try
-	--CHECK FOR GROWL SWITCH
-	if growlSwitch is "ON" then my startGrowl()
-	
-	--SET UP ACTIVITIES
-	set selectedItems to {}
-	
-	set selectedItems to my item_Check()
-	
-	--MESSAGES SELECTED?
-	if selectedItems is not missing value then
-		--GET FILE COUNT
-		my item_Count(selectedItems, the_class)
-		
-		--ANNOUNCE THE EXPORT OF ITEMS
-		my process_Items(itemNum, attNum, the_class)
-		
-		--PROCESS ITEMS FOR EXPORT
-		my item_Process(selectedItems)
-		
-		--DELETE TEMP FOLDER IF IT EXISTS
-		set success to my trashfolder(SaveLoc)
-		
-		--NO ITEMS SELECTED
-	else
-		set successCount to -1
-	end if
-	
-	
-	--GROWL RESULTS
-	if growlSwitch is "ON" then
-		my growl_Growler(successCount, itemNum)
-	else
-		my notification_Center(successCount, itemNum)
-	end if
-	
-	-- ERROR HANDLING 
-on error errText number errNum
-	tell application "System Events"
-		set isGrlRunning to (count of (every process whose bundle identifier is "com.Growl.GrowlHelperApp")) > 0
-	end tell
-	
-	ignoring application responses
-		if isGrlRunning then
-			if errNum is -128 then
-				set part_1 to "tell application \"Growl\"
-                "
-				set part_2 to "notify with name \"Failure Notification\" title \"User Cancelled\" description \"User Cancelled\" application name \"Outlook to OmniFocus\"
-                    end tell"
-			else
-				-- GROWL FAILURE FOR ERROR
-				set part_2 to "notify with name \"Failure Notification\" title \"Import Failure\" description \"Failed to export due to the following error: \" & return & errText application name \"Outlook to OmniFocus\"
-            end tell"
-			end if
-			
-			-- NON-GROWL ERROR MSG. FOR ERROR
-			display dialog "Item Failed to Import: " & errNum & return & errText with icon 0
-		end if
-	end ignoring
-end try
+on run argv
 
-(* 
+	--LET'S GO!
+	try
+		--CHECK FOR GROWL SWITCH
+		if growlSwitch is "ON" then my startGrowl()
+
+		--SET UP ACTIVITIES
+		set selectedItems to {}
+
+		set selectedItems to my item_Check()
+
+		--MESSAGES SELECTED?
+		if selectedItems is not missing value then
+			--GET FILE COUNT
+			my item_Count(selectedItems, the_class)
+
+			--ANNOUNCE THE EXPORT OF ITEMS
+			my process_Items(itemNum, attNum, the_class)
+
+			--PROCESS ITEMS FOR EXPORT
+			my item_Process(selectedItems, argv)
+
+			--DELETE TEMP FOLDER IF IT EXISTS
+			set success to my trashfolder(SaveLoc)
+
+			--NO ITEMS SELECTED
+		else
+			set successCount to -1
+		end if
+
+
+		--GROWL RESULTS
+		if growlSwitch is "ON" then
+			my growl_Growler(successCount, itemNum)
+		else
+			my notification_Center(successCount, itemNum)
+		end if
+
+		-- ERROR HANDLING
+	on error errText number errNum
+		tell application "System Events"
+			set isGrlRunning to (count of (every process whose bundle identifier is "com.Growl.GrowlHelperApp")) > 0
+		end tell
+
+		ignoring application responses
+			if isGrlRunning then
+				if errNum is -128 then
+					set part_1 to "tell application \"Growl\"
+                "
+					set part_2 to "notify with name \"Failure Notification\" title \"User Cancelled\" description \"User Cancelled\" application name \"Outlook to OmniFocus\"
+                    end tell"
+				else
+					-- GROWL FAILURE FOR ERROR
+					set part_2 to "notify with name \"Failure Notification\" title \"Import Failure\" description \"Failed to export due to the following error: \" & return & errText application name \"Outlook to OmniFocus\"
+            end tell"
+				end if
+
+				-- NON-GROWL ERROR MSG. FOR ERROR
+				display dialog "Item Failed to Import: " & errNum & return & errText with icon 0
+			end if
+		end ignoring
+	end try
+
+end run
+
+(*
 ======================================
-// PREPARATORY SUBROUTINES 
+// PREPARATORY SUBROUTINES
 ======================================
 *)
 
@@ -196,27 +200,33 @@ on item_Count(selectedItems, the_class)
 	end tell
 end item_Count
 
-(* 
+(*
 ======================================
 // PROCESS OUTLOOK ITEMS SUBROUTINE
 ======================================
 *)
 
-on item_Process(selectedItems)
+on item_Process(selectedItems, argv)
 	tell application id "com.microsoft.Outlook"
-		
+
 		--TEXT ITEM CLIP
 		if (class of selectedItems) is text then
 			set OFTitle to selectedItems
 			set theContent to "Text Clipping from Outlook"
-			
-			--CREATE IN OMNIFOCUS 
-			tell application "OmniFocus"
-				tell the first document
+
+			--CREATE IN OMNIFOCUS
+			tell front document of application "OmniFocus"
+				if argv is {"nodialog"} then
 					set NewTask to make new inbox task with properties {name:OFTitle, note:theContent}
-				end tell
+				else
+					tell quick entry
+						set NewTask to make new inbox task with properties {name:OFTitle, note:theContent}
+						open
+					end tell
+				end if
+
 			end tell
-			
+
 			--ITEM HAS FINISHED -- COUNT IT AS A SUCCESS!
 			set successCount to 1
 		else
@@ -227,29 +237,29 @@ on item_Process(selectedItems)
 					set theAttachments to attachments of selectedItem
 					set raw_Attendees to attendees of selectedItem
 				end try
-				
+
 				--SET UP SOME VALUES
 				set theCompletionDate to missing value
 				set theStartDate to missing value
 				set theDueDate to missing value
 				set theFlag to false
-				
+
 				-- GET OUTLOOK ITEM INFORMATION
 				set the_vCard to {}
-				
+
 				--WHAT KIND OF ITEM IS IT?
 				if the_class is "Calendar" then
-					
+
 					(* // CALENDAR ITEM *)
-					
-					--PREPARE THE TEMPLATE  
+
+					--PREPARE THE TEMPLATE
 					--LEFT SIDE (FORM FIELDS)
 					set l_1 to "Event:  "
 					set l_2 to "Start Time:  "
 					set l_3 to "End Time:  "
 					set l_4 to "Location:  "
 					set l_5 to "Notes  :"
-					
+
 					--RIGHT SIDE (DATA FIELDS)
 					set r_1 to (subject of theProps)
 					set r_2 to (start time of theProps)
@@ -257,7 +267,7 @@ on item_Process(selectedItems)
 					set the_Location to (location of theProps)
 					if the_Location is missing value then set the_Location to "None"
 					set r_4 to the_Location
-					
+
 					--THE NOTES
 					set the_notes to ""
 					set item_Created to (current date)
@@ -265,18 +275,18 @@ on item_Process(selectedItems)
 						set the_notes to (plain text content of theProps)
 					end try
 					if the_notes is missing value then set the_notes to ""
-					
-					--ADD ATTENDEE INFO IF IT'S A MEETING 
+
+					--ADD ATTENDEE INFO IF IT'S A MEETING
 					if (count of raw_Attendees) > 0 then
 						set the_Organizer to "<strong>Organized By: </strong><br/>" & (organizer of selectedItem) & "<br/><br/>"
 						set the_Attendees to "Invited Attendees: " & return
 						repeat with raw_Attendee in raw_Attendees
-							
+
 							--GET ATTENDEE DATA
 							set raw_EmailAttendee to (email address of raw_Attendee)
 							set attend_Name to (name of raw_EmailAttendee) as text
 							set raw_Status to (status of raw_Attendee)
-							
+
 							--COERCE STATUS TO TEXT
 							if raw_Status contains not responded then
 								set attend_Status to "Not Responded"
@@ -287,7 +297,7 @@ on item_Process(selectedItems)
 							else if raw_Status contains tentatively accepted then
 								set attend_Status to "Tentatively Accepted"
 							end if
-							
+
 							--COMPILE THE ATTENDEE DATA
 							set attend_String to attend_Name & " (" & attend_Status & ")" & return
 							set the_Attendees to the_Attendees & attend_String
@@ -295,35 +305,35 @@ on item_Process(selectedItems)
 						set the_notes to (the_Organizer & the_Attendees & the_notes)
 						set raw_Attendees to ""
 					end if
-					
+
 					--ASSEMBLE THE TEMPLATE
 					set theContent to l_1 & r_1 & return & l_2 & r_2 & return & l_3 & r_3 & return & l_4 & r_4 & return & return & return & return & the_notes & return & return
-					
+
 					--EXPORT VCARD DATA
 					try
 						set vcard_data to (icalendar data of theProps)
 						set vcard_extension to ".ics"
 						set the_vCard to my write_File(r_1, vcard_data, vcard_extension)
 					end try
-					
+
 					set OFTitle to r_1
-					
+
 					(* // NOTE ITEM *)
 				else if the_class is "note" then
-					
-					--PREPARE THE TEMPLATE  
+
+					--PREPARE THE TEMPLATE
 					--LEFT SIDE (FORM FIELDS)
 					set l_1 to "Note:  "
 					set l_2 to "Creation Date:  "
 					set l_3 to "Category:  "
 					set l_4 to ""
 					set l_5 to "Notes:  "
-					
+
 					--RIGHT SIDE (DATA FIELDS)
 					set r_1 to name of theProps
 					set item_Created to creation date of theProps
 					set r_2 to (item_Created as text)
-					
+
 					--GET CATEGORY INFO
 					set the_Cats to (category of theProps)
 					set list_Cats to {}
@@ -338,40 +348,40 @@ on item_Process(selectedItems)
 							set count_Cat to (count_Cat - 1)
 						end if
 					end repeat
-					
+
 					set r_3 to list_Cats
 					set r_4 to ""
-					
+
 					set item_Created to creation date of theProps
-					
+
 					--THE NOTES
 					try
 						set the_notes to plain text content of theProps
 					end try
 					if the_notes is missing value then set the_notes to ""
-					
+
 					--ASSEMBLE THE TEMPLATE
 					set theContent to l_1 & r_1 & return & l_2 & r_2 & return & l_3 & r_3 & return & l_4 & r_4 & return & return & return & return & the_notes & return & return
-					
+
 					--EXPORT VCARD DATA
 					set vcard_data to (icalendar data of theProps)
 					set vcard_extension to ".ics"
 					set the_vCard to my write_File(r_1, vcard_data, vcard_extension)
-					
+
 					set theHTML to true
 					set OFTitle to r_1
-					
+
 					(* // CONTACT ITEM *)
 				else if the_class is "contact" then
-					
-					--PREPARE THE TEMPLATE  
+
+					--PREPARE THE TEMPLATE
 					--LEFT SIDE (FORM FIELDS)
 					set l_1 to "Name:  "
 					set l_2 to "Email:  "
 					set l_3 to "Phone Numbers:" & return
 					set l_4 to "Addresses:" & return
 					set l_5 to "Notes:"
-					
+
 					--GET EMAIL INFO
 					try
 						set list_Addresses to {}
@@ -382,7 +392,7 @@ on item_Process(selectedItems)
 							copy addr_Item to the end of list_Addresses
 						end repeat
 					end try
-					
+
 					--GET PHONE INFO AND ENCODE TELEPHONE LINK
 					try
 						set list_Phone to {}
@@ -402,11 +412,11 @@ on item_Process(selectedItems)
 							copy m_String to end of list_Phone
 						end if
 					end try
-					
+
 					--GET ADDRESS INFO
 					try
 						set list_Addr to {}
-						
+
 						(*BUSINESS *)
 						if business street address of theProps is not missing value then
 							set b_Str to (business street address of theProps)
@@ -440,14 +450,14 @@ on item_Process(selectedItems)
 								set b_gCou to ""
 							end if
 							set b_Addr to b_Str & return & b_Cit & ", " & b_Sta & "  " & b_Zip & return & b_Cou
-							
+
 							--GOOGLE MAPS LOCATION IN URL
 							set b_gString to b_gStr & "," & b_gCit & "," & b_gSta & "," & b_gZip & "," & b_gCou
 							set b_GMAP to "http://maps.google.com/maps?q=" & b_gString
 							set b_String to "-Work: " & return & b_Addr & return & "(Link to Google Map:  " & b_GMAP & ")" & return
 							copy b_String to end of list_Addr
 						end if
-						
+
 						(*HOME *)
 						if home street address of theProps is not missing value then
 							set h_Str to (home street address of theProps)
@@ -481,7 +491,7 @@ on item_Process(selectedItems)
 								set h_gCou to ""
 							end if
 							set h_Addr to h_Str & return & h_Cit & ", " & h_Sta & "  " & h_Zip & return & h_Cou
-							
+
 							--GOOGLE MAPS LOCATION IN URL
 							set h_gString to h_gStr & "," & h_gCit & "," & h_gSta & "," & h_gZip & "," & h_gCou
 							set h_GMAP to "http://maps.google.com/maps?q=" & h_gString
@@ -489,41 +499,41 @@ on item_Process(selectedItems)
 							copy h_String to end of list_Addr
 						end if
 					end try
-					
+
 					--RIGHT SIDE (DATA FIELDS)
 					set r_1 to (display name of theProps)
 					set r_2 to (list_Addresses as string)
 					set r_3 to (list_Phone as text)
 					set r_4 to (list_Addr as text)
-					
+
 					--EXPORT VCARD DATA
 					set vcard_data to (vcard data of theProps)
 					set vcard_extension to ".vcf"
 					set item_Created to (current date)
-					
+
 					--THE NOTES
 					try
 						set the_notes to plain text note of theProps
 					end try
 					if the_notes is missing value then set the_notes to ""
-					
+
 					--ASSEMBLE THE TEMPLATE
 					set theContent to l_1 & r_1 & return & l_2 & r_2 & return & l_3 & r_3 & return & l_4 & r_4 & return & return & return & return & the_notes & return & return
 					set the_vCard to my write_File(r_1, vcard_data, vcard_extension)
-					
+
 					set OFTitle to r_1
-					
+
 					(* // TASK ITEM *)
 				else if the_class is "Task" then
-					
-					--PREPARE THE TEMPLATE  
+
+					--PREPARE THE TEMPLATE
 					--LEFT SIDE (FORM FIELDS)
 					set l_1 to "Note:  "
 					set l_2 to "Priority:  "
 					set l_3 to "Due Date:  "
 					set l_4 to "Status:  "
 					set l_5 to "Notes:  "
-					
+
 					--RIGHT SIDE (DATA FIELDS)
 					set propClass to (class of theProps) as text
 					if propClass is "incoming message" then
@@ -535,52 +545,52 @@ on item_Process(selectedItems)
 					if the_Priority is priority normal then set r_2 to "Normal"
 					if the_Priority is priority high then set r_2 to "High"
 					if the_Priority is priority low then set r_2 to "Low"
-					
+
 					set theDueDate to (due date of theProps)
 					set r_3 to theDueDate
 					set theCompletionDate to (completed date of theProps)
 					set theStartDate to (start date of theProps)
 					set item_Created to (current date)
-					
+
 					--TODO?
 					try
 						set todo_Flag to (todo flag of theProps) as text
 						set r_4 to my TITLECASE(todo_Flag)
 					end try
-					
+
 					--THE NOTES
 					try
 						set the_notes to plain text content of theProps
 					end try
 					if the_notes is missing value then set the_notes to ""
-					
+
 					--ASSEMBLE THE TEMPLATE
 					set theContent to l_1 & r_1 & return & l_2 & r_2 & return & l_3 & r_3 & return & l_4 & r_4 & return & return & return & return & the_notes & return & return
-					
-					
+
+
 					--EXPORT VCARD DATA
 					if propClass is not "incoming message" then
 						set vcard_extension to ".ics"
 						set vcard_data to (icalendar data of theProps)
 						set the_vCard to my write_File(r_1, vcard_data, vcard_extension)
 					end if
-					
+
 					set OFTitle to r_1
-					
+
 					(* // MESSAGE ITEM *)
 				else
-					
+
 					--GET EMAIL INFO
 					set the_Sender to (sender of theProps)
 					set s_Name to (address of the_Sender)
 					set s_Address to (address of the_Sender)
-					
+
 					--REPLACE WITH NAME, IF AVAILABLE
 					try
 						set s_Name to (name of the_Sender)
 					end try
-					
-					
+
+
 					--GET CATEGORY INFO
 					set the_Cats to (category of theProps)
 					set list_Cats to {}
@@ -595,7 +605,7 @@ on item_Process(selectedItems)
 							set count_Cat to (count_Cat - 1)
 						end if
 					end repeat
-					
+
 					--RIGHT SIDE (DATA FIELDS)
 					set m_Sub to (subject of theProps)
 					if m_Sub is missing value then
@@ -605,38 +615,44 @@ on item_Process(selectedItems)
 					end if
 					set r_3 to (time sent of theProps)
 					set r_4 to list_Cats
-					
+
 					set theID to id of theProps as string
 					set item_Created to r_3
 					set OFTitle to r_2
-					
+
 					set theDueDate to (due date of theProps)
 					set theCompletionDate to (completed date of theProps)
 					set theStartDate to (start date of theProps)
-					
+
 					set oFlag to (todo flag of theProps) as text
 					if oFlag is "not completed" then
 						set theFlag to true
 					end if
-					
+
 					--PROCESS EMAIL CONTENT
 					set m_Content to plain text content of theProps
 					set theContent to return & return & "Name: " & s_Name & return & "Subject: " & r_2 & return & "Sent: " & r_3 & return & "Category: " & r_4 & return & return & return & return & m_Content & return & return
 				end if
-				
+
 				--CREATE IN OMNIFOCUS
-				tell application "OmniFocus"
-					tell the first document
+				tell front document of application "OmniFocus"
+					if argv is {"nodialog"} then
+
 						set NewTask to make new inbox task with properties {name:OFTitle, note:theContent, flagged:theFlag, due date:theDueDate, completion date:theCompletionDate, defer date:theStartDate}
-					end tell
+					else
+						tell quick entry
+							set NewTask to make new inbox task with properties {name:OFTitle, note:theContent, flagged:theFlag, due date:theDueDate, completion date:theCompletionDate, defer date:theStartDate}
+							open
+						end tell
+					end if
 				end tell
-				
+
 				--ATTACH VCARD (IF PRESENT)
 				if the_vCard is not {} then my vCard_Attach(the_vCard, theProps, NewTask)
-				
+
 				--IF ATTACHMENTS PRESENT, RUN ATTACHMENT SUBROUTINE
 				my message_Attach(theAttachments, theProps, NewTask, selectedItem)
-				
+
 				--ITEM HAS FINISHED! COUNT IT AS A SUCCESS AND RESET ATTACHMENTS!
 				set successCount to successCount + 1
 				set theAttachments to {}
@@ -645,9 +661,9 @@ on item_Process(selectedItems)
 	end tell
 end item_Process
 
-(* 
+(*
 ======================================
-// UTILITY SUBROUTINES 
+// UTILITY SUBROUTINES
 ======================================
 *)
 
@@ -703,9 +719,9 @@ on replaceString(theString, theOriginalString, theNewString)
 end replaceString
 
 
-(* 
+(*
 ======================================
-// ATTACHMENT SUBROUTINES 
+// ATTACHMENT SUBROUTINES
 =======================================
 *)
 
@@ -737,7 +753,7 @@ on write_File(r_1, vcard_data, vcard_extension)
 		write vcard_data to file theFileName as string
 		close access file theFileName
 		return theFileName
-		
+
 	on error errorMessage
 		log errorMessage
 		try
@@ -773,11 +789,11 @@ on message_Attach(theAttachments, theProps, NewTask, theMsg)
 		tell application id "com.microsoft.Outlook"
 			--MAKE SURE TEXT ITEM DELIMITERS ARE DEFAULT
 			set AppleScript's text item delimiters to ""
-			
+
 			--TEMP FILES PROCESSED ON THE DESKTOP
 			set ExportFolder to ((current identity folder) & "Temp Export From Outlook:") as string
 			set SaveLoc to my f_exists(ExportFolder)
-			
+
 			--Attach original message
 			set subj to subject of theMsg
 			set textPath to ExportFolder & (my clean_Title(subj) & ".eml") as string
@@ -789,8 +805,8 @@ on message_Attach(theAttachments, theProps, NewTask, theMsg)
 			end tell
 			--set trash_Folder to path to trash folder from user domain
 			--do shell script "mv " & quoted form of POSIX path of theFileName & space & quoted form of POSIX path of trash_Folder
-			
-			
+
+
 			if theAttachments is not {} then
 				--PROCESS THE ATTCHMENTS
 				set attCount to 0
@@ -804,7 +820,7 @@ on message_Attach(theAttachments, theProps, NewTask, theMsg)
 							make new file attachment with properties {file name:file theFileName, embedded:true}
 						end tell
 					end tell
-					
+
 					--SILENT DELETE OF TEMP FILE
 					--set trash_Folder to path to trash folder from user domain
 					--do shell script "mv " & quoted form of POSIX path of theFileName & space & quoted form of POSIX path of trash_Folder
@@ -848,7 +864,7 @@ on trashfolder(SaveLoc)
 	end try
 end trashfolder
 
-(* 
+(*
 ======================================
 // GROWL SUBROUTINES
 ======================================
@@ -860,7 +876,7 @@ on startGrowl()
 		end tell
 		ignoring application responses
 			if isGrlRunning then
-				set osaSc to "tell application \"Growl\" 
+				set osaSc to "tell application \"Growl\"
 set the allNotificationsList to {\"Import To OmniFocus\", \"Success Notification\", \"Failure Notification\"}
 set the enabledNotificationsList to {\"Import To OmniFocus\", \"Success Notification\", \"Failure Notification\"}
 register as application \"Outlook to OmniFocus\" all notifications allNotificationsList default notifications enabledNotificationsList icon of application \"OmniFocus\"
@@ -883,9 +899,9 @@ on process_Items(itemNum, attNum, the_class)
 			tell application "System Events"
 				set isGrlRunning to (count of (every process whose bundle identifier is "com.Growl.GrowlHelperApp")) > 0
 			end tell
-			
+
 			set app_Path to (path to application id "com.microsoft.Outlook")
-			
+
 			ignoring application responses
 				if isGrlRunning then
 					set attPlural to "s"
@@ -899,25 +915,25 @@ on process_Items(itemNum, attNum, the_class)
 						set growl_Icon to (path to resource "lcs.icns" in bundle app_Path)
 					end if
 					set growl_Icon to (POSIX path of growl_Icon) as text
-					
+
 					if attNum = 0 then
 						set attNum to "No"
 					else if attNum is 1 then
 						set attPlural to ""
 					end if
-					
+
 					tell application "Finder"
 						if the_class is not "Text" then
 							set Plural_Test to (itemNum) as number
 							if Plural_Test is greater than 1 then
-								
-								set osaSc to "tell application \"Growl\" 
+
+								set osaSc to "tell application \"Growl\"
 notify with name \"Import To OmniFocus\" title \"Import To OmniFocus Started\" description \"Now Importing " & itemNum & " " & the_class & " Items with " & attNum & " Attachment" & attPlural & ".\" application name \"Outlook to OmniFocus\" identifier \"OmniFocus\" image from location \"" & growl_Icon & "\"
                             end tell"
 								set shSc to "osascript -e " & quoted form of osaSc & "  &>  /dev/null &"
 								my growlThis(shSc)
 							else
-								set osaSc to "tell application \"Growl\" 
+								set osaSc to "tell application \"Growl\"
 notify with name \"Import To OmniFocus\" title \"Import To OmniFocus Started\" description \"Now Importing " & itemNum & " " & the_class & " Items with " & attNum & " Attachment" & attPlural & ".\" application name \"Outlook to OmniFocus\" identifier \"OmniFocus\" image from location \"" & growl_Icon & "\"
                             end tell"
 								set shSc to "osascript -e " & quoted form of osaSc & "  &>  /dev/null &"
@@ -928,7 +944,7 @@ notify with name \"Import To OmniFocus\" title \"Import To OmniFocus Started\" d
 				end if
 			end ignoring
 		end if
-		
+
 	end try
 end process_Items
 
@@ -944,7 +960,7 @@ on growl_Growler(successCount, itemNum)
 		tell application "System Events"
 			set isGrlRunning to (count of (every process whose bundle identifier is "com.Growl.GrowlHelperApp")) > 0
 		end tell
-		
+
 		ignoring application responses
 			if isGrlRunning then
 				set part_1 to "tell application \"Growl\"
@@ -968,7 +984,7 @@ on growl_Growler(successCount, itemNum)
 				set shSc to "osascript -e " & quoted form of combined_parts & "  &>  /dev/null &"
 				my growlThis(shSc)
 			end if
-			
+
 		end ignoring
 	end try
 end growl_Growler
@@ -976,20 +992,20 @@ end growl_Growler
 --NOTIFICATION CENTER
 on notification_Center(successCount, itemNum)
 	set Plural_Test to (successCount) as number
-	
+
 	if Plural_Test is -1 then
 		display notification "No Items Selected In Outlook!" with title "Outlook to OmniFocus" subtitle "Veritrope.com"
-		
+
 	else if Plural_Test is 0 then
 		display notification "No Items Exported From Outlook!" with title "Outlook to OmniFocus" subtitle "Veritrope.com"
-		
+
 	else if Plural_Test is equal to 1 then
 		display notification "Successfully Exported " & itemNum & " Item to OmniFocus" with title "Outlook to OmniFocus" subtitle "Veritrope.com"
-		
+
 	else if Plural_Test is greater than 1 then
 		display notification "Successfully Exported " & itemNum & " Items to OmniFocus" with title "Outlook to OmniFocus" subtitle "Veritrope.com"
 	end if
-	
+
 	set itemNum to "0"
 	delay 1
 end notification_Center

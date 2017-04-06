@@ -15,10 +15,13 @@ local osa=require('hs.osascript')
 
 mod.config={
    of_keys = {{ {"ctrl", "cmd", "alt"}, "t" }},
-   of_notifications = false,
-   -- User-provided actions here, thorugh init-local.lua
+   -- Display Hammerspoon notifications (independent of AppleScript notifications, if any, generated from within the scripts)
+   of_notifications = true,
+   -- Display the new tasks in the OmniFocus quick-entry dialog (set to false to send directly to the Inbox)
+   of_noquickentrydialog = false,
+   -- User-provided actions. Don't customize here, do it in init-local.lua
    of_actions = { },
-   -- Built-in actions here, don't modify
+   -- Built-in actions, don't modify
    _of_actions = {
       ["Microsoft Outlook"] = {
          as_scriptfile = hs_config_dir .. "scripts/outlook-to-omnifocus.applescript",
@@ -62,25 +65,41 @@ function mod.universalOF()
             notify("Hammerspoon", "Creating OmniFocus inbox item based on the current " .. itemname)
          end
          if obj.apptype == "chromeapp" then
-            obj.as_script = [[set urlList to {}
-                   set currentTab to 0
-                   tell application "]] .. appname .. [["
-	             set chromeWindow to the front window
-	             set t to active tab of chromeWindow
-	             set tabTitle to (title of t)
-	             set tabURL to (URL of t)
-                   end tell
-                   tell front document of application "OmniFocus"
-	             make new inbox task with properties {name:("Review: " & tabTitle), note:tabURL as text}
-                   end tell
-                   display notification "Successfully exported ]] .. itemname .. [[ '" & tabTitle & "' to OmniFocus" with title "Send ]] .. itemname .. [[ to OmniFocus"]]
+            obj.as_script = [[
+set urlList to {}
+set currentTab to 0
+tell application "]] .. appname .. [["
+  set chromeWindow to the front window
+  set t to active tab of chromeWindow
+  set tabTitle to (title of t)
+  set tabURL to (URL of t)
+end tell
+tell front document of application "OmniFocus"
+]] .. (mod.config.of_noquickentrydialog and
+       [[
+  make new inbox task with properties {name:("Review: " & tabTitle), note:tabURL as text}
+]]
+          or
+          [[
+  tell quick entry
+    make new inbox task with properties {name:("Review: " & tabTitle), note:tabURL as text}
+    open
+  end tell
+]]) ..
+[[
+end tell
+display notification "Successfully exported ]] .. itemname .. [[ '" & tabTitle & "' to OmniFocus" with title "Send ]] .. itemname .. [[ to OmniFocus"]]
+logger.df("obj.as_script=%s", obj.as_script)
          end
          if obj.as_scriptfile ~= nil then
-            os.execute("/usr/bin/osascript '" .. obj.as_scriptfile .. "'")
+            local cmd = "/usr/bin/osascript '" .. obj.as_scriptfile .. "'" .. (mod.config.of_noquickentrydialog and " nodialog" or "")
+            logger.df("Executing command %s", cmd)
+            os.execute(cmd)
          elseif obj.as_script ~= nil then
+            logger.df("Executing AppleScript code:\n%s", obj.as_script)
             osa.applescript(obj.as_script)
          elseif obj.fn ~= nil then
-            logger.df("obj.fn=%s", obj.fn)
+            logger.df("Calling function %s", obj.fn)
             fnu.partial(obj.fn)
          end
       end
