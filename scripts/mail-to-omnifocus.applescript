@@ -13,11 +13,13 @@ tell application "Mail"
 	
 	--CREATE IN OMNIFOCUS 
 	tell application "OmniFocus"
-		tell the first document
-			set NewTask to make new inbox task with properties {name:my_subject, note:message_url}
-		end tell
-                	display notification "Successfully Exported message '" & my_subject & "' to OmniFocus" with title "Send Mail Message to OmniFocus"
+	-- tell quick entry
+	-- 	make new inbox task with properties {name:my_subject, note:message_url}
+	-- 	open
+	-- end tell
+	  tell the first document
+	    set NewTask to make new inbox task with properties {name:my_subject, note:message_url}
+	  end tell
+          display notification "Successfully Exported message '" & my_subject & "' to OmniFocus" with title "Send Mail Message to OmniFocus"
 	end tell
-	
-	--	move selected_message to _archive_box
 end tell
