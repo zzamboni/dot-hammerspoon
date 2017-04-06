@@ -16,7 +16,10 @@ local osa=require('hs.osascript')
 mod.config={
    of_keys = {{ {"ctrl", "cmd", "alt"}, "t" }},
    of_notifications = false,
-   of_actions = {
+   -- User-provided actions here, thorugh init-local.lua
+   of_actions = { },
+   -- Built-in actions here, don't modify
+   _of_actions = {
       ["Microsoft Outlook"] = {
          as_scriptfile = hs_config_dir .. "scripts/outlook-to-omnifocus.applescript",
          itemname = "message"
@@ -49,7 +52,7 @@ function mod.universalOF()
    local curapp = app.frontmostApplication()
    local appname = curapp:name()
    logger.df("appname = %s", appname)
-   local obj = mod.config.of_actions[appname]
+   local obj = mod.config._of_actions[appname]
    if obj ~= nil then
       local itemname = (obj.itemname or "item")
       if (not (obj.as_scriptfile or obj.as_script or obj.fn or obj.apptype)) then
@@ -87,6 +90,9 @@ function mod.universalOF()
 end
 
 function mod.init()
+   -- Integrate user-provided actions into built-in ones
+   for k,v in pairs(mod.config.of_actions) do mod.config._of_actions[k] = v end
+
    for i,kp in ipairs(mod.config.of_keys) do
       hs.hotkey.bind(kp[1], kp[2], hs.fnutils.partial(mod.universalOF, nil))
    end
