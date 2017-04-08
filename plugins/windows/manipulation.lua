@@ -12,6 +12,10 @@ winmod.config = {
    third_right = { {"ctrl", "alt"       }, "Right" },
    third_up    = { {"ctrl", "alt"       }, "Up" },
    third_down  = { {"ctrl", "alt"       }, "Down" },
+   top_right   = { {"ctrl",       "cmd" }, "2"},
+   btm_right   = { {"ctrl",       "cmd" }, "4"},
+   top_left    = { {"ctrl",       "cmd" }, "1"},
+   btm_left    = { {"ctrl",       "cmd" }, "3"},
    max_toggle  = { {"ctrl", "alt", "cmd"}, "F" },
    max         = { {"ctrl", "alt", "cmd"}, "Up" },
    screen_left = { {"ctrl", "alt", "cmd"}, "Left" },
@@ -57,6 +61,14 @@ function winmod.resizeCurrentWindow(how)
       newrect = {0,1/3,1,1/3}
    elseif how == "bottom_third" or how == "vthird-2" then
       newrect = {0,2/3,1,1/3}
+   elseif how == "top_right" then
+      newrect = {0.5,0,0.5,0.5}
+   elseif how == "top_left" then
+     newrect = {0,0,0.5,0.5}
+   elseif how == "bottom_left" then
+     newrect = {0.5,0.5,0.5,0.5}
+   elseif how == "bottom_right" then
+     newrect = {0,0.5,0.5,0.5}
    end
 
    win:move(newrect)
@@ -120,6 +132,7 @@ function get_vertical_third(win)
    return third
 end
 
+
 ----------------------------------------------------------------------
 --- Shortcut functions for those above
 ----------------------------------------------------------------------
@@ -144,6 +157,22 @@ function winmod.maximize()
    hs.window.setFrameCorrectness = true
    winmod.resizeCurrentWindow("max")
    hs.window.setFrameCorrectness = false
+end
+
+function winmod.topRight()
+  winmod.resizeCurrentWindow("top_right")
+end
+
+function winmod.topLeft()
+  winmod.resizeCurrentWindow("top_left")
+end
+
+function winmod.bottomRight()
+  winmod.resizeCurrentWindow("bottom_right")
+end
+
+function winmod.bottomLeft()
+  winmod.resizeCurrentWindow("bottom_left")
 end
 
 function winmod.oneThirdLeft()
@@ -207,6 +236,11 @@ function winmod.bindKeys()
    omh.bind(c.third_right, winmod.oneThirdRight)
    omh.bind(c.third_up, winmod.oneThirdUp)
    omh.bind(c.third_down, winmod.onethirdDown)
+   -- quarters --
+   omh.bind(c.top_right, winmod.topRight)
+   omh.bind(c.top_left, winmod.topLeft)
+   omh.bind(c.btm_left, winmod.bottomLeft)
+   omh.bind(c.btm_right, winmod.bottomRight)
                                                         
    -- Maximized                                         
    omh.bind(c.max_toggle, winmod.toggleMaximized)
