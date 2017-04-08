@@ -105,11 +105,23 @@ end
               "KeyboardLayout Name" = "U.S.";
           }
       )
+
+   Sample output expected in "out" when using IME:
+      (
+              {
+              "Bundle ID" = "com.apple.inputmethod.SCIM";
+              "Input Mode" = "com.apple.inputmethod.SCIM.ITABC";
+              InputSourceKind = "Input Mode";
+          }
+      )
 --]]
 function getInputSourceCallback(callback, code, out, err)
    task=nil
    if code == 0 then
       local _,layout = string.match(out, [["KeyboardLayout Name"%s*=%s*("?)(.-)%1;]])
+      if layout == nil then
+         _,layout = string.match(out, [["Input Mode"%s*=%s*("?)(.-)%1;]])
+      end
       callback(layout)
    else
       logger.ef("getInputSourceCallback called with an error code %s, stdout='%s', stderr='%s'", code, out, err)
