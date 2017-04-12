@@ -84,7 +84,7 @@ function mod.customHttpCallback(scheme, host, params, fullUrl)
       local app = pair[2]
       logger.df("Matching %s against %s", url, p)
       if string.match(url, p) then
-         logger.df("  Match! Opening with %s", app)
+         logger.df("  Match! Opening %s with %s", url, app)
          -- id = getAppId(app, true)
          id = app
          if id ~= nil then

@@ -1,6 +1,6 @@
 require("oh-my-hammerspoon")
 
-omh_go({
+omh.go({
       "apps.hammerspoon_toggle_console",
       "apps.hammerspoon_install_cli",
       "apps.hammerspoon_config_reload",

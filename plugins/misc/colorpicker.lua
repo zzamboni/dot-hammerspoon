@@ -26,9 +26,9 @@ mod.config={
    colorpicker_menubar_title = "\u{1F308}", -- Rainbow Emoji: http://emojipedia.org/rainbow/
    colorpicker_individual_table_keys = false,
    colortable_keys = {
-      x11 =         { draw.color.x11, {"ctrl", "alt", "cmd"}, "x" },
-      hammerspoon = { draw.color.hammerspoon, {"ctrl", "alt", "cmd"}, "h" },
-      ansi =        { draw.color.ansiTerminalColors, {"ctrl", "alt", "cmd"}, "a" }
+      x11 =         { _map = draw.color.x11, key = {{"ctrl", "alt", "cmd"}, "x" }},
+      hammerspoon = { _map = draw.color.hammerspoon, key = {{"ctrl", "alt", "cmd"}, "h" }},
+      ansi =        { _map = draw.color.ansiTerminalColors, key = {{"ctrl", "alt", "cmd"}, "a" }}
    }
 }
 
@@ -133,7 +133,7 @@ function toggleColorSamples(tablename, colortable)
    else  -- display them
       swatches[tablename] = {}
       -- Create sorted list of colors
-      keys = sortedkeys(colortable)
+      keys = omh.sortedkeys(colortable)
 
       -- Scale number of rows/columns according to the screen's aspect ratio
       local rows = math.floor(math.sqrt(#keys)*(frame.w/frame.h))
@@ -161,7 +161,7 @@ end
 function mod.choosetable()
    local tab={}
    local lists=draw.color.lists()
-   local keys=sortedkeys(lists)
+   local keys=omh.sortedkeys(lists)
    for i,v in ipairs(keys) do
       table.insert(tab, {title = v, fn = hs.fnutils.partial(toggleColorSamples, v, lists[v])})
    end
@@ -174,15 +174,15 @@ function mod.init()
    if have_colorlists then
       if mod.config.colorpicker_individual_table_keys then
          for k,v in pairs(mod.config.colortable_keys) do
-            hs.hotkey.bind(v[2], v[3], hs.fnutils.partial(toggleColorSamples,  k, v[1]))
+            omh.bind(v.key, hs.fnutils.partial(toggleColorSamples,  k, v._map))
          end
       end
       choosermenu = hs.menubar.new(mod.config.colorpicker_in_menubar)
       choosermenu:setTitle(mod.config.colorpicker_menubar_title)
       choosermenu:setMenu(mod.choosetable)
-      hs.hotkey.bind(mod.config.colorpicker_key[1], mod.config.colorpicker_key[2], function() choosermenu:popupMenu(hs.mouse.getAbsolutePosition()) end)
+      omh.bind(mod.config.colorpicker_key, function() choosermenu:popupMenu(hs.mouse.getAbsolutePosition()) end)
    else
-      hs.hotkey.bind(mod.config.colorpicker_key[1], mod.config.colorpicker_key[2], hs.fnutils.partial(toggleColorSamples, "default", hs.drawing.color))
+      omh.bind(mod.config.colorpicker_key, hs.fnutils.partial(toggleColorSamples, "default", hs.drawing.color))
    end
 end
 

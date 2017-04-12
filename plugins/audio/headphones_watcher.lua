@@ -28,12 +28,12 @@ function audiodevwatch(dev_uid, event_name, event_scope, event_element)
          logger.d("Headphones connected")
          if mod.config.control_spotify and spotify_was_playing then
             logger.d("Resuming playback in Spotify")
-            notify("Headphones plugged", "Resuming Spotify playback")
+            omh.notify("Headphones plugged", "Resuming Spotify playback")
             spotify.play()
          end
          if mod.config.control_itunes and itunes_was_playing then
             logger.d("Resuming playback in iTunes")
-            notify("Headphones plugged", "Resuming iTunes playback")
+            omh.notify("Headphones plugged", "Resuming iTunes playback")
             itunes.play()
          end
       else
@@ -46,12 +46,12 @@ function audiodevwatch(dev_uid, event_name, event_scope, event_element)
          logger.df("itunes_was_playing=%s", itunes_was_playing)
          if mod.config.control_spotify and spotify_was_playing then
             logger.d("Pausing Spotify")
-            notify("Headphones unplugged", "Pausing Spotify")
+            omh.notify("Headphones unplugged", "Pausing Spotify")
             spotify.pause()
          end
          if mod.config.control_itunes and itunes_was_playing then
             logger.d("Pausing iTunes")
-            notify("Headphones unplugged", "Pausing iTunes")
+            omh.notify("Headphones unplugged", "Pausing iTunes")
             itunes.pause()
          end
       end

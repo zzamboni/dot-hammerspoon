@@ -30,12 +30,12 @@ function mod.evernoteArchive(where)
          dest = mod.config.evernote_archive_notebook
       end
       if mod.config.archive_notifications then
-         notify("Evernote", "Archiving note to " .. dest)
+         omh.notify("Evernote", "Archiving note to " .. dest)
       end
       omh.sleep(mod.config.evernote_delay_before_typing)
       event.keyStrokes(dest .. "\n")
    else
-      notify("Hammerspoon", "Something went wrong, couldn't find Evernote's menu item for archiving")
+      omh.notify("Hammerspoon", "Something went wrong, couldn't find Evernote's menu item for archiving")
    end
 end
 
@@ -44,10 +44,10 @@ function mod.mailArchive()
    local mail = hs.appfinder.appFromName("Mail")
    if mail:selectMenuItem({"Message", "Archive"}) then
       if mod.config.archive_notifications then
-         notify("Mail", "Archiving message")
+         omh.notify("Mail", "Archiving message")
       end
    else
-      notify("Hammerspoon", "Something went wrong, couldn't find Mail's menu item for archiving")
+      omh.notify("Hammerspoon", "Something went wrong, couldn't find Mail's menu item for archiving")
    end
 end
 
@@ -56,10 +56,10 @@ function mod.sparkArchive()
    local spark = hs.appfinder.appFromName("Spark")
    if spark:selectMenuItem({"Message", "Archive"}) then
       if mod.config.archive_notifications then
-         notify("Spark", "Archiving message")
+         omh.notify("Spark", "Archiving message")
       end
    else
-      notify("Hammerspoon", "Something went wrong, couldn't find Spark's menu item for archiving")
+      omh.notify("Hammerspoon", "Something went wrong, couldn't find Spark's menu item for archiving")
    end
 end
 
@@ -68,10 +68,10 @@ function mod.outlookArchive(where)
    local outlook = hs.appfinder.appFromName("Microsoft Outlook")
    if outlook:selectMenuItem({"Message", "Move", mod.config.outlook_archive_folder}) then
       if mod.config.archive_notifications then
-         notify("Outlook", "Archiving message")
+         omh.notify("Outlook", "Archiving message")
       end
    else
-      notify("Hammerspoon", "Something went wrong, couldn't find Outlook's menu item for archiving")
+      omh.notify("Hammerspoon", "Something went wrong, couldn't find Outlook's menu item for archiving")
    end
 end
 
@@ -94,7 +94,7 @@ function mod.universalArchive(where)
       -- Archiving Outlook messages
       mod.outlookArchive()
    else
-      notify("Hammerspoon", "I don't know how to archive in " .. hs.application.frontmostApplication():name())
+      omh.notify("Hammerspoon", "I don't know how to archive in " .. hs.application.frontmostApplication():name())
    end
 end
 

@@ -47,7 +47,7 @@ local app=require("hs.application")
 function mod.mailOF()
    local mail = hs.appfinder.appFromName("Mail")
    if not mail:selectMenuItem({"Mail", "Services", "OmniFocus 2: Send to Inbox"}) then
-      notify("Hammerspoon", "Something went wrong, couldn't find Mail's menu item for archiving")
+      omh.notify("Hammerspoon", "Something went wrong, couldn't find Mail's menu item for archiving")
    end
 end
 
@@ -59,10 +59,10 @@ function mod.universalOF()
    if obj ~= nil then
       local itemname = (obj.itemname or "item")
       if (not (obj.as_scriptfile or obj.as_script or obj.fn or obj.apptype)) then
-         notify("Hammerspoon", "You need to configure of_actions[" .. appname .. "].as_scriptfile/as_script/fn/apptype before filing to Omnifocus from " .. appname)
+         omh.notify("Hammerspoon", "You need to configure of_actions[" .. appname .. "].as_scriptfile/as_script/fn/apptype before filing to Omnifocus from " .. appname)
       else
          if mod.config.of_notifications then
-            notify("Hammerspoon", "Creating OmniFocus inbox item based on the current " .. itemname)
+            omh.notify("Hammerspoon", "Creating OmniFocus inbox item based on the current " .. itemname)
          end
          if obj.apptype == "chromeapp" then
             obj.as_script = [[
@@ -104,7 +104,7 @@ logger.df("obj.as_script=%s", obj.as_script)
          end
       end
    else
-      notify("Hammerspoon", "I don't know how to file to Omnifocus from " .. appname)
+      omh.notify("Hammerspoon", "I don't know how to file to Omnifocus from " .. appname)
    end
 end
 
