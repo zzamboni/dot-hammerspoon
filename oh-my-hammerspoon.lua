@@ -54,19 +54,20 @@ function omh.go(plugins)
    omh.load_plugins(plugins)
 end
 
--- List loaded plugins
-local remove_internal_fields = function(item, path)
-   print("item=".. inspect(item) .. " ; path=" .. inspect(path))
-   if string.match(path[#path] or "", '^_') then return "<omitted>" end
-   return item
-end
-
 function omh.list(verbose)
+   -- List loaded plugins, to be used as a value for the `process` option of `inspect()`
+   local remove_internal_fields = function(item, path)
+      if path[#path] ~= inspect.KEY and string.match(path[#path] or "", '^_') then
+         return "<skipped>"
+      else
+         return item
+      end
+   end
    print("Oh-my-hammerspoon: the following plugins are loaded:")
    for k,v in pairs(omh._plugin_cache) do
       print("- " .. k)
       if verbose and type(v) == "table" and v.config ~= nil then
-         print("    " .. inspect(v.config, {newline="\n    ", process=remove_internal_fields}))
+         print("\n    " .. inspect(v.config, {newline="\n    ", process=remove_internal_fields}) .. "\n")
       end
    end
 end
