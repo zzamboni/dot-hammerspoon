@@ -22,7 +22,7 @@ mod.config={
    -- User-provided actions. Don't customize here, do it in init-local.lua
    of_actions = { },
    -- Built-in actions, don't modify
-   _of_actions = {
+   of_builtin_actions = {
       ["Microsoft Outlook"] = {
          as_scriptfile = hs_config_dir .. "scripts/outlook-to-omnifocus.applescript",
          itemname = "message"
@@ -64,8 +64,9 @@ function mod.universalOF()
          if mod.config.of_notifications then
             omh.notify("Hammerspoon", "Creating OmniFocus inbox item based on the current " .. itemname)
          end
+         local as_script = nil
          if obj.apptype == "chromeapp" then
-            obj.as_script = [[
+            as_script = [[
 set urlList to {}
 set currentTab to 0
 tell application "]] .. appname .. [["
@@ -90,14 +91,16 @@ tell front document of application "OmniFocus"
 end tell
 display notification "Successfully exported ]] .. itemname .. [[ '" & tabTitle & "' to OmniFocus" with title "Send ]] .. itemname .. [[ to OmniFocus"]]
 logger.df("obj.as_script=%s", obj.as_script)
+         elseif obj.as_script ~= nil then
+            as_script = obj.as_script
          end
          if obj.as_scriptfile ~= nil then
             local cmd = "/usr/bin/osascript '" .. obj.as_scriptfile .. "'" .. (mod.config.of_noquickentrydialog and " nodialog" or "")
             logger.df("Executing command %s", cmd)
             os.execute(cmd)
-         elseif obj.as_script ~= nil then
-            logger.df("Executing AppleScript code:\n%s", obj.as_script)
-            osa.applescript(obj.as_script)
+         elseif as_script ~= nil then
+            logger.df("Executing AppleScript code:\n%s", as_script)
+            osa.applescript(as_script)
          elseif obj.fn ~= nil then
             logger.df("Calling function %s", obj.fn)
             fnu.partial(obj.fn)
@@ -109,7 +112,9 @@ logger.df("obj.as_script=%s", obj.as_script)
 end
 
 function mod.init()
-   -- Integrate user-provided actions into built-in ones
+   -- Integrate of_builtin_actions and of_actions into _of_actions
+   mod.config._of_actions={}
+   for k,v in pairs(mod.config.of_builtin_actions) do mod.config._of_actions[k] = v end
    for k,v in pairs(mod.config.of_actions) do mod.config._of_actions[k] = v end
 
    for i,kp in ipairs(mod.config.of_keys) do
