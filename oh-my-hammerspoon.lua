@@ -6,7 +6,6 @@ omh=require("omh-lib")
 omh.plugin={}
 local OMH_PLUGINS={}
 local OMH_CONFIG={}
-local inspect=require('inspect')
 
 function omh.load_plugins(plugins)
    plugins = plugins or {}
@@ -14,7 +13,7 @@ function omh.load_plugins(plugins)
       table.insert(OMH_PLUGINS, p)
    end
    for i,plugin in ipairs(OMH_PLUGINS) do
-      logger.df("Loading plugin %s", plugin)
+      omh.logger.df("Loading plugin %s", plugin)
       -- First, load the plugin
       mod = require(plugin)
       -- If it returns a table (like a proper module should), then
@@ -33,7 +32,7 @@ function omh.load_plugins(plugins)
          end
          -- If it has an init() function, call it
          if type(mod.init) == "function" then
-            logger.i(string.format("Initializing plugin %s", plugin))
+            omh.logger.i(string.format("Initializing plugin %s", plugin))
             mod.init()
          end
       end
@@ -45,7 +44,7 @@ end
 -- Specify config parameters for a plugin. First name
 -- is the name as specified in OMH_PLUGINS, second is a table.
 function omh.config(name, config)
-   logger.df("omh.config, name=%s, config=%s", name, hs.inspect(config))
+   omh.logger.df("omh.config, name=%s, config=%s", name, hs.inspect(config))
    OMH_CONFIG[name]=config
 end
 
@@ -57,7 +56,7 @@ end
 function omh.list(verbose)
    -- List loaded plugins, to be used as a value for the `process` option of `inspect()`
    local remove_internal_fields = function(item, path)
-      if path[#path] ~= inspect.KEY and string.match(path[#path] or "", '^_') then
+      if path[#path] ~= hs.inspect.KEY and string.match(path[#path] or "", '^_') then
          return "<skipped>"
       else
          return item
@@ -67,7 +66,7 @@ function omh.list(verbose)
    for k,v in pairs(omh.plugin) do
       print("- " .. k)
       if verbose and type(v) == "table" and v.config ~= nil then
-         print("\n    " .. inspect(v.config, {newline="\n    ", process=remove_internal_fields}) .. "\n")
+         print("\n    " .. hs.inspect(v.config, {newline="\n    ", process=remove_internal_fields}) .. "\n")
       end
    end
 end
@@ -83,3 +82,5 @@ end
 
 ---- Notify when the configuration is loaded
 omh.notify("Welcome to Oh my Hammerspoon!", "Have fun!")
+
+return omh
