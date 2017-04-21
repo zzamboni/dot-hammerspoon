@@ -17,5 +17,6 @@ omh.go({
       "windows.screen_rotate",
       "apps.evernote",
       "misc.url_handling",
---      "misc.presentation",
+      "omh.brew_info",
+      --      "misc.presentation",
        })
