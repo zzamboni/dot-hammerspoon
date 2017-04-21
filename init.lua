@@ -1,9 +1,9 @@
 require("oh-my-hammerspoon")
 
 omh.go({
+      "omh.config_reload",
       "apps.hammerspoon_toggle_console",
       "apps.hammerspoon_install_cli",
-      "apps.hammerspoon_config_reload",
       "windows.manipulation",
       "windows.grid",
       "apps.skype_mute",
