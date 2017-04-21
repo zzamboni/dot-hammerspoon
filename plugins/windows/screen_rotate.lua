@@ -33,7 +33,7 @@ local fn = require("hs.fnutils")
 local screen = require("hs.screen")
 
 function mod.setRotation(scrname, rotate)
-   logger.df("mod.setRotation(%s, %s)", scrname, rotate)
+   omh.logger.df("mod.setRotation(%s, %s)", scrname, rotate)
    if mod.screens[scrname] ~= nil then
       mod.config.rotated[scrname]=rotate
       mod.screens[scrname]:rotate(mod.config.rotating_angles[mod.config.rotated[scrname] and 2 or 1])
@@ -41,13 +41,13 @@ function mod.setRotation(scrname, rotate)
 end
 
 function mod.toggleRotation(scrname)
-   logger.df("mod.toggleRotation(%s)", scrname)
+   omh.logger.df("mod.toggleRotation(%s)", scrname)
    mod.findScreens()
    if mod.screens[scrname] ~= nil then
-      logger.i(string.format("Rotating screen '%s' (matching key '%s')", mod.screens[scrname]:name(), scrname))
+      omh.logger.i(string.format("Rotating screen '%s' (matching key '%s')", mod.screens[scrname]:name(), scrname))
       mod.setRotation(scrname, not mod.config.rotated[scrname])
    else
-      logger.wf("Rotation triggered, but I didn't find any screen matching '%s' - skipping", scrname)
+      omh.logger.wf("Rotation triggered, but I didn't find any screen matching '%s' - skipping", scrname)
    end
 end
 
@@ -73,19 +73,19 @@ function mod.findScreens()
       mod.screens[k] = scr
       if scr ~= nil then
          scrname = scr:name()
-         logger.df("Found screen %s (matching key '%s'), setting up for rotation", scrname, k)
+         omh.logger.df("Found screen %s (matching key '%s'), setting up for rotation", scrname, k)
          local mode = scr:currentMode()
          -- Determine if the screen is currently rotated
          mod.setRotation(k, mode.h > mode.w)
       else
-         logger.df("Found no screen matching '%s', skipping rotation", k)
+         omh.logger.df("Found no screen matching '%s', skipping rotation", k)
       end
    end
 end
 
 function mod.init()
    for k,v in pairs(mod.config.toggle_rotate_keys) do
-      logger.df("Setting up screen binding rotation for screen matching '%s' with key %s", k, v)
+      omh.logger.df("Setting up screen binding rotation for screen matching '%s' with key %s", k, v)
       omh.bind({ mod.config.toggle_rotate_modifier, v }, fn.partial(mod.toggleRotation, k))
    end
 end

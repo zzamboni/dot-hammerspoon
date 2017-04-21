@@ -185,16 +185,16 @@ function storeCopy()
    now = pasteboard.changeCount()
    if (now > last_change) then
       current_clipboard = pasteboard.getContents()
-      logger.df("current_clipboard (text) = %s", current_clipboard)
+      omh.logger.df("current_clipboard (text) = %s", current_clipboard)
       if (current_clipboard == nil) and (pasteboard.getImageContents ~= nil) then
          pcall(function() current_clipboard = pasteboard.getImageContents() end)
-         logger.df("current_clipboard (image) = %s", current_clipboard)
+         omh.logger.df("current_clipboard (image) = %s", current_clipboard)
       end
       -- asmagill requested this feature. It prevents the history from keeping items removed by password managers
       if (current_clipboard == nil and mod.config.honor_clearcontent) then
          clearLastItem()
       else
-         logger.df("Adding %s to clipboard history", current_clipboard)
+         omh.logger.df("Adding %s to clipboard history", current_clipboard)
          pasteboardToClipboard(current_clipboard)
       end
       last_change = now
@@ -207,11 +207,11 @@ function mod.init()
       mod.selectorobj:choices(populateChooser)
       omh.bind(mod.config.clipboard_menu_key,
                function()
-                  logger.d("Refreshing chooser choices")
+                  omh.logger.d("Refreshing chooser choices")
                   mod.selectorobj:refreshChoicesCallback()
-                  logger.d("Storing currently focused window")
+                  omh.logger.d("Storing currently focused window")
                   mod.prevFocusedWindow = hs.window.focusedWindow()
-                  logger.d("Calling mod.selectorobj:show()")
+                  omh.logger.d("Calling mod.selectorobj:show()")
                   mod.selectorobj:show()
                end)
    else

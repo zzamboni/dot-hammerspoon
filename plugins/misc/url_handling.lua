@@ -37,32 +37,32 @@ function getAppId(app, launch)
    local appid = nil
    if name ~= nil then
       -- app is a valid bundleID, so we return it
-      logger.df("Found an app with bundle ID %s: %s", app, name)
+      omh.logger.df("Found an app with bundle ID %s: %s", app, name)
       appid = app
    else
       -- assume it's an app name, first try to find it running
       local appobj = hs.application.find(app)
       if appobj ~= nil then
          appid = appobj:bundleID()
-         logger.df("Found a running app that matches %s: %s (bundle ID %s)", app, appobj:name(), appid)
+         omh.logger.df("Found a running app that matches %s: %s (bundle ID %s)", app, appobj:name(), appid)
       else
          if launch then
             -- as a last resort, try to launch it and then get its ID
-            logger.df("Trying to launch app %s", app)
+            omh.logger.df("Trying to launch app %s", app)
             if hs.application.launchOrFocus(app) then
                appobj = hs.application.find(app)
-               logger.df("appobj = %s", hs.inspect(appobj))
+               omh.logger.df("appobj = %s", hs.inspect(appobj))
                if appobj ~= nil then
-                  logger.df("Found a running app that matches %s: %s (bundle ID %s)", app, appobj:name(), appid)
+                  omh.logger.df("Found a running app that matches %s: %s (bundle ID %s)", app, appobj:name(), appid)
                   appid = appobj:bundleID()
                else
-                  logger.df("%s launched successfully, but can't find it running", app)
+                  omh.logger.df("%s launched successfully, but can't find it running", app)
                end
             else
-               logger.ef("Launching app %s failed", app)
+               omh.logger.ef("Launching app %s failed", app)
             end
          else
-            logger.df("No running app matches '%s', launch=false so not trying to run one", app)
+            omh.logger.df("No running app matches '%s', launch=false so not trying to run one", app)
          end
       end
    end
@@ -70,28 +70,28 @@ function getAppId(app, launch)
 end
 
 function mod.customHttpCallback(scheme, host, params, fullUrl)
-   logger.df("Handling URL %s", fullUrl)
+   omh.logger.df("Handling URL %s", fullUrl)
    local url = fullUrl
    if mod.config.decode_slack_redir_urls then
       local newUrl = string.match(url, 'https://slack.redir.net/.*url=(.*)')
       if newUrl then
          url = unescape(newUrl)
-         logger.df("Got slack-redir URL, target URL: %s", url)
+         omh.logger.df("Got slack-redir URL, target URL: %s", url)
       end
    end
    for i,pair in ipairs(mod.config.patterns) do
       local p = pair[1]
       local app = pair[2]
-      logger.df("Matching %s against %s", url, p)
+      omh.logger.df("Matching %s against %s", url, p)
       if string.match(url, p) then
-         logger.df("  Match! Opening %s with %s", url, app)
+         omh.logger.df("  Match! Opening %s with %s", url, app)
          -- id = getAppId(app, true)
          id = app
          if id ~= nil then
             hs.urlevent.openURLWithBundle(url, id)
             return
          else
-            logger.wf("I could not find an application that matches '%s', falling through to default handler", app)
+            omh.logger.wf("I could not find an application that matches '%s', falling through to default handler", app)
          end
       end
    end

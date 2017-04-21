@@ -24,11 +24,11 @@ mod.config={
    -- Built-in actions, don't modify
    of_builtin_actions = {
       ["Microsoft Outlook"] = {
-         as_scriptfile = hs_config_dir .. "scripts/outlook-to-omnifocus.applescript",
+         as_scriptfile = hs.configdir .. "/scripts/outlook-to-omnifocus.applescript",
          itemname = "message"
       },
       ["Evernote"] = {
-         as_scriptfile = hs_config_dir .. "scripts/evernote-to-omnifocus.applescript",
+         as_scriptfile = hs.configdir .. "/scripts/evernote-to-omnifocus.applescript",
          itemname = "note"
       },
       ["Google Chrome"] = {
@@ -36,7 +36,7 @@ mod.config={
          itemname = "tab"
       },
       ["Mail"] = {
-         as_scriptfile = hs_config_dir .. "scripts/mail-to-omnifocus.applescript",
+         as_scriptfile = hs.configdir .. "/scripts/mail-to-omnifocus.applescript",
          itemname = "message"
       }
    }
@@ -54,7 +54,7 @@ end
 function mod.universalOF()
    local curapp = app.frontmostApplication()
    local appname = curapp:name()
-   logger.df("appname = %s", appname)
+   omh.logger.df("appname = %s", appname)
    local obj = mod.config._of_actions[appname]
    if obj ~= nil then
       local itemname = (obj.itemname or "item")
@@ -90,19 +90,19 @@ tell front document of application "OmniFocus"
 [[
 end tell
 display notification "Successfully exported ]] .. itemname .. [[ '" & tabTitle & "' to OmniFocus" with title "Send ]] .. itemname .. [[ to OmniFocus"]]
-logger.df("obj.as_script=%s", obj.as_script)
+omh.logger.df("obj.as_script=%s", obj.as_script)
          elseif obj.as_script ~= nil then
             as_script = obj.as_script
          end
          if obj.as_scriptfile ~= nil then
             local cmd = "/usr/bin/osascript '" .. obj.as_scriptfile .. "'" .. (mod.config.of_noquickentrydialog and " nodialog" or "")
-            logger.df("Executing command %s", cmd)
+            omh.logger.df("Executing command %s", cmd)
             os.execute(cmd)
          elseif as_script ~= nil then
-            logger.df("Executing AppleScript code:\n%s", as_script)
+            omh.logger.df("Executing AppleScript code:\n%s", as_script)
             osa.applescript(as_script)
          elseif obj.fn ~= nil then
-            logger.df("Calling function %s", obj.fn)
+            omh.logger.df("Calling function %s", obj.fn)
             fnu.partial(obj.fn)
          end
       end

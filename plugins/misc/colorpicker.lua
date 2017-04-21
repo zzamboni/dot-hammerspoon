@@ -8,7 +8,7 @@
 
 local mod={}
 
-require("omh-lib")
+require 'oh-my-hammerspoon'
 
 local draw = require('hs.drawing')
 local scr  = require('hs.screen')
@@ -17,7 +17,7 @@ local tap  = require('hs.eventtap')
 local choosermenu = nil
 local have_colorlists = false
 if type(hs.drawing.color.lists) == "function" then
-   have_colorlists = true
+           have_colorlists = true
 end
 
 mod.config={

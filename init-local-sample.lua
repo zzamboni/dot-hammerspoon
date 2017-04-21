@@ -1,5 +1,5 @@
 -- Uncomment to set non-default log level
--- logger.setLogLevel('debug')
+-- omh.logger.setLogLevel('debug')
 
 -- Local code and config
 

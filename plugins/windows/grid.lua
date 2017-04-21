@@ -11,7 +11,7 @@ mod.config={
 
 function mod.init()
    for i,v in ipairs(mod.config.grid_geometries) do
-      logger.df("setGrid(%s, %s)", v[1], v[2])
+      omh.logger.df("setGrid(%s, %s)", v[1], v[2])
       hs.grid.setGrid(v[1], v[2])
    end
    omh.bind(mod.config.grid_key, hs.grid.toggleShow)

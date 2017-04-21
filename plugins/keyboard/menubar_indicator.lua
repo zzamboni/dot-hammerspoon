@@ -112,7 +112,7 @@ function getInputSourceCallback(callback, code, out, err)
       local _,layout = string.match(out, [["KeyboardLayout Name"%s*=%s*("?)(.-)%1;]])
       callback(layout)
    else
-      logger.ef("getInputSourceCallback called with an error code %s, stdout='%s', stderr='%s'", code, out, err)
+      omh.logger.ef("getInputSourceCallback called with an error code %s, stdout='%s', stderr='%s'", code, out, err)
    end
 end
 
@@ -129,7 +129,7 @@ function drawIndicators(src)
       initIndicators()
 
       def = mod.config.colors[src]
-      logger.df("Indicator definition for %s: %s", src, hs.inspect(def))
+      omh.logger.df("Indicator definition for %s: %s", src, hs.inspect(def))
       if def ~= nil then
          if mod.config.allScreens then
             screens = scr.allScreens()
@@ -160,7 +160,7 @@ function drawIndicators(src)
             end
          end
       else
-         logger.df("Removing indicators for %s because there is no color definitions for it.", src)
+         omh.logger.df("Removing indicators for %s because there is no color definitions for it.", src)
          delIndicators()
       end
    end
@@ -182,13 +182,13 @@ function mod.init()
          -- Change whenever the input source changes
          keyc.inputSourceChanged(getLayoutAndDrawIndicators)
          if mod.config.enable_timer then
-            logger.i("Enabling timer workaround for menubar indicator")
+            omh.logger.i("Enabling timer workaround for menubar indicator")
             timer = timers.new(mod.config.timer_frequency, getLayoutAndDrawIndicators)
             timer:start()
          end
       end
    else
-      logger.w("Sorry, menubar_indicator needs hs.task, your version of Hammerspoon is too old")
+      omh.logger.w("Sorry, menubar_indicator needs hs.task, your version of Hammerspoon is too old")
    end
 end
 
