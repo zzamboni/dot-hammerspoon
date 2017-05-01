@@ -1,4 +1,5 @@
 init-local.lua
+Spoons/*
 
 # Compiled Lua sources
 luac.out
