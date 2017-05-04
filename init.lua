@@ -1,7 +1,7 @@
 require("oh-my-hammerspoon")
 
-local hyper = {"cmd","alt","ctrl"}
-local shift_hyper = {"cmd","alt","ctrl","shift"}
+hyper = {"cmd","alt","ctrl"}
+shift_hyper = {"cmd","alt","ctrl","shift"}
 local col = hs.drawing.color.x11
 
 ----------------------------------------------------------------------
@@ -66,6 +66,7 @@ spoon.Caffeine:start()
 
 hs.loadSpoon("MenubarFlag")
 spoon.MenubarFlag.colors = {
+   ["U.S."] = { },
    Spanish = {col.green, col.white, col.red},
    German = {col.black, col.red, col.yellow},
 }
@@ -80,6 +81,28 @@ spoon.WindowManipulation.use_frame_correctness = true
 
 ----------------------------------------------------------------------
 
+hs.loadSpoon("WindowGrid")
+spoon.WindowGrid:bindHotkeys({show_grid = {hyper, "g"}})
+spoon.WindowGrid.gridGeometries = { { "6x4" } }
+spoon.WindowGrid:start()
+
+----------------------------------------------------------------------
+
+hs.loadSpoon("ToggleScreenRotation")
+spoon.ToggleScreenRotation:bindHotkeys({first = {hyper, "f15"}})
+
+----------------------------------------------------------------------
+
+hs.loadSpoon("UniversalArchive")
+spoon.UniversalArchive.evernote_archive_notebook = ".Archive"
+spoon.UniversalArchive.outlook_archive_folder = "Archive (On My Computer)"
+spoon.UniversalArchive:bindHotkeys({
+      archive = { { "ctrl", "cmd" }, "a" }, 
+})
+spoon.UniversalArchive.archive_notifications = false
+
+----------------------------------------------------------------------
+
 -- function plainInputSourceChange()
 --    hs.alert.show("Input source change detected! new layout=" .. hs.keycodes.currentLayout())
 -- end
@@ -90,16 +113,16 @@ omh.go({
       --      "apps.hammerspoon_toggle_console",
       --      "apps.hammerspoon_install_cli",
       --      "windows.manipulation",
-      "windows.grid",
+      --      "windows.grid",
       "apps.skype_mute",
       --      "mouse.locator",
       "audio.headphones_watcher",
       "misc.clipboard",
       "misc.colorpicker",
       --      "keyboard.menubar_indicator",
-      "apps.universal_archive",
+      --      "apps.universal_archive",
       "apps.universal_omnifocus",
-      "windows.screen_rotate",
+      --      "windows.screen_rotate",
       "apps.evernote",
       --      "misc.url_handling",
       --      "omh.brew_info",
