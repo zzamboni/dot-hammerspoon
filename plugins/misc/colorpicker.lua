@@ -22,7 +22,7 @@ end
 
 mod.config={
    colorpicker_key = { {"ctrl", "alt", "cmd"}, "c" },
-   colorpicker_in_menubar = true,
+   colorpicker_in_menubar = false,
    colorpicker_menubar_title = "\u{1F308}", -- Rainbow Emoji: http://emojipedia.org/rainbow/
    colorpicker_individual_table_keys = false,
    colortable_keys = {
@@ -177,9 +177,12 @@ function mod.init()
             omh.bind(v.key, hs.fnutils.partial(toggleColorSamples,  k, v._map))
          end
       end
-      choosermenu = hs.menubar.new(mod.config.colorpicker_in_menubar)
+      choosermenu = hs.menubar.new()
       choosermenu:setTitle(mod.config.colorpicker_menubar_title)
       choosermenu:setMenu(mod.choosetable)
+      if not mod.config.colorpicker_in_menubar then
+         choosermenu:removeFromMenuBar()
+      end
       omh.bind(mod.config.colorpicker_key, function() choosermenu:popupMenu(hs.mouse.getAbsolutePosition()) end)
    else
       omh.bind(mod.config.colorpicker_key, hs.fnutils.partial(toggleColorSamples, "default", hs.drawing.color))
