@@ -103,6 +103,19 @@ spoon.UniversalArchive.archive_notifications = false
 
 ----------------------------------------------------------------------
 
+hs.loadSpoon("SendToOmniFocus")
+spoon.SendToOmniFocus:bindHotkeys({
+      send_to_omnifocus = { hyper, "t" }
+})
+spoon.SendToOmniFocus:registerApplication("Swisscom Collab", { apptype = "chromeapp", itemname = "tab" })
+spoon.SendToOmniFocus:registerApplication("Swisscom Wiki", { apptype = "chromeapp", itemname = "wiki page" })
+spoon.SendToOmniFocus:registerApplication("Swisscom Jira", { apptype = "chromeapp", itemname = "issue" })
+spoon.SendToOmniFocus.quickentrydialog = false
+spoon.SendToOmniFocus.notifications = true
+--spoon.SendToOmniFocus.logger.setLogLevel("debug")
+
+----------------------------------------------------------------------
+
 -- function plainInputSourceChange()
 --    hs.alert.show("Input source change detected! new layout=" .. hs.keycodes.currentLayout())
 -- end
@@ -121,7 +134,7 @@ omh.go({
       "misc.colorpicker",
       --      "keyboard.menubar_indicator",
       --      "apps.universal_archive",
-      "apps.universal_omnifocus",
+      --      "apps.universal_omnifocus",
       --      "windows.screen_rotate",
       "apps.evernote",
       --      "misc.url_handling",
