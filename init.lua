@@ -1,12 +1,16 @@
+hs.logger.defaultLogLevel="info"
+
 require("oh-my-hammerspoon")
 
 hyper = {"cmd","alt","ctrl"}
 shift_hyper = {"cmd","alt","ctrl","shift"}
 local col = hs.drawing.color.x11
 
-----------------------------------------------------------------------
-
-hs.loadSpoon("SpoonUtils")
+hs.spoons.repos.zzspoons = {
+   url = "https://github.com/zzamboni/zzSpoons",
+   desc = "zzamboni's spoon repository",
+}
+hs.spoons.updateAllRepos()
 
 ----------------------------------------------------------------------
 
@@ -75,9 +79,14 @@ spoon.MenubarFlag:start()
 
 ----------------------------------------------------------------------
 
-hs.loadSpoon("WindowManipulation")
-spoon.WindowManipulation:bindHotkeys(spoon.WindowManipulation.defaultHotkeys)
-spoon.WindowManipulation.use_frame_correctness = true
+hs.loadSpoon("WindowHalfsAndThirds")
+spoon.WindowHalfsAndThirds:bindHotkeys(spoon.WindowHalfsAndThirds.defaultHotkeys)
+spoon.WindowHalfsAndThirds.use_frame_correctness = true
+
+----------------------------------------------------------------------
+
+hs.loadSpoon("WindowScreenLeftAndRight")
+spoon.WindowScreenLeftAndRight:bindHotkeys(spoon.WindowScreenLeftAndRight.defaultHotkeys)
 
 ----------------------------------------------------------------------
 
