@@ -10,118 +10,163 @@ hs.spoons.repos.zzspoons = {
    url = "https://github.com/zzamboni/zzSpoons",
    desc = "zzamboni's spoon repository",
 }
-hs.spoons.updateAllRepos()
+
+hs.loadSpoon("UseSpoon")
 
 ----------------------------------------------------------------------
 
-hs.loadSpoon("MouseCircle")
-
-spoon.MouseCircle.color=hs.drawing.color.x11.rebeccapurple
-spoon.MouseCircle:bindHotkeys({
-      show = { hyper, "D" }
-})
-
-----------------------------------------------------------------------
-
-hs.loadSpoon("BrewInfo")
-
-spoon.BrewInfo:bindHotkeys({
-      show_brew_info = {hyper, "b"},
-      open_brew_url = {shift_hyper, "b"},
-})
-spoon.BrewInfo.brew_info_style = {
-   textFont = "Inconsolata",
-   textSize = 14,
-   radius = 10,
-}
+spoon.UseSpoon("MouseCircle",
+               {
+                  config = {
+                     color = hs.drawing.color.x11.rebeccapurple
+                  },
+                  hotkeys = {
+                     show = { hyper, "D" }
+                  }
+               }
+)
 
 ----------------------------------------------------------------------
 
-hs.loadSpoon("Hammer")
-
-spoon.Hammer:bindHotkeys({
-      config_reload = {hyper, "r"},
-      toggle_console = {hyper, "y"}
-})
-spoon.Hammer:start()
-
-----------------------------------------------------------------------
-
-hs.loadSpoon("URLDispatcher")
-
-spoon.URLDispatcher.url_patterns = {
-   { "https?://issue.swisscom.ch", "org.epichrome.app.SwisscomJira" },
-   { "https?://issue.swisscom.com", "org.epichrome.app.SwisscomJira" },
-   { "https?://jira.swisscom.com", "org.epichrome.app.SwisscomJira" },
-   { "https?://wiki.swisscom.com", "org.epichrome.app.SwisscomWiki" },
-   { "https?://collaboration.swisscom.com", "org.epichrome.app.SwisscomCollab" },
-   { "https?://smca.swisscom.com", "org.epichrome.app.SwisscomTWP" },
-   { "https?://portal.corproot.net", "com.apple.Safari" },
-}
-spoon.URLDispatcher.default_handler = "com.google.Chrome"
-spoon.URLDispatcher:start()
+spoon.UseSpoon("BrewInfo",
+               {
+                  config = {
+                     brew_info_style = {
+                        textFont = "Inconsolata",
+                        textSize = 14,
+                        radius = 10 }
+                  },
+                  hotkeys = {
+                     show_brew_info = {hyper, "b"},
+                     open_brew_url = {shift_hyper, "b"},
+                  }
+               }
+)
 
 ----------------------------------------------------------------------
 
-hs.loadSpoon("Caffeine")
-spoon.Caffeine:start()
+spoon.UseSpoon("URLDispatcher",
+               {
+                  config = {
+                     url_patterns = {
+                        { "https?://issue.swisscom.ch", "org.epichrome.app.SwisscomJira" },
+                        { "https?://issue.swisscom.com", "org.epichrome.app.SwisscomJira" },
+                        { "https?://jira.swisscom.com", "org.epichrome.app.SwisscomJira" },
+                        { "https?://wiki.swisscom.com", "org.epichrome.app.SwisscomWiki" },
+                        { "https?://collaboration.swisscom.com", "org.epichrome.app.SwisscomCollab" },
+                        { "https?://smca.swisscom.com", "org.epichrome.app.SwisscomTWP" },
+                        { "https?://portal.corproot.net", "com.apple.Safari" },
+                     },
+                     default_handler = "com.google.Chrome"
+                  },
+                  start = true
+               }
+)
 
 ----------------------------------------------------------------------
 
-hs.loadSpoon("MenubarFlag")
-spoon.MenubarFlag.colors = {
-   ["U.S."] = { },
-   Spanish = {col.green, col.white, col.red},
-   German = {col.black, col.red, col.yellow},
-}
-spoon.MenubarFlag.logger.setLogLevel('debug')
-spoon.MenubarFlag:start()
+spoon.UseSpoon("Caffeine")
 
 ----------------------------------------------------------------------
 
-hs.loadSpoon("WindowHalfsAndThirds")
-spoon.WindowHalfsAndThirds:bindHotkeys(spoon.WindowHalfsAndThirds.defaultHotkeys)
-spoon.WindowHalfsAndThirds.use_frame_correctness = true
+spoon.UseSpoon("MenubarFlag",
+               {
+                  config = {
+                     colors = {
+                        ["U.S."] = { },
+                        Spanish = {col.green, col.white, col.red},
+                        German = {col.black, col.red, col.yellow},
+                     }
+                  },
+                  start = true
+               }
+)
 
 ----------------------------------------------------------------------
 
-hs.loadSpoon("WindowScreenLeftAndRight")
-spoon.WindowScreenLeftAndRight:bindHotkeys(spoon.WindowScreenLeftAndRight.defaultHotkeys)
+spoon.UseSpoon("WindowHalfsAndThirds",
+               {
+                  repo = 'zzspoons',
+                  config = {
+                     use_frame_correctness = true
+                  },
+                  hotkeys = 'default'
+               }
+)
 
 ----------------------------------------------------------------------
 
-hs.loadSpoon("WindowGrid")
-spoon.WindowGrid:bindHotkeys({show_grid = {hyper, "g"}})
-spoon.WindowGrid.gridGeometries = { { "6x4" } }
-spoon.WindowGrid:start()
+spoon.UseSpoon("WindowScreenLeftAndRight",
+               {
+                  repo = 'zzspoons',
+                  hotkeys = 'default'
+               }
+)
 
 ----------------------------------------------------------------------
 
-hs.loadSpoon("ToggleScreenRotation")
-spoon.ToggleScreenRotation:bindHotkeys({first = {hyper, "f15"}})
+spoon.UseSpoon("WindowGrid",
+               {
+                  repo = 'zzspoons',
+                  config = { gridGeometries = { { "6x4" } } },
+                  hotkeys = {show_grid = {hyper, "g"}},
+                  start = true
+               }
+)
 
 ----------------------------------------------------------------------
 
-hs.loadSpoon("UniversalArchive")
-spoon.UniversalArchive.evernote_archive_notebook = ".Archive"
-spoon.UniversalArchive.outlook_archive_folder = "Archive (On My Computer)"
-spoon.UniversalArchive:bindHotkeys({
-      archive = { { "ctrl", "cmd" }, "a" }, 
-})
-spoon.UniversalArchive.archive_notifications = false
+spoon.UseSpoon("ToggleScreenRotation",
+               {
+                  hotkeys = { first = {hyper, "f15"} }
+               }
+)
 
 ----------------------------------------------------------------------
 
-hs.loadSpoon("SendToOmniFocus")
-spoon.SendToOmniFocus:bindHotkeys({
-      send_to_omnifocus = { hyper, "t" }
-})
-spoon.SendToOmniFocus:registerApplication("Swisscom Collab", { apptype = "chromeapp", itemname = "tab" })
-spoon.SendToOmniFocus:registerApplication("Swisscom Wiki", { apptype = "chromeapp", itemname = "wiki page" })
-spoon.SendToOmniFocus:registerApplication("Swisscom Jira", { apptype = "chromeapp", itemname = "issue" })
-spoon.SendToOmniFocus.quickentrydialog = false
-spoon.SendToOmniFocus.notifications = true
---spoon.SendToOmniFocus.logger.setLogLevel("debug")
+spoon.UseSpoon("UniversalArchive",
+               {
+                  config = {
+                     evernote_archive_notebook = ".Archive",
+                     outlook_archive_folder = "Archive (On My Computer)",
+                     archive_notifications = false
+                  },
+                  hotkeys = { archive = { { "ctrl", "cmd" }, "a" } }
+               }
+)
+
+----------------------------------------------------------------------
+
+spoon.UseSpoon("SendToOmniFocus",
+               {
+                  config = {
+                     quickentrydialog = false,
+                     notifications = true
+                  },
+                  hotkeys = {
+                     send_to_omnifocus = { hyper, "t" }
+                  },
+                  fn = function(s)
+                     s:registerApplication("Swisscom Collab", { apptype = "chromeapp", itemname = "tab" })
+                     s:registerApplication("Swisscom Wiki", { apptype = "chromeapp", itemname = "wiki page" })
+                     s:registerApplication("Swisscom Jira", { apptype = "chromeapp", itemname = "issue" })
+                  end
+               }
+)
+
+----------------------------------------------------------------------
+
+spoon.UseSpoon("Hammer",
+               {
+                  repo = 'zzspoons',
+                  config = { auto_reload_config = false },
+                  hotkeys = {
+                     config_reload = {hyper, "r"},
+                     toggle_console = {hyper, "y"} 
+                  },
+                  start = true
+               }
+)
 
 ----------------------------------------------------------------------
 
