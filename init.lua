@@ -170,6 +170,18 @@ spoon.UseSpoon("Hammer",
 
 ----------------------------------------------------------------------
 
+spoon.UseSpoon("ToggleSkypeMute",
+               {
+                  repo = 'zzspoons',
+                  hotkeys = {
+                     toggle_skype = { shift_hyper, "v" },
+                     toggle_skype_for_business = { shift_hyper, "f" }
+                  }
+               }
+)
+
+----------------------------------------------------------------------
+
 -- function plainInputSourceChange()
 --    hs.alert.show("Input source change detected! new layout=" .. hs.keycodes.currentLayout())
 -- end
@@ -181,7 +193,7 @@ omh.go({
       --      "apps.hammerspoon_install_cli",
       --      "windows.manipulation",
       --      "windows.grid",
-      "apps.skype_mute",
+      --      "apps.skype_mute",
       --      "mouse.locator",
       "audio.headphones_watcher",
       "misc.clipboard",
