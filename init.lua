@@ -6,178 +6,180 @@ hyper = {"cmd","alt","ctrl"}
 shift_hyper = {"cmd","alt","ctrl","shift"}
 local col = hs.drawing.color.x11
 
-hs.spoons.repos.zzspoons = {
+hs.loadSpoon("SpoonInstall")
+
+spoon.SpoonInstall.repos.zzspoons = {
    url = "https://github.com/zzamboni/zzSpoons",
    desc = "zzamboni's spoon repository",
 }
-
-hs.loadSpoon("UseSpoon")
+spoon.SpoonInstall.use_syncinstall = true
 
 ----------------------------------------------------------------------
 
-spoon.UseSpoon("MouseCircle",
-               {
-                  config = {
-                     color = hs.drawing.color.x11.rebeccapurple
-                  },
-                  hotkeys = {
-                     show = { hyper, "D" }
-                  }
-               }
+spoon.SpoonInstall:andUse("MouseCircle",
+                          {
+                             config = {
+                                color = hs.drawing.color.x11.rebeccapurple
+                             },
+                             hotkeys = {
+                                show = { hyper, "D" }
+                             }
+                          }
 )
 
 ----------------------------------------------------------------------
 
-spoon.UseSpoon("BrewInfo",
-               {
-                  config = {
-                     brew_info_style = {
-                        textFont = "Inconsolata",
-                        textSize = 14,
-                        radius = 10 }
-                  },
-                  hotkeys = {
-                     show_brew_info = {hyper, "b"},
-                     open_brew_url = {shift_hyper, "b"},
-                  }
-               }
+spoon.SpoonInstall:andUse("BrewInfo",
+                          {
+                             config = {
+                                brew_info_style = {
+                                   textFont = "Inconsolata",
+                                   textSize = 14,
+                                   radius = 10 }
+                             },
+                             hotkeys = {
+                                show_brew_info = {hyper, "b"},
+                                open_brew_url = {shift_hyper, "b"},
+                             }
+                          }
 )
 
 ----------------------------------------------------------------------
 
-spoon.UseSpoon("URLDispatcher",
-               {
-                  config = {
-                     url_patterns = {
-                        { "https?://issue.swisscom.ch", "org.epichrome.app.SwisscomJira" },
-                        { "https?://issue.swisscom.com", "org.epichrome.app.SwisscomJira" },
-                        { "https?://jira.swisscom.com", "org.epichrome.app.SwisscomJira" },
-                        { "https?://wiki.swisscom.com", "org.epichrome.app.SwisscomWiki" },
-                        { "https?://collaboration.swisscom.com", "org.epichrome.app.SwisscomCollab" },
-                        { "https?://smca.swisscom.com", "org.epichrome.app.SwisscomTWP" },
-                        { "https?://portal.corproot.net", "com.apple.Safari" },
-                     },
-                     default_handler = "com.google.Chrome"
-                  },
-                  start = true
-               }
+spoon.SpoonInstall:andUse("URLDispatcher",
+                          {
+                             config = {
+                                url_patterns = {
+                                   { "https?://issue.swisscom.ch", "org.epichrome.app.SwisscomJira" },
+                                   { "https?://issue.swisscom.com", "org.epichrome.app.SwisscomJira" },
+                                   { "https?://jira.swisscom.com", "org.epichrome.app.SwisscomJira" },
+                                   { "https?://wiki.swisscom.com", "org.epichrome.app.SwisscomWiki" },
+                                   { "https?://collaboration.swisscom.com", "org.epichrome.app.SwisscomCollab" },
+                                   { "https?://smca.swisscom.com", "org.epichrome.app.SwisscomTWP" },
+                                   { "https?://portal.corproot.net", "com.apple.Safari" },
+                                   { "https?://app.opsgenie.com", "org.epichrome.app.OpsGenie" },
+                                },
+                                default_handler = "com.google.Chrome"
+                             },
+                             start = true
+                          }
 )
 
 ----------------------------------------------------------------------
 
-spoon.UseSpoon("Caffeine")
+spoon.SpoonInstall:andUse("Caffeine")
 
 ----------------------------------------------------------------------
 
-spoon.UseSpoon("MenubarFlag",
-               {
-                  config = {
-                     colors = {
-                        ["U.S."] = { },
-                        Spanish = {col.green, col.white, col.red},
-                        German = {col.black, col.red, col.yellow},
-                     }
-                  },
-                  start = true
-               }
+spoon.SpoonInstall:andUse("MenubarFlag",
+                          {
+                             config = {
+                                colors = {
+                                   ["U.S."] = { },
+                                   Spanish = {col.green, col.white, col.red},
+                                   German = {col.black, col.red, col.yellow},
+                                }
+                             },
+                             start = true
+                          }
 )
 
 ----------------------------------------------------------------------
 
-spoon.UseSpoon("WindowHalfsAndThirds",
-               {
-                  repo = 'zzspoons',
-                  config = {
-                     use_frame_correctness = true
-                  },
-                  hotkeys = 'default'
-               }
+spoon.SpoonInstall:andUse("WindowHalfsAndThirds",
+                          {
+                             repo = 'zzspoons',
+                             config = {
+                                use_frame_correctness = true
+                             },
+                             hotkeys = 'default'
+                          }
 )
 
 ----------------------------------------------------------------------
 
-spoon.UseSpoon("WindowScreenLeftAndRight",
-               {
-                  repo = 'zzspoons',
-                  hotkeys = 'default'
-               }
+spoon.SpoonInstall:andUse("WindowScreenLeftAndRight",
+                          {
+                             repo = 'zzspoons',
+                             hotkeys = 'default'
+                          }
 )
 
 ----------------------------------------------------------------------
 
-spoon.UseSpoon("WindowGrid",
-               {
-                  repo = 'zzspoons',
-                  config = { gridGeometries = { { "6x4" } } },
-                  hotkeys = {show_grid = {hyper, "g"}},
-                  start = true
-               }
+spoon.SpoonInstall:andUse("WindowGrid",
+                          {
+                             repo = 'zzspoons',
+                             config = { gridGeometries = { { "6x4" } } },
+                             hotkeys = {show_grid = {hyper, "g"}},
+                             start = true
+                          }
 )
 
 ----------------------------------------------------------------------
 
-spoon.UseSpoon("ToggleScreenRotation",
-               {
-                  hotkeys = { first = {hyper, "f15"} }
-               }
+spoon.SpoonInstall:andUse("ToggleScreenRotation",
+                          {
+                             hotkeys = { first = {hyper, "f15"} }
+                          }
 )
 
 ----------------------------------------------------------------------
 
-spoon.UseSpoon("UniversalArchive",
-               {
-                  config = {
-                     evernote_archive_notebook = ".Archive",
-                     outlook_archive_folder = "Archive (On My Computer)",
-                     archive_notifications = false
-                  },
-                  hotkeys = { archive = { { "ctrl", "cmd" }, "a" } }
-               }
+spoon.SpoonInstall:andUse("UniversalArchive",
+                          {
+                             config = {
+                                evernote_archive_notebook = ".Archive",
+                                outlook_archive_folder = "Archive (On My Computer)",
+                                archive_notifications = false
+                             },
+                             hotkeys = { archive = { { "ctrl", "cmd" }, "a" } }
+                          }
 )
 
 ----------------------------------------------------------------------
 
-spoon.UseSpoon("SendToOmniFocus",
-               {
-                  config = {
-                     quickentrydialog = false,
-                     notifications = true
-                  },
-                  hotkeys = {
-                     send_to_omnifocus = { hyper, "t" }
-                  },
-                  fn = function(s)
-                     s:registerApplication("Swisscom Collab", { apptype = "chromeapp", itemname = "tab" })
-                     s:registerApplication("Swisscom Wiki", { apptype = "chromeapp", itemname = "wiki page" })
-                     s:registerApplication("Swisscom Jira", { apptype = "chromeapp", itemname = "issue" })
-                  end
-               }
+spoon.SpoonInstall:andUse("SendToOmniFocus",
+                          {
+                             config = {
+                                quickentrydialog = false,
+                                notifications = true
+                             },
+                             hotkeys = {
+                                send_to_omnifocus = { hyper, "t" }
+                             },
+                             fn = function(s)
+                                s:registerApplication("Swisscom Collab", { apptype = "chromeapp", itemname = "tab" })
+                                s:registerApplication("Swisscom Wiki", { apptype = "chromeapp", itemname = "wiki page" })
+                                s:registerApplication("Swisscom Jira", { apptype = "chromeapp", itemname = "issue" })
+                             end
+                          }
 )
 
 ----------------------------------------------------------------------
 
-spoon.UseSpoon("Hammer",
-               {
-                  repo = 'zzspoons',
-                  config = { auto_reload_config = false },
-                  hotkeys = {
-                     config_reload = {hyper, "r"},
-                     toggle_console = {hyper, "y"} 
-                  },
-                  start = true
-               }
+spoon.SpoonInstall:andUse("Hammer",
+                          {
+                             repo = 'zzspoons',
+                             config = { auto_reload_config = false },
+                             hotkeys = {
+                                config_reload = {hyper, "r"},
+                                toggle_console = {hyper, "y"} 
+                             },
+                             start = true
+                          }
 )
 
 ----------------------------------------------------------------------
 
-spoon.UseSpoon("ToggleSkypeMute",
-               {
-                  repo = 'zzspoons',
-                  hotkeys = {
-                     toggle_skype = { shift_hyper, "v" },
-                     toggle_skype_for_business = { shift_hyper, "f" }
-                  }
-               }
+spoon.SpoonInstall:andUse("ToggleSkypeMute",
+                          {
+                             repo = 'zzspoons',
+                             hotkeys = {
+                                toggle_skype = { shift_hyper, "v" },
+                                toggle_skype_for_business = { shift_hyper, "f" }
+                             }
+                          }
 )
 
 ----------------------------------------------------------------------
