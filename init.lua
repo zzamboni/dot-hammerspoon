@@ -21,7 +21,7 @@ spoon.SpoonInstall.repos.zzspoons = {
 spoon.SpoonInstall.use_syncinstall = true
 
 -- This is just a shortcut to make the declarations below look better
-local Install=spoon.SpoonInstall
+Install=spoon.SpoonInstall
 
 ----------------------------------------------------------------------
 
@@ -210,6 +210,16 @@ Install:andUse("HeadphoneWatcher",
 
 ----------------------------------------------------------------------
 
+Install:andUse("EvernoteOpenAndTag",
+               {
+                  hotkeys = {
+                     open_note = { hyper, "o" },
+                     ["open_and_tag-+work,+swisscom"] = { hyper, "w" },
+                     ["open_and_tag-+personal"] = { hyper, "p" },
+                     ["tag-@zzdone"] = { hyper, "z" }
+                  }
+               }
+)
 -- function plainInputSourceChange()
 --    hs.alert.show("Input source change detected! new layout=" .. hs.keycodes.currentLayout())
 -- end
@@ -230,7 +240,7 @@ omh.go({
       --      "apps.universal_archive",
       --      "apps.universal_omnifocus",
       --      "windows.screen_rotate",
-      "apps.evernote",
+      --      "apps.evernote",
       --      "misc.url_handling",
       --      "omh.brew_info",
       --      "misc.presentation",
