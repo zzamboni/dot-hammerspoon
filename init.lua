@@ -1,7 +1,5 @@
 hs.logger.defaultLogLevel="info"
 
-require("oh-my-hammerspoon")
-
 hyper = {"cmd","alt","ctrl"}
 shift_hyper = {"cmd","alt","ctrl","shift"}
 local col = hs.drawing.color.x11
@@ -212,6 +210,7 @@ Install:andUse("HeadphoneWatcher",
 
 Install:andUse("EvernoteOpenAndTag",
                {
+                  repo = 'zzspoons',
                   hotkeys = {
                      open_note = { hyper, "o" },
                      ["open_and_tag-+work,+swisscom"] = { hyper, "w" },
@@ -220,10 +219,57 @@ Install:andUse("EvernoteOpenAndTag",
                   }
                }
 )
--- function plainInputSourceChange()
---    hs.alert.show("Input source change detected! new layout=" .. hs.keycodes.currentLayout())
--- end
--- hs.keycodes.inputSourceChanged(plainInputSourceChange)
+
+----------------------------------------------------------------------
+
+Install:andUse("Seal",
+               {
+                  hotkeys = { show = { {"cmd"}, "space" } },
+                  fn = function(s)
+                     s:loadPlugins({"apps", "calc", "safari_bookmarks"})
+                  end,
+                  start = true,
+               }
+)
+
+----------------------------------------------------------------------
+
+Install:andUse("TextClipboardHistory",
+               {
+                  hotkeys = {
+                     show_clipboard = { { "cmd", "shift" }, "v" } },
+                  start = true,
+               }
+)
+
+----------------------------------------------------------------------
+-- Test stuff
+
+-- Get onenote: link to the current OneNote page or section. Defaults to Page - pass `"Section"` as the argument to get the current section URI.
+function getOneNoteURI(what)
+   local obj = what or "Page"
+   local menu="Copy Link to " .. obj
+   local app=hs.appfinder.appFromName("Microsoft OneNote")
+   if app then
+      local i=app:findMenuItem(menu)
+      if i then
+         app:selectMenuItem(menu)
+         -- 1/50th of a second wait to give the pasteboard a chance to catch up
+         hs.timer.usleep(20000)
+         local links=hs.pasteboard.getContents()
+         if links then
+            -- Remove the web URL part and leave the onenote: part
+            return links:match("(onenote:.*)$")
+         end
+      end
+   end
+   return nil
+end
+
+----------------------------------------------------------------------
+-- Old configuration, being phased out.
+
+require("oh-my-hammerspoon")
 
 omh.go({
       --      "omh.config_reload",
@@ -234,7 +280,7 @@ omh.go({
       --      "apps.skype_mute",
       --      "mouse.locator",
       --      "audio.headphones_watcher",
-      "misc.clipboard",
+      --      "misc.clipboard",
       "misc.colorpicker",
       --      "keyboard.menubar_indicator",
       --      "apps.universal_archive",
