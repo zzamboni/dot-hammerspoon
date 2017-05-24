@@ -236,6 +236,7 @@ Install:andUse("Seal",
 
 Install:andUse("TextClipboardHistory",
                {
+                  repo = 'zzspoons',
                   config = {
                      show_in_menubar = false,
                   },
@@ -249,6 +250,7 @@ Install:andUse("TextClipboardHistory",
 
 Install:andUse("ColorPicker",
                {
+                  repo = 'zzspoons',
                   hotkeys = {
                      show = { shift_hyper, "c" }
                   },
