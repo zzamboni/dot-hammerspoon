@@ -236,14 +236,34 @@ Install:andUse("Seal",
 
 Install:andUse("TextClipboardHistory",
                {
+                  config = {
+                     show_in_menubar = false,
+                  },
                   hotkeys = {
-                     show_clipboard = { { "cmd", "shift" }, "v" } },
+                     toggle_clipboard = { { "cmd", "shift" }, "v" } },
+                  start = true,
+               }
+)
+
+----------------------------------------------------------------------
+
+Install:andUse("ColorPicker",
+               {
+                  hotkeys = {
+                     show = { shift_hyper, "c" }
+                  },
+                  config = {
+                     show_in_menubar = false,
+                  },
                   start = true,
                }
 )
 
 ----------------------------------------------------------------------
 -- Test stuff
+
+-- https://github.com/Hammerspoon/hammerspoon/issues/1356#issuecomment-300707447
+require('hs.ipc2')
 
 -- Get onenote: link to the current OneNote page or section. Defaults to Page - pass `"Section"` as the argument to get the current section URI.
 function getOneNoteURI(what)
@@ -266,28 +286,30 @@ function getOneNoteURI(what)
    return nil
 end
 
+hs.notify.show("Welcome to Hammerspoon", "Have fun!", "")
+
 ----------------------------------------------------------------------
 -- Old configuration, being phased out.
 
-require("oh-my-hammerspoon")
+-- require("oh-my-hammerspoon")
 
-omh.go({
-      --      "omh.config_reload",
-      --      "apps.hammerspoon_toggle_console",
-      --      "apps.hammerspoon_install_cli",
-      --      "windows.manipulation",
-      --      "windows.grid",
-      --      "apps.skype_mute",
-      --      "mouse.locator",
-      --      "audio.headphones_watcher",
-      --      "misc.clipboard",
-      "misc.colorpicker",
-      --      "keyboard.menubar_indicator",
-      --      "apps.universal_archive",
-      --      "apps.universal_omnifocus",
-      --      "windows.screen_rotate",
-      --      "apps.evernote",
-      --      "misc.url_handling",
-      --      "omh.brew_info",
-      --      "misc.presentation",
-})
+-- omh.go({
+--       --      "omh.config_reload",
+--       --      "apps.hammerspoon_toggle_console",
+--       --      "apps.hammerspoon_install_cli",
+--       --      "windows.manipulation",
+--       --      "windows.grid",
+--       --      "apps.skype_mute",
+--       --      "mouse.locator",
+--       --      "audio.headphones_watcher",
+--       --      "misc.clipboard",
+--       --      "misc.colorpicker",
+--       --      "keyboard.menubar_indicator",
+--       --      "apps.universal_archive",
+--       --      "apps.universal_omnifocus",
+--       --      "windows.screen_rotate",
+--       --      "apps.evernote",
+--       --      "misc.url_handling",
+--       --      "omh.brew_info",
+--       --      "misc.presentation",
+-- })
