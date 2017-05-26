@@ -191,11 +191,13 @@ Install:andUse("ToggleSkypeMute",
 
 ----------------------------------------------------------------------
 
--- Install:andUse("Emojis",
---                {
---                   hotkeys = { toggle = { hyper, "e" } }
---                }
--- )
+if false then
+   Install:andUse("Emojis",
+                  {
+                     hotkeys = { toggle = { hyper, "e" } }
+                  }
+   )
+end
 
 ----------------------------------------------------------------------
 
@@ -288,30 +290,17 @@ function getOneNoteURI(what)
    return nil
 end
 
-hs.notify.show("Welcome to Hammerspoon", "Have fun!", "")
-
 ----------------------------------------------------------------------
--- Old configuration, being phased out.
 
--- require("oh-my-hammerspoon")
+Install:andUse("FadeLogo",
+               {
+                  repo = 'zzspoons',
+                  config = {
+                     default_run = 1.0,
+                     fade_out_time = 0.3,
+                  },
+                  start = true
+               }
+)
 
--- omh.go({
---       --      "omh.config_reload",
---       --      "apps.hammerspoon_toggle_console",
---       --      "apps.hammerspoon_install_cli",
---       --      "windows.manipulation",
---       --      "windows.grid",
---       --      "apps.skype_mute",
---       --      "mouse.locator",
---       --      "audio.headphones_watcher",
---       --      "misc.clipboard",
---       --      "misc.colorpicker",
---       --      "keyboard.menubar_indicator",
---       --      "apps.universal_archive",
---       --      "apps.universal_omnifocus",
---       --      "windows.screen_rotate",
---       --      "apps.evernote",
---       --      "misc.url_handling",
---       --      "omh.brew_info",
---       --      "misc.presentation",
--- })
+-- hs.notify.show("Welcome to Hammerspoon", "Have fun!", "")
