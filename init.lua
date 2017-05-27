@@ -1,24 +1,33 @@
+-- Global log level. Per-spoon log level can be configured in each block below
 hs.logger.defaultLogLevel="info"
 
+-- Some useful variables for key binding specifications in Spoon configurations
 hyper = {"cmd","alt","ctrl"}
 shift_hyper = {"cmd","alt","ctrl","shift"}
-local col = hs.drawing.color.x11
+
+-- Useful color map I use in some configurations below
+col = hs.drawing.color.x11
 
 ----------------------------------------------------------------------
 -- Set up SpoonInstall - this is the only spoon that needs to be
 -- manually installed, all the others are installed and configured
 -- automatically.
 ----------------------------------------------------------------------
+
 hs.loadSpoon("SpoonInstall")
--- Configuration of my personal spoon repository
+
+-- Configuration of my personal spoon repository, which contains Spoons
+-- that have not been merged in the main repo.
 spoon.SpoonInstall.repos.zzspoons = {
    url = "https://github.com/zzamboni/zzSpoons",
    desc = "zzamboni's spoon repository",
 }
+
 -- I prefer sync notifications, makes them easier to read
 spoon.SpoonInstall.use_syncinstall = true
 
--- This is just a shortcut to make the declarations below look better
+-- This is just a shortcut to make the declarations below look more readable,
+-- i.e. `Install:andUse()` instead of `spoon.SpoonInstall:andUse()`
 Install=spoon.SpoonInstall
 
 ----------------------------------------------------------------------
