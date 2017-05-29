@@ -10,7 +10,8 @@ col = hs.drawing.color.x11
 
 ----------------------------------------------------------------------
 -- Set up SpoonInstall - this is the only spoon that needs to be
--- manually installed, all the others are installed and configured
+-- manually installed (it is already there if you check out this
+-- repository), all the others are installed and configured
 -- automatically.
 ----------------------------------------------------------------------
 
@@ -18,6 +19,7 @@ hs.loadSpoon("SpoonInstall")
 
 -- Configuration of my personal spoon repository, which contains Spoons
 -- that have not been merged in the main repo.
+-- See the descriptions at http://zzamboni.org/zzSpoons/
 spoon.SpoonInstall.repos.zzspoons = {
    url = "https://github.com/zzamboni/zzSpoons",
    desc = "zzamboni's spoon repository",
@@ -32,6 +34,7 @@ Install=spoon.SpoonInstall
 
 ----------------------------------------------------------------------
 
+-- http://www.hammerspoon.org/Spoons/MouseCircle.html
 Install:andUse("MouseCircle",
                {
                   config = {
@@ -45,6 +48,7 @@ Install:andUse("MouseCircle",
 
 ----------------------------------------------------------------------
 
+-- http://www.hammerspoon.org/Spoons/BrewInfo.html
 Install:andUse("BrewInfo",
                {
                   config = {
@@ -62,6 +66,7 @@ Install:andUse("BrewInfo",
 
 ----------------------------------------------------------------------
 
+-- http://www.hammerspoon.org/Spoons/URLDispatcher.html
 Install:andUse("URLDispatcher",
                {
                   config = {
@@ -83,10 +88,12 @@ Install:andUse("URLDispatcher",
 
 ----------------------------------------------------------------------
 
+-- http://www.hammerspoon.org/Spoons/Caffeine.html
 Install:andUse("Caffeine")
 
 ----------------------------------------------------------------------
 
+-- http://www.hammerspoon.org/Spoons/MenubarFlag.html
 Install:andUse("MenubarFlag",
                {
                   config = {
@@ -102,6 +109,7 @@ Install:andUse("MenubarFlag",
 
 ----------------------------------------------------------------------
 
+-- http://zzamboni.org/zzSpoons/WindowHalfsAndThirds.html
 Install:andUse("WindowHalfsAndThirds",
                {
                   repo = 'zzspoons',
@@ -114,6 +122,7 @@ Install:andUse("WindowHalfsAndThirds",
 
 ----------------------------------------------------------------------
 
+-- http://zzamboni.org/zzSpoons/WindowScreenLeftAndRight.html
 Install:andUse("WindowScreenLeftAndRight",
                {
                   repo = 'zzspoons',
@@ -123,6 +132,7 @@ Install:andUse("WindowScreenLeftAndRight",
 
 ----------------------------------------------------------------------
 
+-- http://zzamboni.org/zzSpoons/WindowGrid.html
 Install:andUse("WindowGrid",
                {
                   repo = 'zzspoons',
@@ -134,6 +144,7 @@ Install:andUse("WindowGrid",
 
 ----------------------------------------------------------------------
 
+-- http://www.hammerspoon.org/Spoons/ToggleScreenRotation.html
 Install:andUse("ToggleScreenRotation",
                {
                   hotkeys = { first = {hyper, "f15"} }
@@ -142,6 +153,7 @@ Install:andUse("ToggleScreenRotation",
 
 ----------------------------------------------------------------------
 
+-- http://www.hammerspoon.org/Spoons/UniversalArchive.html
 Install:andUse("UniversalArchive",
                {
                   config = {
@@ -155,6 +167,7 @@ Install:andUse("UniversalArchive",
 
 ----------------------------------------------------------------------
 
+-- http://www.hammerspoon.org/Spoons/SendToOmniFocus.html
 Install:andUse("SendToOmniFocus",
                {
                   config = {
@@ -174,6 +187,7 @@ Install:andUse("SendToOmniFocus",
 
 ----------------------------------------------------------------------
 
+-- http://zzamboni.org/zzSpoons/Hammer.html
 Install:andUse("Hammer",
                {
                   repo = 'zzspoons',
@@ -188,6 +202,7 @@ Install:andUse("Hammer",
 
 ----------------------------------------------------------------------
 
+-- http://zzamboni.org/zzSpoons/ToggleSkypeMute.html
 Install:andUse("ToggleSkypeMute",
                {
                   repo = 'zzspoons',
@@ -200,16 +215,17 @@ Install:andUse("ToggleSkypeMute",
 
 ----------------------------------------------------------------------
 
-if false then
-   Install:andUse("Emojis",
-                  {
-                     hotkeys = { toggle = { hyper, "e" } }
-                  }
-   )
-end
+-- http://www.hammerspoon.org/Spoons/Emojis.html
+Install:andUse("Emojis",
+               {
+                  disable = true,
+                  hotkeys = { toggle = { hyper, "e" } }
+               }
+)
 
 ----------------------------------------------------------------------
 
+-- http://zzamboni.org/zzSpoons/HeadphoneWatcher.html
 Install:andUse("HeadphoneWatcher",
                {
                   repo = 'zzspoons',
@@ -219,6 +235,7 @@ Install:andUse("HeadphoneWatcher",
 
 ----------------------------------------------------------------------
 
+-- http://zzamboni.org/zzSpoons/EvernoteOpenAndTag.html
 Install:andUse("EvernoteOpenAndTag",
                {
                   repo = 'zzspoons',
@@ -233,6 +250,7 @@ Install:andUse("EvernoteOpenAndTag",
 
 ----------------------------------------------------------------------
 
+-- http://www.hammerspoon.org/Spoons/Seal.html
 Install:andUse("Seal",
                {
                   hotkeys = { show = { {"cmd"}, "space" } },
@@ -245,6 +263,7 @@ Install:andUse("Seal",
 
 ----------------------------------------------------------------------
 
+-- http://zzamboni.org/zzSpoons/TextClipboardHistory.html
 Install:andUse("TextClipboardHistory",
                {
                   repo = 'zzspoons',
@@ -259,6 +278,7 @@ Install:andUse("TextClipboardHistory",
 
 ----------------------------------------------------------------------
 
+-- http://zzamboni.org/zzSpoons/ColorPicker.html
 Install:andUse("ColorPicker",
                {
                   repo = 'zzspoons',
@@ -301,15 +321,16 @@ end
 
 ----------------------------------------------------------------------
 
+-- http://zzamboni.org/zzSpoons/FadeLogo.html
 Install:andUse("FadeLogo",
                {
                   repo = 'zzspoons',
                   config = {
                      default_run = 1.0,
-                     fade_out_time = 0.3,
                   },
                   start = true
                }
 )
 
+-- If you don't want to use FadeLogo, you can have a regular notification
 -- hs.notify.show("Welcome to Hammerspoon", "Have fun!", "")
