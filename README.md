@@ -16,19 +16,20 @@ the same (and some new) functionality, but much easier to understand
 and configure. Some of them have been merged already in
 the [official Spoons repository](http://www.hammerspoon.org/Spoons/),
 and others are available in
-[my personal zzSpoons repository](https://github.com/zzamboni/zzSpoons).
+[my personal zzSpoons repository](http://zzamboni.org/zzSpoons/).
 
 If you still want it, the old oh-my-hammerspoon code has been archived in the
 [`old-oh-my-hammerspoon` branch](https://github.com/zzamboni/oh-my-hammerspoon/tree/old-oh-my-hammerspoon).
 
 ## How to use it
 
+1. Install [Hammerspoon](http://www.hammerspoon.org/).
 1. Clone this repository into your `~/.hammerspoon` directory:
    ```
    git clone https://github.com/zzamboni/oh-my-hammerspoon.git ~/.hammerspoon
    ```
-2. Review `init.lua` and change or disable any Spoons as needed.
-2. Run Hammerspoon
+2. Review [`init.lua`](https://github.com/zzamboni/dot-hammerspoon/blob/master/init.lua) and change or disable any Spoons as needed.
+2. Run Hammerspoon.
 3. All the necessary Spoons will be downloaded, installed and configured.
 4. Have fun!
 
