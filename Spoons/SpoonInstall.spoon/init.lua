@@ -371,6 +371,7 @@ end
 ---    * fn - a function which will be called with the freshly-loaded Spoon object as its first argument.
 ---    * loglevel - if the Spoon has a variable called `logger`, its `setLogLevel()` method will be called with this value.
 ---    * start - if `true`, call the Spoon's `start()` method after configuring everything else.
+---    * disable - if `true`, do nothing. Easier than commenting it out when you want to temporarily disable a spoon.
 ---
 --- Returns:
 ---  * None
@@ -379,6 +380,7 @@ end
 ---  * For convenience, this method can be invoked directly on the UseSpoon object, i.e. `spoon.UseSpoon(name, arg)` instead of `spoon.UseSpoon.use(name, arg)`.
 function obj:andUse(name, arg)
    if not arg then arg = {} end
+   if arg.disable then return true end
    if hs.spoons.use(name, arg, true) then
       return true
    else
