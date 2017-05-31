@@ -293,6 +293,56 @@ Install:andUse("ColorPicker",
 )
 
 ----------------------------------------------------------------------
+
+function reconfigSpotifyProxy(proxy)
+   local spotify = hs.appfinder.appFromName("Spotify")
+   hs.notify.show(string.format("Reconfiguring %sSpotify", ((spotify~=nil) and "and restarting " or "")),
+                  string.format("Proxy %s", (proxy and "enabled" or "disabled")), "")
+   -- I use CFEngine to reconfigure the Spotify preferences
+   hs.execute(string.format("/usr/local/bin/cf-agent -f %s/files/spotify-proxymode.cf%s", hs.configdir, (proxy and " -DPROXY" or "")))
+   if spotify then
+      local lastapp = hs.application.frontmostApplication() 
+      spotify:kill()
+      hs.timer.doAfter(3,
+                       function()
+                          if not hs.application.launchOrFocus("Spotify") then
+                             hs.notify.show("Error launching Spotify", "", "")
+                          end
+                          if lastapp then
+                             hs.timer.doAfter(0.5, hs.fnutils.partial(lastapp.activate, lastapp))
+                          end
+      end)
+   end
+end
+
+Install:andUse("WiFiTransitions",
+               {
+                  repo = 'zzspoons',
+                  config = {
+                     actions = {
+                        {
+                           -- Test action just to see the SSID transitions
+                           fn = function(_, _, prev_ssid, new_ssid)
+                              hs.notify.show("SSID change", string.format("From '%s' to '%s'", prev_ssid, new_ssid), "")
+                           end
+                        },
+                        {
+                           -- Enable proxy in Spotify config in corp network
+                           to = "corpnet01",
+                           fn = hs.fnutils.partial(reconfigSpotifyProxy, true)
+                        },
+                        {
+                           -- Disable proxy in Spotify config when leaving corp network
+                           from = "corpnet01",
+                           fn = hs.fnutils.partial(reconfigSpotifyProxy, false)
+                        },
+                     }
+                  },
+                  start = true,
+               }
+)
+
+----------------------------------------------------------------------
 -- Test stuff
 
 -- https://github.com/Hammerspoon/hammerspoon/issues/1356#issuecomment-300707447
