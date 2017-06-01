@@ -321,16 +321,14 @@ function reconfigAdiumProxy(proxy)
                   string.format("Proxy %s", (proxy and "enabled" or "disabled")), "")
    local script = string.format([[
 tell application "Adium"
-	set acc to accounts
-	repeat with a in acc
-		set active to enabled of a
-		if active is true then
-			set proxy enabled of a to %s
-		end if
-	end repeat
-	go online
+  repeat with a in accounts
+    if (enabled of a) is true then
+      set proxy enabled of a to %s
+    end if
+  end repeat
+  go online
 end tell
-]], proxy)
+]], hs.inspect(proxy))
    hs.osascript.applescript(script)
 end
 
@@ -339,11 +337,11 @@ Install:andUse("WiFiTransitions",
                   repo = 'zzspoons',
                   config = {
                      actions = {
-                        { -- Test action just to see the SSID transitions
-                           fn = function(_, _, prev_ssid, new_ssid)
-                              hs.notify.show("SSID change", string.format("From '%s' to '%s'", prev_ssid, new_ssid), "")
-                           end
-                        },
+                        -- { -- Test action just to see the SSID transitions
+                        --    fn = function(_, _, prev_ssid, new_ssid)
+                        --       hs.notify.show("SSID change", string.format("From '%s' to '%s'", prev_ssid, new_ssid), "")
+                        --    end
+                        -- },
                         { -- Enable proxy in Spotify and Adium config when joining corp network
                            to = "corpnet01",
                            fn = {hs.fnutils.partial(reconfigSpotifyProxy, true),
