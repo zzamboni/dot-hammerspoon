@@ -256,6 +256,7 @@ Install:andUse("Seal",
                   hotkeys = { show = { {"cmd"}, "space" } },
                   fn = function(s)
                      s:loadPlugins({"apps", "calc", "safari_bookmarks"})
+                     s.plugins.safari_bookmarks.always_open_with_safari = false
                   end,
                   start = true,
                }
@@ -315,26 +316,45 @@ function reconfigSpotifyProxy(proxy)
    end
 end
 
+function reconfigAdiumProxy(proxy)
+   hs.notify.show("Reconfiguring Adium",
+                  string.format("Proxy %s", (proxy and "enabled" or "disabled")), "")
+   local script = string.format([[
+tell application "Adium"
+	set acc to accounts
+	repeat with a in acc
+		set active to enabled of a
+		if active is true then
+			set proxy enabled of a to %s
+		end if
+	end repeat
+	go online
+end tell
+]], proxy)
+   hs.osascript.applescript(script)
+end
+
 Install:andUse("WiFiTransitions",
                {
                   repo = 'zzspoons',
                   config = {
                      actions = {
-                        {
-                           -- Test action just to see the SSID transitions
+                        { -- Test action just to see the SSID transitions
                            fn = function(_, _, prev_ssid, new_ssid)
                               hs.notify.show("SSID change", string.format("From '%s' to '%s'", prev_ssid, new_ssid), "")
                            end
                         },
-                        {
-                           -- Enable proxy in Spotify config in corp network
+                        { -- Enable proxy in Spotify and Adium config when joining corp network
                            to = "corpnet01",
-                           fn = hs.fnutils.partial(reconfigSpotifyProxy, true)
+                           fn = {hs.fnutils.partial(reconfigSpotifyProxy, true),
+                                 hs.fnutils.partial(reconfigAdiumProxy, true),
+                           }
                         },
-                        {
-                           -- Disable proxy in Spotify config when leaving corp network
+                        { -- Disable proxy in Spotify and Adium config when leaving corp network
                            from = "corpnet01",
-                           fn = hs.fnutils.partial(reconfigSpotifyProxy, false)
+                           fn = {hs.fnutils.partial(reconfigSpotifyProxy, false),
+                                 hs.fnutils.partial(reconfigAdiumProxy, false),
+                           }
                         },
                      }
                   },
