@@ -368,28 +368,9 @@ Install:andUse("WiFiTransitions",
 ----------------------------------------------------------------------
 -- Test stuff
 
--- https://github.com/Hammerspoon/hammerspoon/issues/1356#issuecomment-300707447
-require('hs.ipc2')
-
--- Get onenote: link to the current OneNote page or section. Defaults to Page - pass `"Section"` as the argument to get the current section URI.
-function getOneNoteURI(what)
-   local obj = what or "Page"
-   local menu="Copy Link to " .. obj
-   local app=hs.appfinder.appFromName("Microsoft OneNote")
-   if app then
-      local i=app:findMenuItem(menu)
-      if i then
-         app:selectMenuItem(menu)
-         -- 1/50th of a second wait to give the pasteboard a chance to catch up
-         hs.timer.usleep(20000)
-         local links=hs.pasteboard.getContents()
-         if links then
-            -- Remove the web URL part and leave the onenote: part
-            return links:match("(onenote:.*)$")
-         end
-      end
-   end
-   return nil
+local localstuff=loadfile(hs.configdir .. "/init-local.lua")
+if localstuff then
+   localstuff()
 end
 
 ----------------------------------------------------------------------
