@@ -24,13 +24,20 @@ If you still want it, the old oh-my-hammerspoon code has been archived in the
 ## How to use it
 
 1. Install [Hammerspoon](http://www.hammerspoon.org/).
-   * Please note: until Hammerspoon 0.9.55 is released, you also need to download the files from https://github.com/Hammerspoon/hammerspoon/tree/master/extensions/spoons and store them under your `~/.hammerspoon/hs/spoons/` directory (create the directories as needed) for the SpoonInstall spoon to work properly.
-1. Clone this repository into your `~/.hammerspoon` directory:
+   * Please note: the SpoonInstall spoon (used in this configuration)
+     requires the `hs.spoons` extension, which is unavailable in
+     versions before Hammerspoon 0.9.55. In the meantime, the
+     `hs.spoons` extension is included in this repository and loaded
+     by hand at the top of `init.lua`.
+2. Clone this repository into your `~/.hammerspoon` directory:
    ```
    git clone https://github.com/zzamboni/oh-my-hammerspoon.git ~/.hammerspoon
    ```
-2. Review [`init.lua`](https://github.com/zzamboni/dot-hammerspoon/blob/master/init.lua) and change or disable any Spoons as needed.
-2. Run Hammerspoon.
-3. All the necessary Spoons will be downloaded, installed and configured.
-4. Have fun!
+3. Review
+   [`init.lua`](https://github.com/zzamboni/dot-hammerspoon/blob/master/init.lua) and
+   change or disable any Spoons as needed.
+4. Run Hammerspoon.
+5. All the necessary Spoons will be downloaded, installed and
+   configured.
+6. Have fun!
 

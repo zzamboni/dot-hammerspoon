@@ -1,6 +1,11 @@
 -- Global log level. Per-spoon log level can be configured in each block below
 hs.logger.defaultLogLevel="info"
 
+-- If hs.spoons is not available (i.e. before Hammerspoon 0.9.55), load the local version
+if hs.spoons == nil then
+   hs.spoons=require('hs.spoons')
+end
+
 -- Some useful variables for key binding specifications in Spoon configurations
 hyper = {"cmd","alt","ctrl"}
 shift_hyper = {"cmd","alt","ctrl","shift"}
