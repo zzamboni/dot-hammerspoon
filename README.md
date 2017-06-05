@@ -24,6 +24,7 @@ If you still want it, the old oh-my-hammerspoon code has been archived in the
 ## How to use it
 
 1. Install [Hammerspoon](http://www.hammerspoon.org/).
+   * Please note: until Hammerspoon 0.9.55 is released, you also need to download the files from https://github.com/Hammerspoon/hammerspoon/tree/master/extensions/spoons and store them under your `~/.hammerspoon/hs/spoons/` directory (create the directories as needed) for the SpoonInstall spoon to work properly.
 1. Clone this repository into your `~/.hammerspoon` directory:
    ```
    git clone https://github.com/zzamboni/oh-my-hammerspoon.git ~/.hammerspoon
