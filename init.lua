@@ -210,7 +210,6 @@ Install:andUse("Hammer",
 -- http://zzamboni.org/zzSpoons/ToggleSkypeMute.html
 Install:andUse("ToggleSkypeMute",
                {
-                  repo = 'zzspoons',
                   hotkeys = {
                      toggle_skype = { shift_hyper, "v" },
                      toggle_skype_for_business = { shift_hyper, "f" }
@@ -230,8 +229,8 @@ Install:andUse("Emojis",
 
 ----------------------------------------------------------------------
 
--- http://zzamboni.org/zzSpoons/HeadphoneWatcher.html
-Install:andUse("HeadphoneWatcher",
+-- http://zzamboni.org/zzSpoons/HeadphoneAutoPause.html
+Install:andUse("HeadphoneAutoPause",
                {
                   repo = 'zzspoons',
                   start = true
@@ -272,7 +271,6 @@ Install:andUse("Seal",
 -- http://zzamboni.org/zzSpoons/TextClipboardHistory.html
 Install:andUse("TextClipboardHistory",
                {
-                  repo = 'zzspoons',
                   config = {
                      show_in_menubar = false,
                   },
@@ -287,7 +285,6 @@ Install:andUse("TextClipboardHistory",
 -- http://zzamboni.org/zzSpoons/ColorPicker.html
 Install:andUse("ColorPicker",
                {
-                  repo = 'zzspoons',
                   hotkeys = {
                      show = { shift_hyper, "c" }
                   },
@@ -339,7 +336,6 @@ end
 
 Install:andUse("WiFiTransitions",
                {
-                  repo = 'zzspoons',
                   config = {
                      actions = {
                         -- { -- Test action just to see the SSID transitions
@@ -366,6 +362,21 @@ Install:andUse("WiFiTransitions",
 )
 
 ----------------------------------------------------------------------
+
+Install:andUse("PopupTranslateSelection",
+               {
+                  repo = 'zzspoons',
+                  hotkeys = {
+                     translate_to_en = { hyper, "e" },
+                     translate_to_de = { hyper, "d" },
+                     translate_to_es = { hyper, "s" },
+                     translate_de_en = { shift_hyper, "e" },
+                     translate_en_de = { shift_hyper, "d" },
+                  }
+               }
+)
+
+----------------------------------------------------------------------
 -- Test stuff
 
 local localstuff=loadfile(hs.configdir .. "/init-local.lua")
@@ -378,7 +389,6 @@ end
 -- http://zzamboni.org/zzSpoons/FadeLogo.html
 Install:andUse("FadeLogo",
                {
-                  repo = 'zzspoons',
                   config = {
                      default_run = 1.0,
                   },
