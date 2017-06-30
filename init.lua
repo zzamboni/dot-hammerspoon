@@ -13,6 +13,9 @@ shift_hyper = {"cmd","alt","ctrl","shift"}
 -- Useful color map I use in some configurations below
 col = hs.drawing.color.x11
 
+-- Work's logo
+swisscom_logo = hs.image.imageFromPath(hs.configdir .. "/files/swisscom_logo_2x.png")
+
 ----------------------------------------------------------------------
 -- Set up SpoonInstall - this is the only spoon that needs to be
 -- manually installed (it is already there if you check out this
@@ -46,7 +49,7 @@ Install:andUse("MouseCircle",
                      color = hs.drawing.color.x11.rebeccapurple
                   },
                   hotkeys = {
-                     show = { hyper, "D" }
+                     show = { hyper, "m" }
                   }
                }
 )
@@ -63,8 +66,12 @@ Install:andUse("BrewInfo",
                         radius = 10 }
                   },
                   hotkeys = {
+                     -- brew info
                      show_brew_info = {hyper, "b"},
                      open_brew_url = {shift_hyper, "b"},
+                     -- brew cask info
+                     show_brew_cask_info = {hyper, "c"},
+                     open_brew_cask_url = {shift_hyper, "c"},
                   }
                }
 )
@@ -80,7 +87,8 @@ Install:andUse("URLDispatcher",
                         { "https?://issue.swisscom.com", "org.epichrome.app.SwisscomJira" },
                         { "https?://jira.swisscom.com", "org.epichrome.app.SwisscomJira" },
                         { "https?://wiki.swisscom.com", "org.epichrome.app.SwisscomWiki" },
-                        { "https?://collaboration.swisscom.com", "org.epichrome.app.SwisscomCollab" },
+                        -- { "https?://collaboration.swisscom.com", "org.epichrome.app.SwisscomCollab" },
+                        { "https?://collaboration.swisscom.com", "com.apple.Safari" },
                         { "https?://smca.swisscom.com", "org.epichrome.app.SwisscomTWP" },
                         { "https?://portal.corproot.net", "com.apple.Safari" },
                         { "https?://app.opsgenie.com", "org.epichrome.app.OpsGenie" },
@@ -259,8 +267,38 @@ Install:andUse("Seal",
                {
                   hotkeys = { show = { {"cmd"}, "space" } },
                   fn = function(s)
-                     s:loadPlugins({"apps", "calc", "safari_bookmarks"})
+                     s:loadPlugins({"apps", "calc", "safari_bookmarks", "screencapture", "useractions"})
                      s.plugins.safari_bookmarks.always_open_with_safari = false
+                     s.plugins.useractions.actions =
+                        {
+                           ["Hammerspoon docs webpage"] = {
+                              url = "http://hammerspoon.org/docs/",
+                              icon = hs.image.imageFromName(hs.image.systemImageNames.ApplicationIcon),
+                              hotkey = { hyper, "h" }
+                           },
+                           ["Leave corpnet"] = {
+                              fn = function()
+                                 spoon.WiFiTransitions:processTransition('foo', 'corpnet01')
+                              end,
+                              icon = swisscom_logo,
+                           },
+                           ["Arrive in corpnet"] = {
+                              fn = function()
+                                 spoon.WiFiTransitions:processTransition('corpnet01', 'foo')
+                              end,
+                              icon = swisscom_logo,
+                           },
+                           ["Translate using Leo"] = {
+                              url = "http://dict.leo.org/ende/index_de.html#/search=${query}",
+                              icon = 'favicon',
+                              keyword = "leo",
+                           },
+                           ["Tell me something"] = {
+                              keyword = "tellme",
+                              fn = function(str) hs.alert.show(str) end,
+                           }
+                        }
+                     s:refreshAllCommands()
                   end,
                   start = true,
                }
@@ -285,6 +323,7 @@ Install:andUse("TextClipboardHistory",
 -- http://zzamboni.org/zzSpoons/ColorPicker.html
 Install:andUse("ColorPicker",
                {
+                  disable = true,
                   hotkeys = {
                      show = { shift_hyper, "c" }
                   },
@@ -363,9 +402,13 @@ Install:andUse("WiFiTransitions",
 
 ----------------------------------------------------------------------
 
+local wm=hs.webview.windowMasks
 Install:andUse("PopupTranslateSelection",
                {
                   repo = 'zzspoons',
+                  config = {
+                     popup_style = wm.utility|wm.HUD|wm.titled|wm.closable|wm.resizable,
+                  },
                   hotkeys = {
                      translate_to_en = { hyper, "e" },
                      translate_to_de = { hyper, "d" },
