@@ -122,10 +122,9 @@ Install:andUse("MenubarFlag",
 
 ----------------------------------------------------------------------
 
--- http://zzamboni.org/zzSpoons/WindowHalfsAndThirds.html
+-- http://www.hammerspoon.org/Spoons/WindowHalfsAndThirds.html
 Install:andUse("WindowHalfsAndThirds",
                {
-                  repo = 'zzspoons',
                   config = {
                      use_frame_correctness = true
                   },
@@ -145,10 +144,9 @@ Install:andUse("WindowScreenLeftAndRight",
 
 ----------------------------------------------------------------------
 
--- http://zzamboni.org/zzSpoons/WindowGrid.html
+-- http://www.hammerspoon.org/Spoons/WindowGrid.html
 Install:andUse("WindowGrid",
                {
-                  repo = 'zzspoons',
                   config = { gridGeometries = { { "6x4" } } },
                   hotkeys = {show_grid = {hyper, "g"}},
                   start = true
@@ -215,7 +213,7 @@ Install:andUse("Hammer",
 
 ----------------------------------------------------------------------
 
--- http://zzamboni.org/zzSpoons/ToggleSkypeMute.html
+-- http://www.hammerspoon.org/Spoons/ToggleSkypeMute.html
 Install:andUse("ToggleSkypeMute",
                {
                   hotkeys = {
@@ -237,20 +235,18 @@ Install:andUse("Emojis",
 
 ----------------------------------------------------------------------
 
--- http://zzamboni.org/zzSpoons/HeadphoneAutoPause.html
+-- http://www.hammerspoon.org/Spoons/HeadphoneAutoPause.html
 Install:andUse("HeadphoneAutoPause",
                {
-                  repo = 'zzspoons',
                   start = true
                }
 )
 
 ----------------------------------------------------------------------
 
--- http://zzamboni.org/zzSpoons/EvernoteOpenAndTag.html
+-- http://www.hammerspoon.org/Spoons/EvernoteOpenAndTag.html
 Install:andUse("EvernoteOpenAndTag",
                {
-                  repo = 'zzspoons',
                   hotkeys = {
                      open_note = { hyper, "o" },
                      ["open_and_tag-+work,+swisscom"] = { hyper, "w" },
@@ -306,7 +302,7 @@ Install:andUse("Seal",
 
 ----------------------------------------------------------------------
 
--- http://zzamboni.org/zzSpoons/TextClipboardHistory.html
+-- http://www.hammerspoon.org/Spoons/TextClipboardHistory.html
 Install:andUse("TextClipboardHistory",
                {
                   config = {
@@ -320,7 +316,7 @@ Install:andUse("TextClipboardHistory",
 
 ----------------------------------------------------------------------
 
--- http://zzamboni.org/zzSpoons/ColorPicker.html
+-- http://www.hammerspoon.org/Spoons/ColorPicker.html
 Install:andUse("ColorPicker",
                {
                   disable = true,
@@ -405,7 +401,6 @@ Install:andUse("WiFiTransitions",
 local wm=hs.webview.windowMasks
 Install:andUse("PopupTranslateSelection",
                {
-                  repo = 'zzspoons',
                   config = {
                      popup_style = wm.utility|wm.HUD|wm.titled|wm.closable|wm.resizable,
                   },
@@ -429,7 +424,7 @@ end
 
 ----------------------------------------------------------------------
 
--- http://zzamboni.org/zzSpoons/FadeLogo.html
+-- http://www.hammerspoon.org/Spoons/FadeLogo.html
 Install:andUse("FadeLogo",
                {
                   config = {
