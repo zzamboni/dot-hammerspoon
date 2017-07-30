@@ -6,11 +6,12 @@ if hs.spoons == nil then
    hs.spoons=require('hs.spoons')
 end
 
--- Some useful variables for key binding specifications in Spoon configurations
+-- Some useful global variables for key binding specifications in
+-- Spoon configurations
 hyper = {"cmd","alt","ctrl"}
 shift_hyper = {"cmd","alt","ctrl","shift"}
 
--- Useful color map I use in some configurations below
+-- Color map I use in some configurations below
 col = hs.drawing.color.x11
 
 -- Work's logo
@@ -363,6 +364,7 @@ tell application "Adium"
       set proxy enabled of a to %s
     end if
   end repeat
+  go offline
   go online
 end tell
 ]], hs.inspect(proxy))
