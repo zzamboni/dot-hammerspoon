@@ -46,6 +46,7 @@ Install=spoon.SpoonInstall
 -- http://www.hammerspoon.org/Spoons/MouseCircle.html
 Install:andUse("MouseCircle",
                {
+                  disable = true,
                   config = {
                      color = hs.drawing.color.x11.rebeccapurple
                   },
@@ -88,8 +89,8 @@ Install:andUse("URLDispatcher",
                         { "https?://issue.swisscom.com", "org.epichrome.app.SwisscomJira" },
                         { "https?://jira.swisscom.com", "org.epichrome.app.SwisscomJira" },
                         { "https?://wiki.swisscom.com", "org.epichrome.app.SwisscomWiki" },
-                        -- { "https?://collaboration.swisscom.com", "org.epichrome.app.SwisscomCollab" },
-                        { "https?://collaboration.swisscom.com", "com.apple.Safari" },
+                        { "https?://collaboration.swisscom.com", "org.epichrome.app.SwisscomCollab" },
+                        -- { "https?://collaboration.swisscom.com", "com.apple.Safari" },
                         { "https?://smca.swisscom.com", "org.epichrome.app.SwisscomTWP" },
                         { "https?://portal.corproot.net", "com.apple.Safari" },
                         { "https?://app.opsgenie.com", "org.epichrome.app.OpsGenie" },
