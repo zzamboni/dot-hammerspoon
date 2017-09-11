@@ -336,8 +336,7 @@ Install:andUse("ColorPicker",
 
 function reconfigSpotifyProxy(proxy)
    local spotify = hs.appfinder.appFromName("Spotify")
-   hs.notify.show(string.format("Reconfiguring %sSpotify", ((spotify~=nil) and "and restarting " or "")),
-                  string.format("Proxy %s", (proxy and "enabled" or "disabled")), "")
+   --   hs.notify.show(string.format("Reconfiguring %sSpotify", ((spotify~=nil) and "and restarting " or "")), string.format("Proxy %s", (proxy and "enabled" or "disabled")), "")
    -- I use CFEngine to reconfigure the Spotify preferences
    hs.execute(string.format("/usr/local/bin/cf-agent -f %s/files/spotify-proxymode.cf%s", hs.configdir, (proxy and " -DPROXY" or "")))
    if spotify then
@@ -356,8 +355,7 @@ function reconfigSpotifyProxy(proxy)
 end
 
 function reconfigAdiumProxy(proxy)
-   hs.notify.show("Reconfiguring Adium",
-                  string.format("Proxy %s", (proxy and "enabled" or "disabled")), "")
+   --   hs.notify.show("Reconfiguring Adium", string.format("Proxy %s", (proxy and "enabled" or "disabled")), "")
    local script = string.format([[
 tell application "Adium"
   repeat with a in accounts
