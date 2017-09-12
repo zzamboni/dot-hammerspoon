@@ -2,6 +2,7 @@ init-local.lua
 Spoons/*
 seal_plugins/*
 .DS_Store
+local/*
 
 # Compiled Lua sources
 luac.out
