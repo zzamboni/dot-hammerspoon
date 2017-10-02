@@ -272,7 +272,7 @@ Install:andUse("Seal",
                            ["Hammerspoon docs webpage"] = {
                               url = "http://hammerspoon.org/docs/",
                               icon = hs.image.imageFromName(hs.image.systemImageNames.ApplicationIcon),
-                              hotkey = { hyper, "h" }
+                              --                              hotkey = { hyper, "h" }
                            },
                            ["Leave corpnet"] = {
                               fn = function()
