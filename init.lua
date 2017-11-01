@@ -92,7 +92,7 @@ Install:andUse("URLDispatcher",
                         { "https?://collaboration.swisscom.com", "org.epichrome.app.SwisscomCollab" },
                         -- { "https?://collaboration.swisscom.com", "com.apple.Safari" },
                         { "https?://smca.swisscom.com", "org.epichrome.app.SwisscomTWP" },
-                        { "https?://portal.corproot.net", "com.apple.Safari" },
+                        { "https?://portal.corproot.net", "com.google.Chrome" },
                         { "https?://app.opsgenie.com", "org.epichrome.app.OpsGenie" },
                      },
                      default_handler = "com.google.Chrome"
