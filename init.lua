@@ -336,12 +336,19 @@ Install:andUse("ColorPicker",
 
 function reconfigSpotifyProxy(proxy)
    local spotify = hs.appfinder.appFromName("Spotify")
+   local lastapp = nil
+   if spotify then
+      lastapp = hs.application.frontmostApplication() 
+      spotify:kill()
+      hs.timer.usleep(40000)
+   end
    --   hs.notify.show(string.format("Reconfiguring %sSpotify", ((spotify~=nil) and "and restarting " or "")), string.format("Proxy %s", (proxy and "enabled" or "disabled")), "")
    -- I use CFEngine to reconfigure the Spotify preferences
-   hs.execute(string.format("/usr/local/bin/cf-agent -f %s/files/spotify-proxymode.cf%s", hs.configdir, (proxy and " -DPROXY" or "")))
-   if spotify then
-      local lastapp = hs.application.frontmostApplication() 
-      spotify:kill()
+   cmd = string.format("/usr/local/bin/cf-agent -K -f %s/files/spotify-proxymode.cf%s", hs.configdir, (proxy and " -DPROXY" or " -DNOPROXY"))
+   --   print("reconfigSpotifyProxy: running command ", cmd)
+   output, status, t, rc = hs.execute(cmd)
+   --   print(output, status, t, rc)
+   if spotify and lastapp then
       hs.timer.doAfter(3,
                        function()
                           if not hs.application.launchOrFocus("Spotify") then
