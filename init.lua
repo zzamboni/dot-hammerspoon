@@ -104,7 +104,12 @@ Install:andUse("URLDispatcher",
 ----------------------------------------------------------------------
 
 -- http://www.hammerspoon.org/Spoons/Caffeine.html
-Install:andUse("Caffeine")
+Install:andUse("Caffeine", {
+                 start = true,
+                 hotkeys = {
+                   toggle = { hyper, "1" }
+                 }
+})
 
 ----------------------------------------------------------------------
 
