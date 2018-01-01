@@ -230,12 +230,25 @@ note manipulation in Evernote.
   )
 #+END_SRC
 
+The [[http://www.hammerspoon.org/Spoons/TextClipboardHistory.html][TextClipboardHistory]] spoon implements a clipboard history, only
+for text items. It is invoked with =Cmd-Shift-v=.
+
+#+BEGIN_SRC lua
+  Install:andUse("TextClipboardHistory",
+                 {
+                   config = {
+                     show_in_menubar = false,
+                   },
+                   hotkeys = {
+                     toggle_clipboard = { { "cmd", "shift" }, "v" } },
+                   start = true,
+                 }
+  )
+#+END_SRC
 
 * The rest
 
 #+BEGIN_SRC lua
-  ----------------------------------------------------------------------
-
   -- http://www.hammerspoon.org/Spoons/Caffeine.html
   Install:andUse("Caffeine", {
                    start = true,
@@ -243,9 +256,9 @@ note manipulation in Evernote.
                      toggle = { hyper, "1" }
                    }
   })
+#+END_SRC
 
-  ----------------------------------------------------------------------
-
+#+BEGIN_SRC lua
   -- http://www.hammerspoon.org/Spoons/MenubarFlag.html
   Install:andUse("MenubarFlag",
                  {
@@ -260,7 +273,6 @@ note manipulation in Evernote.
                  }
   )
 #+END_SRC
-
 
 #+BEGIN_SRC lua
   -- http://www.hammerspoon.org/Spoons/MouseCircle.html
@@ -300,8 +312,6 @@ note manipulation in Evernote.
 #+END_SRC
 
 #+BEGIN_SRC lua
-  ----------------------------------------------------------------------
-
   -- http://zzamboni.org/zzSpoons/Hammer.html
   Install:andUse("Hammer",
                  {
@@ -314,9 +324,9 @@ note manipulation in Evernote.
                    start = true
                  }
   )
+#+END_SRC
 
-  ----------------------------------------------------------------------
-
+#+BEGIN_SRC lua
   -- http://www.hammerspoon.org/Spoons/ToggleSkypeMute.html
   Install:andUse("ToggleSkypeMute",
                  {
@@ -326,9 +336,9 @@ note manipulation in Evernote.
                    }
                  }
   )
+#+END_SRC
 
-  ----------------------------------------------------------------------
-
+#+BEGIN_SRC lua
   -- http://www.hammerspoon.org/Spoons/Emojis.html
   Install:andUse("Emojis",
                  {
@@ -336,22 +346,18 @@ note manipulation in Evernote.
                    hotkeys = { toggle = { hyper, "e" } }
                  }
   )
+#+END_SRC
 
-  ----------------------------------------------------------------------
-
+#+BEGIN_SRC lua
   -- http://www.hammerspoon.org/Spoons/HeadphoneAutoPause.html
   Install:andUse("HeadphoneAutoPause",
                  {
                    start = true
                  }
   )
-
-  ----------------------------------------------------------------------
 #+END_SRC
 
 #+BEGIN_SRC lua
-  ----------------------------------------------------------------------
-
   -- http://www.hammerspoon.org/Spoons/Seal.html
   Install:andUse("Seal",
                  {
@@ -393,23 +399,9 @@ note manipulation in Evernote.
                    start = true,
                  }
   )
+#+END_SRC
 
-  ----------------------------------------------------------------------
-
-  -- http://www.hammerspoon.org/Spoons/TextClipboardHistory.html
-  Install:andUse("TextClipboardHistory",
-                 {
-                   config = {
-                     show_in_menubar = false,
-                   },
-                   hotkeys = {
-                     toggle_clipboard = { { "cmd", "shift" }, "v" } },
-                   start = true,
-                 }
-  )
-
-  ----------------------------------------------------------------------
-
+#+BEGIN_SRC lua
   -- http://www.hammerspoon.org/Spoons/ColorPicker.html
   Install:andUse("ColorPicker",
                  {
@@ -423,9 +415,9 @@ note manipulation in Evernote.
                    start = true,
                  }
   )
+#+END_SRC
 
-  ----------------------------------------------------------------------
-
+#+BEGIN_SRC lua
   function reconfigSpotifyProxy(proxy)
     local spotify = hs.appfinder.appFromName("Spotify")
     local lastapp = nil
@@ -495,9 +487,9 @@ note manipulation in Evernote.
                    start = true,
                  }
   )
+#+END_SRC
 
-  ----------------------------------------------------------------------
-
+#+BEGIN_SRC lua
   local wm=hs.webview.windowMasks
   Install:andUse("PopupTranslateSelection",
                  {
@@ -513,16 +505,18 @@ note manipulation in Evernote.
                    }
                  }
   )
+#+END_SRC
 
-  ----------------------------------------------------------------------
-
+#+BEGIN_SRC lua
   -- Cheat sheet for the running application
   Install:andUse("KSheet",
                  {
                    hotkeys = {
                      toggle = { hyper, "/" }
   }})
+#+END_SRC
 
+#+BEGIN_SRC lua
   ----------------------------------------------------------------------
   -- Test stuff
 
@@ -530,9 +524,9 @@ note manipulation in Evernote.
   if localstuff then
     localstuff()
   end
+#+END_SRC
 
-  ----------------------------------------------------------------------
-
+#+BEGIN_SRC lua
   -- http://www.hammerspoon.org/Spoons/FadeLogo.html
   Install:andUse("FadeLogo",
                  {
@@ -545,5 +539,4 @@ note manipulation in Evernote.
 
   -- If you don't want to use FadeLogo, you can have a regular notification
   -- hs.notify.show("Welcome to Hammerspoon", "Have fun!", "")
-
 #+END_SRC

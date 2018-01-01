@@ -111,7 +111,16 @@ Install:andUse("EvernoteOpenAndTag",
                }
 )
 
-----------------------------------------------------------------------
+Install:andUse("TextClipboardHistory",
+               {
+                 config = {
+                   show_in_menubar = false,
+                 },
+                 hotkeys = {
+                   toggle_clipboard = { { "cmd", "shift" }, "v" } },
+                 start = true,
+               }
+)
 
 -- http://www.hammerspoon.org/Spoons/Caffeine.html
 Install:andUse("Caffeine", {
@@ -120,8 +129,6 @@ Install:andUse("Caffeine", {
                    toggle = { hyper, "1" }
                  }
 })
-
-----------------------------------------------------------------------
 
 -- http://www.hammerspoon.org/Spoons/MenubarFlag.html
 Install:andUse("MenubarFlag",
@@ -170,8 +177,6 @@ Install:andUse("BrewInfo",
                }
 )
 
-----------------------------------------------------------------------
-
 -- http://zzamboni.org/zzSpoons/Hammer.html
 Install:andUse("Hammer",
                {
@@ -185,8 +190,6 @@ Install:andUse("Hammer",
                }
 )
 
-----------------------------------------------------------------------
-
 -- http://www.hammerspoon.org/Spoons/ToggleSkypeMute.html
 Install:andUse("ToggleSkypeMute",
                {
@@ -197,8 +200,6 @@ Install:andUse("ToggleSkypeMute",
                }
 )
 
-----------------------------------------------------------------------
-
 -- http://www.hammerspoon.org/Spoons/Emojis.html
 Install:andUse("Emojis",
                {
@@ -207,18 +208,12 @@ Install:andUse("Emojis",
                }
 )
 
-----------------------------------------------------------------------
-
 -- http://www.hammerspoon.org/Spoons/HeadphoneAutoPause.html
 Install:andUse("HeadphoneAutoPause",
                {
                  start = true
                }
 )
-
-----------------------------------------------------------------------
-
-----------------------------------------------------------------------
 
 -- http://www.hammerspoon.org/Spoons/Seal.html
 Install:andUse("Seal",
@@ -262,22 +257,6 @@ Install:andUse("Seal",
                }
 )
 
-----------------------------------------------------------------------
-
--- http://www.hammerspoon.org/Spoons/TextClipboardHistory.html
-Install:andUse("TextClipboardHistory",
-               {
-                 config = {
-                   show_in_menubar = false,
-                 },
-                 hotkeys = {
-                   toggle_clipboard = { { "cmd", "shift" }, "v" } },
-                 start = true,
-               }
-)
-
-----------------------------------------------------------------------
-
 -- http://www.hammerspoon.org/Spoons/ColorPicker.html
 Install:andUse("ColorPicker",
                {
@@ -291,8 +270,6 @@ Install:andUse("ColorPicker",
                  start = true,
                }
 )
-
-----------------------------------------------------------------------
 
 function reconfigSpotifyProxy(proxy)
   local spotify = hs.appfinder.appFromName("Spotify")
@@ -364,8 +341,6 @@ Install:andUse("WiFiTransitions",
                }
 )
 
-----------------------------------------------------------------------
-
 local wm=hs.webview.windowMasks
 Install:andUse("PopupTranslateSelection",
                {
@@ -382,8 +357,6 @@ Install:andUse("PopupTranslateSelection",
                }
 )
 
-----------------------------------------------------------------------
-
 -- Cheat sheet for the running application
 Install:andUse("KSheet",
                {
@@ -398,8 +371,6 @@ local localstuff=loadfile(hs.configdir .. "/init-local.lua")
 if localstuff then
   localstuff()
 end
-
-----------------------------------------------------------------------
 
 -- http://www.hammerspoon.org/Spoons/FadeLogo.html
 Install:andUse("FadeLogo",
