@@ -3,89 +3,26 @@
 -- https://github.com/zzamboni/dot-hammerspoon/blob/master/init.org.
 -- You should make any changes there and regenerate it from Emacs org-mode using C-c C-v t
 
--- Global log level. Per-spoon log level can be configured in each block below
 hs.logger.defaultLogLevel="info"
 
--- If hs.spoons is not available (i.e. before Hammerspoon 0.9.55), load the local version
-if hs.spoons == nil then
-  hs.spoons=require('hs.spoons')
-end
-
--- Some useful global variables for key binding specifications in
--- Spoon configurations
 hyper = {"cmd","alt","ctrl"}
 shift_hyper = {"cmd","alt","ctrl","shift"}
 
--- Color map I use in some configurations below
 col = hs.drawing.color.x11
 
--- Work's logo
 swisscom_logo = hs.image.imageFromPath(hs.configdir .. "/files/swisscom_logo_2x.png")
-
-----------------------------------------------------------------------
--- Set up SpoonInstall - this is the only spoon that needs to be
--- manually installed (it is already there if you check out this
--- repository), all the others are installed and configured
--- automatically.
-----------------------------------------------------------------------
 
 hs.loadSpoon("SpoonInstall")
 
--- Configuration of my personal spoon repository, which contains Spoons
--- that have not been merged in the main repo.
--- See the descriptions at http://zzamboni.org/zzSpoons/
 spoon.SpoonInstall.repos.zzspoons = {
   url = "https://github.com/zzamboni/zzSpoons",
   desc = "zzamboni's spoon repository",
 }
 
--- I prefer sync notifications, makes them easier to read
 spoon.SpoonInstall.use_syncinstall = true
 
--- This is just a shortcut to make the declarations below look more readable,
--- i.e. `Install:andUse()` instead of `spoon.SpoonInstall:andUse()`
 Install=spoon.SpoonInstall
 
-----------------------------------------------------------------------
-
--- http://www.hammerspoon.org/Spoons/MouseCircle.html
-Install:andUse("MouseCircle",
-               {
-                 disable = true,
-                 config = {
-                   color = hs.drawing.color.x11.rebeccapurple
-                 },
-                 hotkeys = {
-                   show = { hyper, "m" }
-                 }
-               }
-)
-
-----------------------------------------------------------------------
-
--- http://www.hammerspoon.org/Spoons/BrewInfo.html
-Install:andUse("BrewInfo",
-               {
-                 config = {
-                   brew_info_style = {
-                     textFont = "Inconsolata",
-                     textSize = 14,
-                     radius = 10 }
-                 },
-                 hotkeys = {
-                   -- brew info
-                   show_brew_info = {hyper, "b"},
-                   open_brew_url = {shift_hyper, "b"},
-                   -- brew cask info
-                   show_brew_cask_info = {hyper, "c"},
-                   open_brew_cask_url = {shift_hyper, "c"},
-                 }
-               }
-)
-
-----------------------------------------------------------------------
-
--- http://www.hammerspoon.org/Spoons/URLDispatcher.html
 Install:andUse("URLDispatcher",
                {
                  config = {
@@ -95,16 +32,82 @@ Install:andUse("URLDispatcher",
                      { "https?://jira.swisscom.com", "org.epichrome.app.SwisscomJira" },
                      { "https?://wiki.swisscom.com", "org.epichrome.app.SwisscomWiki" },
                      { "https?://collaboration.swisscom.com", "org.epichrome.app.SwisscomCollab" },
-                     -- { "https?://collaboration.swisscom.com", "com.apple.Safari" },
                      { "https?://smca.swisscom.com", "org.epichrome.app.SwisscomTWP" },
                      { "https?://portal.corproot.net", "com.google.Chrome" },
                      { "https?://app.opsgenie.com", "org.epichrome.app.OpsGenie" },
                    },
                    default_handler = "com.google.Chrome"
-                   -- default_handler = "org.mozilla.firefox"
                  },
-                 loglevel = 'debug',
                  start = true
+               }
+)
+
+Install:andUse("WindowHalfsAndThirds",
+               {
+                 config = {
+                   use_frame_correctness = true
+                 },
+                 hotkeys = 'default'
+               }
+)
+
+Install:andUse("WindowScreenLeftAndRight",
+               {
+                 hotkeys = 'default'
+               }
+)
+
+Install:andUse("WindowGrid",
+               {
+                 config = { gridGeometries = { { "6x4" } } },
+                 hotkeys = {show_grid = {hyper, "g"}},
+                 start = true
+               }
+)
+
+Install:andUse("ToggleScreenRotation",
+               {
+                 hotkeys = { first = {hyper, "f15"} }
+               }
+)
+
+Install:andUse("UniversalArchive",
+               {
+                 config = {
+                   evernote_archive_notebook = ".Archive",
+                   outlook_archive_folder = "Archive (On My Computer)",
+                   archive_notifications = false
+                 },
+                 hotkeys = { archive = { { "ctrl", "cmd" }, "a" } }
+               }
+)
+
+Install:andUse("SendToOmniFocus",
+               {
+                 config = {
+                   quickentrydialog = false,
+                   notifications = false
+                 },
+                 hotkeys = {
+                   send_to_omnifocus = { hyper, "t" }
+                 },
+                 fn = function(s)
+                   s:registerApplication("Swisscom Collab", { apptype = "chromeapp", itemname = "tab" })
+                   s:registerApplication("Swisscom Wiki", { apptype = "chromeapp", itemname = "wiki page" })
+                   s:registerApplication("Swisscom Jira", { apptype = "chromeapp", itemname = "issue" })
+                 end
+               }
+)
+
+-- 
+Install:andUse("EvernoteOpenAndTag",
+               {
+                 hotkeys = {
+                   open_note = { hyper, "o" },
+                   ["open_and_tag-+work,+swisscom"] = { hyper, "w" },
+                   ["open_and_tag-+personal"] = { hyper, "p" },
+                   ["tag-@zzdone"] = { hyper, "z" }
+                 }
                }
 )
 
@@ -134,78 +137,36 @@ Install:andUse("MenubarFlag",
                }
 )
 
-----------------------------------------------------------------------
-
--- http://www.hammerspoon.org/Spoons/WindowHalfsAndThirds.html
-Install:andUse("WindowHalfsAndThirds",
+-- http://www.hammerspoon.org/Spoons/MouseCircle.html
+Install:andUse("MouseCircle",
                {
+                 disable = true,
                  config = {
-                   use_frame_correctness = true
-                 },
-                 hotkeys = 'default'
-               }
-)
-
-----------------------------------------------------------------------
-
--- http://zzamboni.org/zzSpoons/WindowScreenLeftAndRight.html
-Install:andUse("WindowScreenLeftAndRight",
-               {
-                 hotkeys = 'default'
-               }
-)
-
-----------------------------------------------------------------------
-
--- http://www.hammerspoon.org/Spoons/WindowGrid.html
-Install:andUse("WindowGrid",
-               {
-                 config = { gridGeometries = { { "6x4" } } },
-                 hotkeys = {show_grid = {hyper, "g"}},
-                 start = true
-               }
-)
-
-----------------------------------------------------------------------
-
--- http://www.hammerspoon.org/Spoons/ToggleScreenRotation.html
-Install:andUse("ToggleScreenRotation",
-               {
-                 hotkeys = { first = {hyper, "f15"} }
-               }
-)
-
-----------------------------------------------------------------------
-
--- http://www.hammerspoon.org/Spoons/UniversalArchive.html
-Install:andUse("UniversalArchive",
-               {
-                 config = {
-                   evernote_archive_notebook = ".Archive",
-                   outlook_archive_folder = "Archive (On My Computer)",
-                   archive_notifications = false
-                 },
-                 hotkeys = { archive = { { "ctrl", "cmd" }, "a" } }
-               }
-)
-
-----------------------------------------------------------------------
-
--- http://www.hammerspoon.org/Spoons/SendToOmniFocus.html
-Install:andUse("SendToOmniFocus",
-               {
-                 config = {
-                   quickentrydialog = false,
-                   notifications = false
+                   color = hs.drawing.color.x11.rebeccapurple
                  },
                  hotkeys = {
-                   send_to_omnifocus = { hyper, "t" }
+                   show = { hyper, "m" }
+                 }
+               }
+)
+
+-- http://www.hammerspoon.org/Spoons/BrewInfo.html
+Install:andUse("BrewInfo",
+               {
+                 config = {
+                   brew_info_style = {
+                     textFont = "Inconsolata",
+                     textSize = 14,
+                     radius = 10 }
                  },
-                 fn = function(s)
-                   s:registerApplication("Swisscom Collab", { apptype = "chromeapp", itemname = "tab" })
-                   s:registerApplication("Swisscom Wiki", { apptype = "chromeapp", itemname = "wiki page" })
-                   s:registerApplication("Swisscom Jira", { apptype = "chromeapp", itemname = "issue" })
-                 end
+                 hotkeys = {
+                   -- brew info
+                   show_brew_info = {hyper, "b"},
+                   open_brew_url = {shift_hyper, "b"},
+                   -- brew cask info
+                   show_brew_cask_info = {hyper, "c"},
+                   open_brew_cask_url = {shift_hyper, "c"},
+                 }
                }
 )
 
@@ -256,18 +217,6 @@ Install:andUse("HeadphoneAutoPause",
 )
 
 ----------------------------------------------------------------------
-
--- http://www.hammerspoon.org/Spoons/EvernoteOpenAndTag.html
-Install:andUse("EvernoteOpenAndTag",
-               {
-                 hotkeys = {
-                   open_note = { hyper, "o" },
-                   ["open_and_tag-+work,+swisscom"] = { hyper, "w" },
-                   ["open_and_tag-+personal"] = { hyper, "p" },
-                   ["tag-@zzdone"] = { hyper, "z" }
-                 }
-               }
-)
 
 ----------------------------------------------------------------------
 

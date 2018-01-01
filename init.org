@@ -13,90 +13,93 @@
   -- You should make any changes there and regenerate it from Emacs org-mode using C-c C-v t
 #+END_SRC
 
+* Introduction
+
+This is my [[http://www.hammerspoon.org/][Hammerspoon]] configuration file. It is written using [[http://www.howardism.org/Technical/Emacs/literate-programming-tutorial.html][literate
+programming]] style using org-mode in Emacs. You can see the generated
+file at [[https://github.com/zzamboni/dot-hammerspoon/blob/master/init.lua]].
+
+* Table of Contents                                                     :TOC:noexport:
+- [[#introduction][Introduction]]
+- [[#general-variables][General variables]]
+- [[#spoon-management][Spoon Management]]
+- [[#url-dispatching-to-site-specific-browsers][URL Dispatching to site-specific browsers]]
+- [[#window-and-screen-manipulation][Window and screen manipulation]]
+- [[#organization-and-productivity][Organization and Productivity]]
+- [[#the-rest][The rest]]
+
+* General variables
+
+Global log level. Per-spoon log level can be configured in each
+=Install:andUse= block below.
+
 #+BEGIN_SRC lua
-  -- Global log level. Per-spoon log level can be configured in each block below
   hs.logger.defaultLogLevel="info"
+#+END_SRC
 
-  -- If hs.spoons is not available (i.e. before Hammerspoon 0.9.55), load the local version
-  if hs.spoons == nil then
-    hs.spoons=require('hs.spoons')
-  end
+I use =hyper= and =shift_hyper= as the modifiers for most of my key
+bindings, so I define them as variables here for easier referencing.
 
-  -- Some useful global variables for key binding specifications in
-  -- Spoon configurations
+#+BEGIN_SRC lua
   hyper = {"cmd","alt","ctrl"}
   shift_hyper = {"cmd","alt","ctrl","shift"}
+#+END_SRC
 
-  -- Color map I use in some configurations below
+Set up an abbreviation for =hs.drawing.color.x11= since I use it
+repeatedly later on.
+
+#+BEGIN_SRC lua
   col = hs.drawing.color.x11
+#+END_SRC
 
-  -- Work's logo
+Work's logo, which I use in some of my Seal shortcuts later on.
+
+#+BEGIN_SRC lua
   swisscom_logo = hs.image.imageFromPath(hs.configdir .. "/files/swisscom_logo_2x.png")
+#+END_SRC
 
-  ----------------------------------------------------------------------
-  -- Set up SpoonInstall - this is the only spoon that needs to be
-  -- manually installed (it is already there if you check out this
-  -- repository), all the others are installed and configured
-  -- automatically.
-  ----------------------------------------------------------------------
+* Spoon Management
 
+Set up SpoonInstall - this is the only spoon that needs to be manually
+installed (it is already there if you check out this repository), all
+the others are installed and configured automatically.
+
+#+BEGIN_SRC lua
   hs.loadSpoon("SpoonInstall")
+#+END_SRC
 
-  -- Configuration of my personal spoon repository, which contains Spoons
-  -- that have not been merged in the main repo.
-  -- See the descriptions at http://zzamboni.org/zzSpoons/
+Configuration of my personal spoon repository, which contains Spoons
+that have not been merged in the main repo.  See the descriptions at
+http://zzamboni.org/zzSpoons/.
+  
+#+BEGIN_SRC lua
   spoon.SpoonInstall.repos.zzspoons = {
     url = "https://github.com/zzamboni/zzSpoons",
     desc = "zzamboni's spoon repository",
   }
+#+END_SRC
 
-  -- I prefer sync notifications, makes them easier to read
+I prefer sync notifications, makes them easier to read.
+
+#+BEGIN_SRC lua
   spoon.SpoonInstall.use_syncinstall = true
+#+END_SRC
 
-  -- This is just a shortcut to make the declarations below look more readable,
-  -- i.e. `Install:andUse()` instead of `spoon.SpoonInstall:andUse()`
+This is just a shortcut to make the declarations below look more
+readable, i.e. =Install:andUse= instead of =spoon.SpoonInstall:andUse=.
+
+#+BEGIN_SRC lua
   Install=spoon.SpoonInstall
+#+END_SRC
 
-  ----------------------------------------------------------------------
+* URL Dispatching to site-specific browsers
 
-  -- http://www.hammerspoon.org/Spoons/MouseCircle.html
-  Install:andUse("MouseCircle",
-                 {
-                   disable = true,
-                   config = {
-                     color = hs.drawing.color.x11.rebeccapurple
-                   },
-                   hotkeys = {
-                     show = { hyper, "m" }
-                   }
-                 }
-  )
+The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoon makes it possible to open URLs with different
+browsers. I have created different site-specific browsers using
+[[https://github.com/dmarmor/epichrome][Epichrome]], which allows me to keep site-specific bookmarks, search
+settings, etc.
 
-  ----------------------------------------------------------------------
-
-  -- http://www.hammerspoon.org/Spoons/BrewInfo.html
-  Install:andUse("BrewInfo",
-                 {
-                   config = {
-                     brew_info_style = {
-                       textFont = "Inconsolata",
-                       textSize = 14,
-                       radius = 10 }
-                   },
-                   hotkeys = {
-                     -- brew info
-                     show_brew_info = {hyper, "b"},
-                     open_brew_url = {shift_hyper, "b"},
-                     -- brew cask info
-                     show_brew_cask_info = {hyper, "c"},
-                     open_brew_cask_url = {shift_hyper, "c"},
-                   }
-                 }
-  )
-
-  ----------------------------------------------------------------------
-
-  -- http://www.hammerspoon.org/Spoons/URLDispatcher.html
+#+BEGIN_SRC lua
   Install:andUse("URLDispatcher",
                  {
                    config = {
@@ -106,19 +109,131 @@
                        { "https?://jira.swisscom.com", "org.epichrome.app.SwisscomJira" },
                        { "https?://wiki.swisscom.com", "org.epichrome.app.SwisscomWiki" },
                        { "https?://collaboration.swisscom.com", "org.epichrome.app.SwisscomCollab" },
-                       -- { "https?://collaboration.swisscom.com", "com.apple.Safari" },
                        { "https?://smca.swisscom.com", "org.epichrome.app.SwisscomTWP" },
                        { "https?://portal.corproot.net", "com.google.Chrome" },
                        { "https?://app.opsgenie.com", "org.epichrome.app.OpsGenie" },
                      },
                      default_handler = "com.google.Chrome"
-                     -- default_handler = "org.mozilla.firefox"
                    },
-                   loglevel = 'debug',
                    start = true
                  }
   )
+#+END_SRC
 
+* Window and screen manipulation
+
+The [[http://www.hammerspoon.org/Spoons/WindowHalfsAndThirds.html][WindowHalfAndThirds]] spoon sets up multiple key bindings for
+manipulating the size and position of windows.
+
+#+BEGIN_SRC lua
+  Install:andUse("WindowHalfsAndThirds",
+                 {
+                   config = {
+                     use_frame_correctness = true
+                   },
+                   hotkeys = 'default'
+                 }
+  )
+#+END_SRC
+
+The [[http://zzamboni.org/zzSpoons/WindowScreenLeftAndRight.html][WindowScreenLeftAndRight]] spoon sets up key bindings for moving
+windows between multiple screens.
+
+#+BEGIN_SRC lua
+  Install:andUse("WindowScreenLeftAndRight",
+                 {
+                   hotkeys = 'default'
+                 }
+  )
+#+END_SRC
+
+The [[http://www.hammerspoon.org/Spoons/WindowGrid.html][WindowGrid]] spoon sets up a key binding (=Hyper-g= here) to overlay a
+grid that allows resizing windows by specifying their opposite
+corners.
+
+#+BEGIN_SRC lua
+  Install:andUse("WindowGrid",
+                 {
+                   config = { gridGeometries = { { "6x4" } } },
+                   hotkeys = {show_grid = {hyper, "g"}},
+                   start = true
+                 }
+  )
+#+END_SRC
+
+The [[http://www.hammerspoon.org/Spoons/ToggleScreenRotation.html][ToggleScreenRotation]] spoon sets up a key binding to rotate the
+external screen (the spoon can set up keys for multiple screens if
+needed, but by default it rotates the first external screen).
+
+#+BEGIN_SRC lua
+  Install:andUse("ToggleScreenRotation",
+                 {
+                   hotkeys = { first = {hyper, "f15"} }
+                 }
+  )
+#+END_SRC
+
+* Organization and Productivity
+
+The [[http://www.hammerspoon.org/Spoons/UniversalArchive.html][UniversalArchive]] spoon sets up a single key binding (=Ctrl-Cmd-a=)
+to archive the current item in Evernote, Mail and Outlook.
+
+#+BEGIN_SRC lua
+  Install:andUse("UniversalArchive",
+                 {
+                   config = {
+                     evernote_archive_notebook = ".Archive",
+                     outlook_archive_folder = "Archive (On My Computer)",
+                     archive_notifications = false
+                   },
+                   hotkeys = { archive = { { "ctrl", "cmd" }, "a" } }
+                 }
+  )
+#+END_SRC
+
+The [[http://www.hammerspoon.org/Spoons/SendToOmniFocus.html][SendToOmniFocus]] spoon sets up a single key binding (=Hyper-t=) to
+send the current item to OmniFocus from multiple applications.
+
+#+BEGIN_SRC lua
+  Install:andUse("SendToOmniFocus",
+                 {
+                   config = {
+                     quickentrydialog = false,
+                     notifications = false
+                   },
+                   hotkeys = {
+                     send_to_omnifocus = { hyper, "t" }
+                   },
+                   fn = function(s)
+                     s:registerApplication("Swisscom Collab", { apptype = "chromeapp", itemname = "tab" })
+                     s:registerApplication("Swisscom Wiki", { apptype = "chromeapp", itemname = "wiki page" })
+                     s:registerApplication("Swisscom Jira", { apptype = "chromeapp", itemname = "issue" })
+                   end
+                 }
+  )
+#+END_SRC
+
+The [[http://www.hammerspoon.org/Spoons/EvernoteOpenAndTag.html][EvernoteOpenAndTag]] spoon sets up some missing key bindings for
+note manipulation in Evernote.
+
+#+BEGIN_SRC lua
+  -- 
+  Install:andUse("EvernoteOpenAndTag",
+                 {
+                   hotkeys = {
+                     open_note = { hyper, "o" },
+                     ["open_and_tag-+work,+swisscom"] = { hyper, "w" },
+                     ["open_and_tag-+personal"] = { hyper, "p" },
+                     ["tag-@zzdone"] = { hyper, "z" }
+                   }
+                 }
+  )
+#+END_SRC
+
+
+* The rest
+
+#+BEGIN_SRC lua
   ----------------------------------------------------------------------
 
   -- http://www.hammerspoon.org/Spoons/Caffeine.html
@@ -144,82 +259,47 @@
                    start = true
                  }
   )
+#+END_SRC
 
-  ----------------------------------------------------------------------
 
-  -- http://www.hammerspoon.org/Spoons/WindowHalfsAndThirds.html
-  Install:andUse("WindowHalfsAndThirds",
+#+BEGIN_SRC lua
+  -- http://www.hammerspoon.org/Spoons/MouseCircle.html
+  Install:andUse("MouseCircle",
                  {
+                   disable = true,
                    config = {
-                     use_frame_correctness = true
-                   },
-                   hotkeys = 'default'
-                 }
-  )
-
-  ----------------------------------------------------------------------
-
-  -- http://zzamboni.org/zzSpoons/WindowScreenLeftAndRight.html
-  Install:andUse("WindowScreenLeftAndRight",
-                 {
-                   hotkeys = 'default'
-                 }
-  )
-
-  ----------------------------------------------------------------------
-
-  -- http://www.hammerspoon.org/Spoons/WindowGrid.html
-  Install:andUse("WindowGrid",
-                 {
-                   config = { gridGeometries = { { "6x4" } } },
-                   hotkeys = {show_grid = {hyper, "g"}},
-                   start = true
-                 }
-  )
-
-  ----------------------------------------------------------------------
-
-  -- http://www.hammerspoon.org/Spoons/ToggleScreenRotation.html
-  Install:andUse("ToggleScreenRotation",
-                 {
-                   hotkeys = { first = {hyper, "f15"} }
-                 }
-  )
-
-  ----------------------------------------------------------------------
-
-  -- http://www.hammerspoon.org/Spoons/UniversalArchive.html
-  Install:andUse("UniversalArchive",
-                 {
-                   config = {
-                     evernote_archive_notebook = ".Archive",
-                     outlook_archive_folder = "Archive (On My Computer)",
-                     archive_notifications = false
-                   },
-                   hotkeys = { archive = { { "ctrl", "cmd" }, "a" } }
-                 }
-  )
-
-  ----------------------------------------------------------------------
-
-  -- http://www.hammerspoon.org/Spoons/SendToOmniFocus.html
-  Install:andUse("SendToOmniFocus",
-                 {
-                   config = {
-                     quickentrydialog = false,
-                     notifications = false
+                     color = hs.drawing.color.x11.rebeccapurple
                    },
                    hotkeys = {
-                     send_to_omnifocus = { hyper, "t" }
-                   },
-                   fn = function(s)
-                     s:registerApplication("Swisscom Collab", { apptype = "chromeapp", itemname = "tab" })
-                     s:registerApplication("Swisscom Wiki", { apptype = "chromeapp", itemname = "wiki page" })
-                     s:registerApplication("Swisscom Jira", { apptype = "chromeapp", itemname = "issue" })
-                   end
+                     show = { hyper, "m" }
+                   }
                  }
   )
+#+END_SRC
 
+#+BEGIN_SRC lua
+  -- http://www.hammerspoon.org/Spoons/BrewInfo.html
+  Install:andUse("BrewInfo",
+                 {
+                   config = {
+                     brew_info_style = {
+                       textFont = "Inconsolata",
+                       textSize = 14,
+                       radius = 10 }
+                   },
+                   hotkeys = {
+                     -- brew info
+                     show_brew_info = {hyper, "b"},
+                     open_brew_url = {shift_hyper, "b"},
+                     -- brew cask info
+                     show_brew_cask_info = {hyper, "c"},
+                     open_brew_cask_url = {shift_hyper, "c"},
+                   }
+                 }
+  )
+#+END_SRC
+
+#+BEGIN_SRC lua
   ----------------------------------------------------------------------
 
   -- http://zzamboni.org/zzSpoons/Hammer.html
@@ -267,19 +347,9 @@
   )
 
   ----------------------------------------------------------------------
+#+END_SRC
 
-  -- http://www.hammerspoon.org/Spoons/EvernoteOpenAndTag.html
-  Install:andUse("EvernoteOpenAndTag",
-                 {
-                   hotkeys = {
-                     open_note = { hyper, "o" },
-                     ["open_and_tag-+work,+swisscom"] = { hyper, "w" },
-                     ["open_and_tag-+personal"] = { hyper, "p" },
-                     ["tag-@zzdone"] = { hyper, "z" }
-                   }
-                 }
-  )
-
+#+BEGIN_SRC lua
   ----------------------------------------------------------------------
 
   -- http://www.hammerspoon.org/Spoons/Seal.html
