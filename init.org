@@ -21,14 +21,16 @@ file at [[https://github.com/zzamboni/dot-hammerspoon/blob/master/init.lua]].
 
 * Table of Contents                                                     :TOC:noexport:
 - [[#introduction][Introduction]]
-- [[#general-variables][General variables]]
+- [[#general-variables-and-configuration][General variables and configuration]]
 - [[#spoon-management][Spoon Management]]
 - [[#url-dispatching-to-site-specific-browsers][URL Dispatching to site-specific browsers]]
 - [[#window-and-screen-manipulation][Window and screen manipulation]]
 - [[#organization-and-productivity][Organization and Productivity]]
+- [[#system-and-ui][System and UI]]
+- [[#other-applications][Other applications]]
 - [[#the-rest][The rest]]
 
-* General variables
+* General variables and configuration
 
 Global log level. Per-spoon log level can be configured in each
 =Install:andUse= block below.
@@ -246,10 +248,31 @@ for text items. It is invoked with =Cmd-Shift-v=.
   )
 #+END_SRC
 
-* The rest
+* System and UI
+
+The [[http://zzamboni.org/zzSpoons/Hammer.html][Hammer]] spoon (get it? hehe) is a simple wrapper around some common
+Hamerspoon configuration variables. Not that this gets loaded from my
+personal repo, since it's not in the official repository.
 
 #+BEGIN_SRC lua
-  -- http://www.hammerspoon.org/Spoons/Caffeine.html
+  Install:andUse("Hammer",
+                 {
+                   repo = 'zzspoons',
+                   config = { auto_reload_config = false },
+                   hotkeys = {
+                     config_reload = {hyper, "r"},
+                     toggle_console = {hyper, "y"} 
+                   },
+                   start = true
+                 }
+  )
+#+END_SRC
+
+The [[http://www.hammerspoon.org/Spoons/Caffeine.html][Caffeine]] spoon allows preventing the display and the machine from
+sleeping. I use it frequently when playing music from my machine, to
+avoid having to unlock the screen whenever I want to change the music.
+
+#+BEGIN_SRC lua
   Install:andUse("Caffeine", {
                    start = true,
                    hotkeys = {
@@ -258,8 +281,12 @@ for text items. It is invoked with =Cmd-Shift-v=.
   })
 #+END_SRC
 
+The [[http://www.hammerspoon.org/Spoons/MenubarFlag.html][MenubarFlag]] spoon colorizes the menubar according to the selected
+keyboard language or layout (Functionality inspired by [[https://pqrs.org/osx/ShowyEdge/index.html.en][ShowyEdge]]. I
+use English, Spanish and German, so those are the colors I have
+defined.
+
 #+BEGIN_SRC lua
-  -- http://www.hammerspoon.org/Spoons/MenubarFlag.html
   Install:andUse("MenubarFlag",
                  {
                    config = {
@@ -274,8 +301,11 @@ for text items. It is invoked with =Cmd-Shift-v=.
   )
 #+END_SRC
 
+The [[http://www.hammerspoon.org/Spoons/MouseCircle.html][MouseCircle]] spoon shows a circle around the mouse pointer when
+triggered. I have it disabled for now because I have the macOS
+[[https://support.apple.com/kb/PH25507?locale=en_US&viewlocale=en_US][shake-to-grow feature]] enabled.
+
 #+BEGIN_SRC lua
-  -- http://www.hammerspoon.org/Spoons/MouseCircle.html
   Install:andUse("MouseCircle",
                  {
                    disable = true,
@@ -289,8 +319,36 @@ for text items. It is invoked with =Cmd-Shift-v=.
   )
 #+END_SRC
 
+One of my original bits of Hammerspoon code, now made into a spoon
+(although I keep it disabled, since I don't really use it). The
+[[http://www.hammerspoon.org/Spoons/ColorPicker.html][ColorPicker]] spoon shows a menu of the available color palettes, and
+when you select one, it draws swatches in all the colors in that
+palette, covering the whole screen. You can click on any of them to
+copy its name to the clipboard, or cmd-click to copy its RGB code.
+
 #+BEGIN_SRC lua
-  -- http://www.hammerspoon.org/Spoons/BrewInfo.html
+  Install:andUse("ColorPicker",
+                 {
+                   disable = true,
+                   hotkeys = {
+                     show = { shift_hyper, "c" }
+                   },
+                   config = {
+                     show_in_menubar = false,
+                   },
+                   start = true,
+                 }
+  )
+#+END_SRC
+
+I use Homebrew, and when I run =brew update=, I often wonder about what
+some of the formulas shown are (names are not always obvious). The
+[[http://www.hammerspoon.org/Spoons/BrewInfo.html][BrewInfo]] spoon allows me to point at a Formula or Cask name and press
+=Hyper-b= or =Hyper-c= (for Casks) to have the output of the =info= command
+in a popup window, or the same key with =Shift-Hyper= to open the URL of
+the Formula/Cask.
+
+#+BEGIN_SRC lua
   Install:andUse("BrewInfo",
                  {
                    config = {
@@ -311,23 +369,15 @@ for text items. It is invoked with =Cmd-Shift-v=.
   )
 #+END_SRC
 
-#+BEGIN_SRC lua
-  -- http://zzamboni.org/zzSpoons/Hammer.html
-  Install:andUse("Hammer",
-                 {
-                   repo = 'zzspoons',
-                   config = { auto_reload_config = false },
-                   hotkeys = {
-                     config_reload = {hyper, "r"},
-                     toggle_console = {hyper, "y"} 
-                   },
-                   start = true
-                 }
-  )
-#+END_SRC
+* Other applications
+
+The [[http://www.hammerspoon.org/Spoons/ToggleSkypeMute.html][ToggleSkypeMute]] spoon sets up the missing keyboard bindings for
+toggling the mute button on Skype and Skype for Business. I'm not
+fully happy with this spoon - it should auto-detect the application
+instead of having separate keys for each application, and it could be
+extended to more generic use.
 
 #+BEGIN_SRC lua
-  -- http://www.hammerspoon.org/Spoons/ToggleSkypeMute.html
   Install:andUse("ToggleSkypeMute",
                  {
                    hotkeys = {
@@ -338,15 +388,10 @@ for text items. It is invoked with =Cmd-Shift-v=.
   )
 #+END_SRC
 
-#+BEGIN_SRC lua
-  -- http://www.hammerspoon.org/Spoons/Emojis.html
-  Install:andUse("Emojis",
-                 {
-                   disable = true,
-                   hotkeys = { toggle = { hyper, "e" } }
-                 }
-  )
-#+END_SRC
+
+
+
+* The rest
 
 #+BEGIN_SRC lua
   -- http://www.hammerspoon.org/Spoons/HeadphoneAutoPause.html
@@ -396,22 +441,6 @@ for text items. It is invoked with =Cmd-Shift-v=.
                        }
                      s:refreshAllCommands()
                    end,
-                   start = true,
-                 }
-  )
-#+END_SRC
-
-#+BEGIN_SRC lua
-  -- http://www.hammerspoon.org/Spoons/ColorPicker.html
-  Install:andUse("ColorPicker",
-                 {
-                   disable = true,
-                   hotkeys = {
-                     show = { shift_hyper, "c" }
-                   },
-                   config = {
-                     show_in_menubar = false,
-                   },
                    start = true,
                  }
   )

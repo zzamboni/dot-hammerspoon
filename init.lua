@@ -122,7 +122,18 @@ Install:andUse("TextClipboardHistory",
                }
 )
 
--- http://www.hammerspoon.org/Spoons/Caffeine.html
+Install:andUse("Hammer",
+               {
+                 repo = 'zzspoons',
+                 config = { auto_reload_config = false },
+                 hotkeys = {
+                   config_reload = {hyper, "r"},
+                   toggle_console = {hyper, "y"} 
+                 },
+                 start = true
+               }
+)
+
 Install:andUse("Caffeine", {
                  start = true,
                  hotkeys = {
@@ -130,7 +141,6 @@ Install:andUse("Caffeine", {
                  }
 })
 
--- http://www.hammerspoon.org/Spoons/MenubarFlag.html
 Install:andUse("MenubarFlag",
                {
                  config = {
@@ -144,7 +154,6 @@ Install:andUse("MenubarFlag",
                }
 )
 
--- http://www.hammerspoon.org/Spoons/MouseCircle.html
 Install:andUse("MouseCircle",
                {
                  disable = true,
@@ -157,7 +166,19 @@ Install:andUse("MouseCircle",
                }
 )
 
--- http://www.hammerspoon.org/Spoons/BrewInfo.html
+Install:andUse("ColorPicker",
+               {
+                 disable = true,
+                 hotkeys = {
+                   show = { shift_hyper, "c" }
+                 },
+                 config = {
+                   show_in_menubar = false,
+                 },
+                 start = true,
+               }
+)
+
 Install:andUse("BrewInfo",
                {
                  config = {
@@ -177,34 +198,12 @@ Install:andUse("BrewInfo",
                }
 )
 
--- http://zzamboni.org/zzSpoons/Hammer.html
-Install:andUse("Hammer",
-               {
-                 repo = 'zzspoons',
-                 config = { auto_reload_config = false },
-                 hotkeys = {
-                   config_reload = {hyper, "r"},
-                   toggle_console = {hyper, "y"} 
-                 },
-                 start = true
-               }
-)
-
--- http://www.hammerspoon.org/Spoons/ToggleSkypeMute.html
 Install:andUse("ToggleSkypeMute",
                {
                  hotkeys = {
                    toggle_skype = { shift_hyper, "v" },
                    toggle_skype_for_business = { shift_hyper, "f" }
                  }
-               }
-)
-
--- http://www.hammerspoon.org/Spoons/Emojis.html
-Install:andUse("Emojis",
-               {
-                 disable = true,
-                 hotkeys = { toggle = { hyper, "e" } }
                }
 )
 
@@ -253,20 +252,6 @@ Install:andUse("Seal",
                      }
                    s:refreshAllCommands()
                  end,
-                 start = true,
-               }
-)
-
--- http://www.hammerspoon.org/Spoons/ColorPicker.html
-Install:andUse("ColorPicker",
-               {
-                 disable = true,
-                 hotkeys = {
-                   show = { shift_hyper, "c" }
-                 },
-                 config = {
-                   show_in_menubar = false,
-                 },
                  start = true,
                }
 )
