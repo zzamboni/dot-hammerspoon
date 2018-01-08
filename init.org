@@ -28,7 +28,11 @@ file at [[https://github.com/zzamboni/dot-hammerspoon/blob/master/init.lua]].
 - [[#organization-and-productivity][Organization and Productivity]]
 - [[#system-and-ui][System and UI]]
 - [[#other-applications][Other applications]]
-- [[#the-rest][The rest]]
+- [[#seal][Seal]]
+- [[#network-transitions][Network transitions]]
+- [[#pop-up-translation][Pop-up translation]]
+- [[#miscellaneous-stuff][Miscellaneous stuff]]
+- [[#end-of-config-animation][End-of-config animation]]
 
 * General variables and configuration
 
@@ -369,6 +373,18 @@ the Formula/Cask.
   )
 #+END_SRC
 
+The KSheet spoon traverses the current application's menus and builds
+a cheatsheet of the keyboard shortcuts, showing it in a nice popup
+window.
+
+#+BEGIN_SRC lua
+  Install:andUse("KSheet",
+                 {
+                   hotkeys = {
+                     toggle = { hyper, "/" }
+  }})
+#+END_SRC
+
 * Other applications
 
 The [[http://www.hammerspoon.org/Spoons/ToggleSkypeMute.html][ToggleSkypeMute]] spoon sets up the missing keyboard bindings for
@@ -388,13 +404,10 @@ extended to more generic use.
   )
 #+END_SRC
 
-
-
-
-* The rest
+The [[http://www.hammerspoon.org/Spoons/HeadphoneAutoPause.html][HeadphoneAutoPause]] spoon implements auto-pause/resume for iTunes,
+Spotify and others when the headphones are unplugged.
 
 #+BEGIN_SRC lua
-  -- http://www.hammerspoon.org/Spoons/HeadphoneAutoPause.html
   Install:andUse("HeadphoneAutoPause",
                  {
                    start = true
@@ -402,8 +415,17 @@ extended to more generic use.
   )
 #+END_SRC
 
-#+BEGIN_SRC lua
-  -- http://www.hammerspoon.org/Spoons/Seal.html
+* Seal
+
+The [[http://www.hammerspoon.org/Spoons/Seal.html][Seal]] spoon is a powerhouse - it implements a Spotlight-like
+launcher, but which allows for infinite configurability of what can be
+done or searched from the launcher window. I use Seal as my default
+launcher, triggered with =Cmd-space=, although I still keep Spotlight
+around under =Hyper-space=, mainly for its search capabilities.
+
+We start by loading the spoon, and specifying which plugins we want.
+
+#+BEGIN_SRC lua :noweb no-export
   Install:andUse("Seal",
                  {
                    hotkeys = { show = { {"cmd"}, "space" } },
@@ -412,32 +434,7 @@ extended to more generic use.
                      s.plugins.safari_bookmarks.always_open_with_safari = false
                      s.plugins.useractions.actions =
                        {
-                         ["Hammerspoon docs webpage"] = {
-                           url = "http://hammerspoon.org/docs/",
-                           icon = hs.image.imageFromName(hs.image.systemImageNames.ApplicationIcon),
-                           --                              hotkey = { hyper, "h" }
-                         },
-                         ["Leave corpnet"] = {
-                           fn = function()
-                             spoon.WiFiTransitions:processTransition('foo', 'corpnet01')
-                           end,
-                           icon = swisscom_logo,
-                         },
-                         ["Arrive in corpnet"] = {
-                           fn = function()
-                             spoon.WiFiTransitions:processTransition('corpnet01', 'foo')
-                           end,
-                           icon = swisscom_logo,
-                         },
-                         ["Translate using Leo"] = {
-                           url = "http://dict.leo.org/ende/index_de.html#/search=${query}",
-                           icon = 'favicon',
-                           keyword = "leo",
-                         },
-                         ["Tell me something"] = {
-                           keyword = "tellme",
-                           fn = function(str) hs.alert.show(str) end,
-                         }
+                        <<useraction-definitions>>
                        }
                      s:refreshAllCommands()
                    end,
@@ -445,6 +442,56 @@ extended to more generic use.
                  }
   )
 #+END_SRC
+
+The =useractions= Seal plugin allows me to define my own shortcuts. For
+example, a bookmark to the Hammerspoon documentation page:
+
+#+BEGIN_SRC lua :tangle no :noweb-ref useraction-definitions
+  ["Hammerspoon docs webpage"] = {
+    url = "http://hammerspoon.org/docs/",
+    icon = hs.image.imageFromName(hs.image.systemImageNames.ApplicationIcon),
+  },
+#+END_SRC
+
+Or to manually trigger my work/non-work transition scripts (see
+below):
+
+#+BEGIN_SRC lua :tangle no :noweb-ref useraction-definitions
+  ["Leave corpnet"] = {
+    fn = function()
+      spoon.WiFiTransitions:processTransition('foo', 'corpnet01')
+    end,
+    icon = swisscom_logo,
+  },
+  ["Arrive in corpnet"] = {
+    fn = function()
+      spoon.WiFiTransitions:processTransition('corpnet01', 'foo')
+    end,
+    icon = swisscom_logo,
+  },
+#+END_SRC
+
+Or to translate things using dict.leo.org:
+
+#+BEGIN_SRC lua :tangle no :noweb-ref useraction-definitions
+  ["Translate using Leo"] = {
+    url = "http://dict.leo.org/ende/index_de.html#/search=${query}",
+    icon = 'favicon',
+    keyword = "leo",
+  }
+#+END_SRC
+
+* Network transitions
+
+The [[http://www.hammerspoon.org/Spoons/WiFiTransitions.html][WiFiTransitions]] spoon allows triggering arbitrary actions when the
+SSID changes. I am interested in the change from my work network
+(corpnet01) to other networks, mainly because at work I need a proxy
+for all connections to the Internet. I have two applications which
+don't handle these transitions gracefully on their own: Spotify and
+Adium. So I have written a couple of functions for helping them along.
+
+The =reconfigSpotifyProxy= function quits Spotify, updates the proxy
+settings in its config file, and restarts it.
 
 #+BEGIN_SRC lua
   function reconfigSpotifyProxy(proxy)
@@ -458,9 +505,7 @@ extended to more generic use.
     --   hs.notify.show(string.format("Reconfiguring %sSpotify", ((spotify~=nil) and "and restarting " or "")), string.format("Proxy %s", (proxy and "enabled" or "disabled")), "")
     -- I use CFEngine to reconfigure the Spotify preferences
     cmd = string.format("/usr/local/bin/cf-agent -K -f %s/files/spotify-proxymode.cf%s", hs.configdir, (proxy and " -DPROXY" or " -DNOPROXY"))
-    --   print("reconfigSpotifyProxy: running command ", cmd)
     output, status, t, rc = hs.execute(cmd)
-    --   print(output, status, t, rc)
     if spotify and lastapp then
       hs.timer.doAfter(3,
                        function()
@@ -473,7 +518,12 @@ extended to more generic use.
       end)
     end
   end
+#+END_SRC
 
+The =reconfigAdiumProxy= function uses AppleScript to tell Adium about
+the change without having to restart it.
+
+#+BEGIN_SRC lua
   function reconfigAdiumProxy(proxy)
     --   hs.notify.show("Reconfiguring Adium", string.format("Proxy %s", (proxy and "enabled" or "disabled")), "")
     local script = string.format([[
@@ -489,7 +539,12 @@ extended to more generic use.
   ]], hs.inspect(proxy))
     hs.osascript.applescript(script)
   end
+#+END_SRC
 
+The configuration for the WiFiTransitions spoon invoked these
+functions with the appropriate parameters.
+
+#+BEGIN_SRC lua
   Install:andUse("WiFiTransitions",
                  {
                    config = {
@@ -518,6 +573,17 @@ extended to more generic use.
   )
 #+END_SRC
 
+* Pop-up translation
+
+I live in Switzerland, and my German is far from perfect, so the
+[[http://www.hammerspoon.org/Spoons/PopupTranslateSelection.html][PopupTranslateSelection]] spoon helps me a lot. It allows me to select
+some text and, with a keystroke, translate it to any of three
+languages using Google Translate. Super useful! Usually, Google's
+auto-detect feature works fine, so the =translate_to_<lang>= keys are
+sufficient. I have some =translate_<from>_<to>= keys set up for certain
+language pairs for when this doesn't quite work (I don't think I've
+ever needed them).
+
 #+BEGIN_SRC lua
   local wm=hs.webview.windowMasks
   Install:andUse("PopupTranslateSelection",
@@ -536,27 +602,24 @@ extended to more generic use.
   )
 #+END_SRC
 
-#+BEGIN_SRC lua
-  -- Cheat sheet for the running application
-  Install:andUse("KSheet",
-                 {
-                   hotkeys = {
-                     toggle = { hyper, "/" }
-  }})
-#+END_SRC
+* Miscellaneous stuff
+
+In my =init-local.lua= file I keep some experimental or private stuff
+that I don't want to publish in my main config.
 
 #+BEGIN_SRC lua
-  ----------------------------------------------------------------------
-  -- Test stuff
-
   local localstuff=loadfile(hs.configdir .. "/init-local.lua")
   if localstuff then
     localstuff()
   end
 #+END_SRC
 
+* End-of-config animation
+
+The [[http://www.hammerspoon.org/Spoons/FadeLogo.html][FadeLogo]] spoon simply shows an animation of the Hammerspoon logo
+to signal the end of the config load.
+
 #+BEGIN_SRC lua
-  -- http://www.hammerspoon.org/Spoons/FadeLogo.html
   Install:andUse("FadeLogo",
                  {
                    config = {
@@ -565,7 +628,10 @@ extended to more generic use.
                    start = true
                  }
   )
+#+END_SRC
 
-  -- If you don't want to use FadeLogo, you can have a regular notification
+If you don't want to use FadeLogo, you can have a regular notification.
+
+#+BEGIN_SRC lua
   -- hs.notify.show("Welcome to Hammerspoon", "Have fun!", "")
 #+END_SRC

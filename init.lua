@@ -198,6 +198,12 @@ Install:andUse("BrewInfo",
                }
 )
 
+Install:andUse("KSheet",
+               {
+                 hotkeys = {
+                   toggle = { hyper, "/" }
+}})
+
 Install:andUse("ToggleSkypeMute",
                {
                  hotkeys = {
@@ -207,14 +213,12 @@ Install:andUse("ToggleSkypeMute",
                }
 )
 
--- http://www.hammerspoon.org/Spoons/HeadphoneAutoPause.html
 Install:andUse("HeadphoneAutoPause",
                {
                  start = true
                }
 )
 
--- http://www.hammerspoon.org/Spoons/Seal.html
 Install:andUse("Seal",
                {
                  hotkeys = { show = { {"cmd"}, "space" } },
@@ -223,32 +227,27 @@ Install:andUse("Seal",
                    s.plugins.safari_bookmarks.always_open_with_safari = false
                    s.plugins.useractions.actions =
                      {
-                       ["Hammerspoon docs webpage"] = {
-                         url = "http://hammerspoon.org/docs/",
-                         icon = hs.image.imageFromName(hs.image.systemImageNames.ApplicationIcon),
-                         --                              hotkey = { hyper, "h" }
-                       },
-                       ["Leave corpnet"] = {
-                         fn = function()
-                           spoon.WiFiTransitions:processTransition('foo', 'corpnet01')
-                         end,
-                         icon = swisscom_logo,
-                       },
-                       ["Arrive in corpnet"] = {
-                         fn = function()
-                           spoon.WiFiTransitions:processTransition('corpnet01', 'foo')
-                         end,
-                         icon = swisscom_logo,
-                       },
-                       ["Translate using Leo"] = {
-                         url = "http://dict.leo.org/ende/index_de.html#/search=${query}",
-                         icon = 'favicon',
-                         keyword = "leo",
-                       },
-                       ["Tell me something"] = {
-                         keyword = "tellme",
-                         fn = function(str) hs.alert.show(str) end,
-                       }
+                      ["Hammerspoon docs webpage"] = {
+                        url = "http://hammerspoon.org/docs/",
+                        icon = hs.image.imageFromName(hs.image.systemImageNames.ApplicationIcon),
+                      },
+                      ["Leave corpnet"] = {
+                        fn = function()
+                          spoon.WiFiTransitions:processTransition('foo', 'corpnet01')
+                        end,
+                        icon = swisscom_logo,
+                      },
+                      ["Arrive in corpnet"] = {
+                        fn = function()
+                          spoon.WiFiTransitions:processTransition('corpnet01', 'foo')
+                        end,
+                        icon = swisscom_logo,
+                      },
+                      ["Translate using Leo"] = {
+                        url = "http://dict.leo.org/ende/index_de.html#/search=${query}",
+                        icon = 'favicon',
+                        keyword = "leo",
+                      }
                      }
                    s:refreshAllCommands()
                  end,
@@ -267,9 +266,7 @@ function reconfigSpotifyProxy(proxy)
   --   hs.notify.show(string.format("Reconfiguring %sSpotify", ((spotify~=nil) and "and restarting " or "")), string.format("Proxy %s", (proxy and "enabled" or "disabled")), "")
   -- I use CFEngine to reconfigure the Spotify preferences
   cmd = string.format("/usr/local/bin/cf-agent -K -f %s/files/spotify-proxymode.cf%s", hs.configdir, (proxy and " -DPROXY" or " -DNOPROXY"))
-  --   print("reconfigSpotifyProxy: running command ", cmd)
   output, status, t, rc = hs.execute(cmd)
-  --   print(output, status, t, rc)
   if spotify and lastapp then
     hs.timer.doAfter(3,
                      function()
@@ -342,22 +339,11 @@ Install:andUse("PopupTranslateSelection",
                }
 )
 
--- Cheat sheet for the running application
-Install:andUse("KSheet",
-               {
-                 hotkeys = {
-                   toggle = { hyper, "/" }
-}})
-
-----------------------------------------------------------------------
--- Test stuff
-
 local localstuff=loadfile(hs.configdir .. "/init-local.lua")
 if localstuff then
   localstuff()
 end
 
--- http://www.hammerspoon.org/Spoons/FadeLogo.html
 Install:andUse("FadeLogo",
                {
                  config = {
@@ -367,5 +353,4 @@ Install:andUse("FadeLogo",
                }
 )
 
--- If you don't want to use FadeLogo, you can have a regular notification
 -- hs.notify.show("Welcome to Hammerspoon", "Have fun!", "")
