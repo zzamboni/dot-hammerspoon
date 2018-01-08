@@ -253,7 +253,7 @@ for text items. It is invoked with =Cmd-Shift-v=.
 
 * System and UI
 
-The [[http://zzamboni.org/zzSpoons/Hammer.html][Hammer]] spoon (get it? hehe) is a simple wrapper around some common
+The [[https://zzamboni.github.io/zzSpoons/Hammer.html][Hammer]] spoon (get it? hehe) is a simple wrapper around some common
 Hamerspoon configuration variables. Note that this gets loaded from my
 personal repo, since it's not in the official repository.
 
