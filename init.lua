@@ -99,7 +99,6 @@ Install:andUse("SendToOmniFocus",
                }
 )
 
--- 
 Install:andUse("EvernoteOpenAndTag",
                {
                  hotkeys = {

@@ -223,7 +223,6 @@ The [[http://www.hammerspoon.org/Spoons/EvernoteOpenAndTag.html][EvernoteOpenAnd
 note manipulation in Evernote.
 
 #+BEGIN_SRC lua
-  -- 
   Install:andUse("EvernoteOpenAndTag",
                  {
                    hotkeys = {
