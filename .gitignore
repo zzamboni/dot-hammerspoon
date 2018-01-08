@@ -1,4 +1,5 @@
 init-local.lua
+init.html
 Spoons/*
 seal_plugins/*
 .DS_Store
