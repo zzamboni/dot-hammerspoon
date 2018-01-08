@@ -76,7 +76,7 @@ the others are installed and configured automatically.
 
 Configuration of my personal spoon repository, which contains Spoons
 that have not been merged in the main repo.  See the descriptions at
-http://zzamboni.org/zzSpoons/.
+https://zzamboni.github.io/zzSpoons/.
   
 #+BEGIN_SRC lua
   spoon.SpoonInstall.repos.zzspoons = {
