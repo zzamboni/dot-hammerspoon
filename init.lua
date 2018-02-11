@@ -127,7 +127,7 @@ Install:andUse("Hammer",
                  config = { auto_reload_config = false },
                  hotkeys = {
                    config_reload = {hyper, "r"},
-                   toggle_console = {hyper, "y"} 
+                   toggle_console = {hyper, "y"}
                  },
                  start = true
                }
@@ -258,7 +258,7 @@ function reconfigSpotifyProxy(proxy)
   local spotify = hs.appfinder.appFromName("Spotify")
   local lastapp = nil
   if spotify then
-    lastapp = hs.application.frontmostApplication() 
+    lastapp = hs.application.frontmostApplication()
     spotify:kill()
     hs.timer.usleep(40000)
   end
