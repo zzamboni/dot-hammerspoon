@@ -384,6 +384,18 @@ window.
   }})
 #+end_src
 
+The TimeMachineProgress spoon shows an indicator about the progress of
+the ongoing Time Machine backup. The indicator disappears when there
+is no backup going on.
+
+#+begin_src lua
+  Install:andUse("TimeMachineProgress",
+                 {
+                   start = true
+                 }
+  )
+#+end_src
+
 * Other applications
 
 The [[http://www.hammerspoon.org/Spoons/ToggleSkypeMute.html][ToggleSkypeMute]] spoon sets up the missing keyboard bindings for

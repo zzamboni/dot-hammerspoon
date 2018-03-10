@@ -203,6 +203,12 @@ Install:andUse("KSheet",
                    toggle = { hyper, "/" }
 }})
 
+Install:andUse("TimeMachineProgress",
+               {
+                 start = true
+               }
+)
+
 Install:andUse("ToggleSkypeMute",
                {
                  hotkeys = {
