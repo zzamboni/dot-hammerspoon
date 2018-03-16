@@ -330,7 +330,7 @@ I use Homebrew, and when I run =brew update=, I often wonder about what some of 
   )
 #+end_src
 
-The KSheet spoon traverses the current application's menus and builds a cheatsheet of the keyboard shortcuts, showing it in a nice popup window.
+The [[http://www.hammerspoon.org/Spoons/KSheet.html][KSheet]] spoon traverses the current application's menus and builds a cheatsheet of the keyboard shortcuts, showing it in a nice popup window.
 
 #+begin_src lua
   Install:andUse("KSheet",
