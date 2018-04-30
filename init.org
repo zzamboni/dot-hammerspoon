@@ -182,7 +182,7 @@ The [[http://www.hammerspoon.org/Spoons/SendToOmniFocus.html][SendToOmniFocus]] 
   Install:andUse("SendToOmniFocus",
                  {
                    config = {
-                     quickentrydialog = false,
+                     quickentrydialog = true,
                      notifications = false
                    },
                    hotkeys = {
