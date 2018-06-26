@@ -17,7 +17,7 @@ This is my [[http://www.hammerspoon.org/][Hammerspoon]] configuration file.
 
 This file is written in [[http://www.howardism.org/Technical/Emacs/literate-programming-tutorial.html][literate programming style]] using [[https://orgmode.org/][org-mode]]. See [[file:init.lua][init.lua]] for the generated file. You can see this in a nicer format on my blog post [[http://zzamboni.org/post/my-hammerspoon-configuration-with-commentary/][My Hammerspoon Configuration, With Commentary]].
 
-* Table of Contents                                            :TOC_3:noexport:
+* Table of Contents                                          :TOC_3:noexport:
 - [[#general-variables-and-configuration][General variables and configuration]]
 - [[#spoon-management][Spoon Management]]
 - [[#url-dispatching-to-site-specific-browsers][URL Dispatching to site-specific browsers]]
@@ -389,7 +389,7 @@ We start by loading the spoon, and specifying which plugins we want.
                      s.plugins.safari_bookmarks.always_open_with_safari = false
                      s.plugins.useractions.actions =
                        {
-                        <<useraction-definitions>>
+                           <<useraction-definitions>>
                        }
                      s:refreshAllCommands()
                    end,

@@ -232,27 +232,27 @@ Install:andUse("Seal",
                    s.plugins.safari_bookmarks.always_open_with_safari = false
                    s.plugins.useractions.actions =
                      {
-                      ["Hammerspoon docs webpage"] = {
-                        url = "http://hammerspoon.org/docs/",
-                        icon = hs.image.imageFromName(hs.image.systemImageNames.ApplicationIcon),
-                      },
-                      ["Leave corpnet"] = {
-                        fn = function()
-                          spoon.WiFiTransitions:processTransition('foo', 'corpnet01')
-                        end,
-                        icon = swisscom_logo,
-                      },
-                      ["Arrive in corpnet"] = {
-                        fn = function()
-                          spoon.WiFiTransitions:processTransition('corpnet01', 'foo')
-                        end,
-                        icon = swisscom_logo,
-                      },
-                      ["Translate using Leo"] = {
-                        url = "http://dict.leo.org/ende/index_de.html#/search=${query}",
-                        icon = 'favicon',
-                        keyword = "leo",
-                      }
+                         ["Hammerspoon docs webpage"] = {
+                           url = "http://hammerspoon.org/docs/",
+                           icon = hs.image.imageFromName(hs.image.systemImageNames.ApplicationIcon),
+                         },
+                         ["Leave corpnet"] = {
+                           fn = function()
+                             spoon.WiFiTransitions:processTransition('foo', 'corpnet01')
+                           end,
+                           icon = swisscom_logo,
+                         },
+                         ["Arrive in corpnet"] = {
+                           fn = function()
+                             spoon.WiFiTransitions:processTransition('corpnet01', 'foo')
+                           end,
+                           icon = swisscom_logo,
+                         },
+                         ["Translate using Leo"] = {
+                           url = "http://dict.leo.org/ende/index_de.html#/search=${query}",
+                           icon = 'favicon',
+                           keyword = "leo",
+                         }
                      }
                    s:refreshAllCommands()
                  end,
