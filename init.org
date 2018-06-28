@@ -428,7 +428,7 @@ Or to translate things using [[https://dict.leo.org/][dict.leo.org]]:
 
 #+begin_src lua :tangle no :noweb-ref useraction-definitions
   ["Translate using Leo"] = {
-    url = "http://dict.leo.org/ende/index_de.html#/search=${query}",
+    url = "http://dict.leo.org/englisch-deutsch/${query}",
     icon = 'favicon',
     keyword = "leo",
   }

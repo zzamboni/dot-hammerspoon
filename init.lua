@@ -249,7 +249,7 @@ Install:andUse("Seal",
                            icon = swisscom_logo,
                          },
                          ["Translate using Leo"] = {
-                           url = "http://dict.leo.org/ende/index_de.html#/search=${query}",
+                           url = "http://dict.leo.org/englisch-deutsch/${query}",
                            icon = 'favicon',
                            keyword = "leo",
                          }
