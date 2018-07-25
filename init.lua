@@ -36,7 +36,8 @@ Install:andUse("URLDispatcher",
                      { "https?://portal.corproot.net", "com.google.Chrome" },
                      { "https?://app.opsgenie.com", "org.epichrome.app.OpsGenie" },
                    },
-                   default_handler = "com.google.Chrome"
+                   --                     default_handler = "com.google.Chrome"
+                   default_handler = "com.electron.brave"
                  },
                  start = true
                }
