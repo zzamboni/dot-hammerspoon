@@ -33,10 +33,12 @@ Install:andUse("URLDispatcher",
                      { "https?://wiki.swisscom.com", "org.epichrome.app.SwisscomWiki" },
                      { "https?://collaboration.swisscom.com", "org.epichrome.app.SwisscomCollab" },
                      { "https?://smca.swisscom.com", "org.epichrome.app.SwisscomTWP" },
-                     { "https?://portal.corproot.net", "com.google.Chrome" },
+                     { "https?://portal.corproot.net", "com.apple.Safari" },
                      { "https?://app.opsgenie.com", "org.epichrome.app.OpsGenie" },
+                     { "https?://fiori.swisscom.com", "com.apple.Safari" },
+                     { "https?://https://pmpgwd.apps.swisscom.com/fiori", "com.apple.Safari" },
                    },
-                   --                     default_handler = "com.google.Chrome"
+                   -- default_handler = "com.google.Chrome"
                    default_handler = "com.electron.brave"
                  },
                  start = true
