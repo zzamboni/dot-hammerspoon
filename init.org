@@ -99,7 +99,7 @@ The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoo
                        { "https?://issue.swisscom.ch",                       "org.epichrome.app.SwisscomJira" },
                        { "https?://issue.swisscom.com",                      "org.epichrome.app.SwisscomJira" },
                        { "https?://jira.swisscom.com",                       "org.epichrome.app.SwisscomJira" },
-                       { "https?://wiki.swisscom.com",                       "org.epichrome.app.SwisscomWiki" },
+                       { "https?://wiki.swisscom.com",                       "org.epichrome.app.SwisscomW408" },
                        { "https?://collaboration.swisscom.com",              "org.epichrome.app.SwisscomCollab" },
                        { "https?://smca.swisscom.com",                       "org.epichrome.app.SwisscomTWP" },
                        { "https?://portal.corproot.net",                     "com.apple.Safari" },
@@ -335,7 +335,7 @@ I use Homebrew, and when I run =brew update=, I often wonder about what some of 
 
 The [[http://www.hammerspoon.org/Spoons/KSheet.html][KSheet]] spoon traverses the current application's menus and builds a cheatsheet of the keyboard shortcuts, showing it in a nice popup window.
 
-#+begin_src lua
+#+begin_src lua :tangle no
   Install:andUse("KSheet",
                  {
                    hotkeys = {

@@ -30,7 +30,7 @@ Install:andUse("URLDispatcher",
                      { "https?://issue.swisscom.ch",                       "org.epichrome.app.SwisscomJira" },
                      { "https?://issue.swisscom.com",                      "org.epichrome.app.SwisscomJira" },
                      { "https?://jira.swisscom.com",                       "org.epichrome.app.SwisscomJira" },
-                     { "https?://wiki.swisscom.com",                       "org.epichrome.app.SwisscomWiki" },
+                     { "https?://wiki.swisscom.com",                       "org.epichrome.app.SwisscomW408" },
                      { "https?://collaboration.swisscom.com",              "org.epichrome.app.SwisscomCollab" },
                      { "https?://smca.swisscom.com",                       "org.epichrome.app.SwisscomTWP" },
                      { "https?://portal.corproot.net",                     "com.apple.Safari" },
@@ -200,12 +200,6 @@ Install:andUse("BrewInfo",
                  }
                }
 )
-
-Install:andUse("KSheet",
-               {
-                 hotkeys = {
-                   toggle = { hyper, "/" }
-}})
 
 Install:andUse("TimeMachineProgress",
                {
