@@ -90,7 +90,7 @@ This is just a shortcut to make the declarations below look more readable, i.e. 
 
 * BetterTouchTool
 
-I'm currently working on a new [[https://github.com/zzamboni/Spoons/tree/spoon/BetterTouchTool/Source/BetterTouchTool.spoon][BetterTouchTool.spoon]] which provides integration with the [[https://docs.bettertouchtool.net/docs/apple_script.html][BetterTouchTool AppleScript API]]. This is in heavy development! See the configuration for the Hammer spoon in [[System and UI]] for an example of how to use it.
+I'm currently working on a new [[https://github.com/zzamboni/Spoons/tree/spoon/BetterTouchTool/Source/BetterTouchTool.spoon][BetterTouchTool.spoon]] which provides integration with the [[https://docs.bettertouchtool.net/docs/apple_script.html][BetterTouchTool AppleScript API]]. This is in heavy development! See the configuration for the Hammer spoon in [[#system-and-ui][System and UI]] for an example of how to use it.
 
 #+begin_src lua
   Install:andUse("BetterTouchTool", { loglevel = 'debug' })
