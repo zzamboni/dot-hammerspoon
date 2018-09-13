@@ -23,6 +23,9 @@ spoon.SpoonInstall.use_syncinstall = true
 
 Install=spoon.SpoonInstall
 
+Install:andUse("BetterTouchTool", { loglevel = 'debug' })
+BTT = spoon.BetterTouchTool
+
 Install:andUse("URLDispatcher",
                {
                  config = {
@@ -40,7 +43,8 @@ Install:andUse("URLDispatcher",
                      { "https?://https://pmpgwd.apps.swisscom.com/fiori",  "com.apple.Safari" },
                    },
                    -- default_handler = "com.google.Chrome"
-                   default_handler = "com.electron.brave"
+                   -- default_handler = "com.electron.brave"
+                   default_handler = "com.brave.Browser.dev"
                  },
                  start = true
                }
@@ -133,6 +137,17 @@ Install:andUse("Hammer",
                    config_reload = {hyper, "r"},
                    toggle_console = {hyper, "y"}
                  },
+                 fn = function(s)
+                   BTT:bindSpoonActions(s,
+                                        { config_reload = {
+                                            kind = 'touchbar_button',
+                                            uuid = "FF8DA717-737F-4C42-BF91-E8826E586FA1",
+                                            name = "Restart",
+                                            icon = hs.image.imageFromName(hs.image.systemImageNames.ApplicationIcon),
+                                            color = hs.drawing.color.x11.orange,
+                                        }
+                   })
+                 end,
                  start = true
                }
 )

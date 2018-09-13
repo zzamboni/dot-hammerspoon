@@ -20,6 +20,7 @@ This file is written in [[http://www.howardism.org/Technical/Emacs/literate-prog
 * Table of Contents                                          :TOC_3:noexport:
 - [[#general-variables-and-configuration][General variables and configuration]]
 - [[#spoon-management][Spoon Management]]
+- [[#bettertouchtool][BetterTouchTool]]
 - [[#url-dispatching-to-site-specific-browsers][URL Dispatching to site-specific browsers]]
 - [[#window-and-screen-manipulation][Window and screen manipulation]]
 - [[#organization-and-productivity][Organization and Productivity]]
@@ -87,6 +88,13 @@ This is just a shortcut to make the declarations below look more readable, i.e. 
   Install=spoon.SpoonInstall
 #+end_src
 
+* BetterTouchTool
+
+#+begin_src lua
+  Install:andUse("BetterTouchTool", { loglevel = 'debug' })
+  BTT = spoon.BetterTouchTool
+#+end_src
+
 * URL Dispatching to site-specific browsers
 
 The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoon makes it possible to open URLs with different browsers. I have created different site-specific browsers using [[https://github.com/dmarmor/epichrome][Epichrome]], which allows me to keep site-specific bookmarks, search settings, etc.
@@ -109,7 +117,8 @@ The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoo
                        { "https?://https://pmpgwd.apps.swisscom.com/fiori",  "com.apple.Safari" },
                      },
                      -- default_handler = "com.google.Chrome"
-                     default_handler = "com.electron.brave"
+                     -- default_handler = "com.electron.brave"
+                     default_handler = "com.brave.Browser.dev"
                    },
                    start = true
                  }
@@ -244,6 +253,17 @@ The [[https://zzamboni.github.io/zzSpoons/Hammer.html][Hammer]] spoon (get it? h
                      config_reload = {hyper, "r"},
                      toggle_console = {hyper, "y"}
                    },
+                   fn = function(s)
+                     BTT:bindSpoonActions(s,
+                                          { config_reload = {
+                                              kind = 'touchbar_button',
+                                              uuid = "FF8DA717-737F-4C42-BF91-E8826E586FA1",
+                                              name = "Restart",
+                                              icon = hs.image.imageFromName(hs.image.systemImageNames.ApplicationIcon),
+                                              color = hs.drawing.color.x11.orange,
+                                          }
+                     })
+                   end,
                    start = true
                  }
   )
