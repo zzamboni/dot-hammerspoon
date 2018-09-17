@@ -120,6 +120,7 @@ Install:andUse("EvernoteOpenAndTag",
 
 Install:andUse("TextClipboardHistory",
                {
+                 disable = true,
                  config = {
                    show_in_menubar = false,
                  },
@@ -140,7 +141,7 @@ Install:andUse("Hammer",
                  fn = function(s)
                    BTT:bindSpoonActions(s,
                                         { config_reload = {
-                                            kind = 'touchbar_button',
+                                            kind = 'touchbarButton',
                                             uuid = "FF8DA717-737F-4C42-BF91-E8826E586FA1",
                                             name = "Restart",
                                             icon = hs.image.imageFromName(hs.image.systemImageNames.ApplicationIcon),
@@ -156,7 +157,35 @@ Install:andUse("Caffeine", {
                  start = true,
                  hotkeys = {
                    toggle = { hyper, "1" }
-                 }
+                 },
+                 fn = function(s)
+                   BTT:bindSpoonActions(s, {
+                                          toggle = {
+                                            kind = 'touchbarWidget',
+                                            uuid = '72A96332-E908-4872-A6B4-8A6ED2E3586F',
+                                            name = 'Caffeine',
+                                            widget_code = [[
+do
+  title = " "
+  icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-off.pdf")
+  if (hs.caffeinate.get('displayIdle')) then
+    icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-on.pdf")
+  end
+  print(hs.json.encode({ text = title, icon_data = BTT:hsimageToBTTIconData(icon) }))
+end
+  ]],
+                                            code = "spoon.Caffeine.clicked()",
+                                            widget_interval = 1,
+                                            color = hs.drawing.color.x11.black,
+                                            icon_only = true,
+                                            icon_size = hs.geometry.size(15,15),
+                                            BTTTriggerConfig = {
+                                              BTTTouchBarFreeSpaceAfterButton = 0,
+                                              BTTTouchBarItemPadding = -6,
+                                            },
+                                          }
+                   })
+                 end
 })
 
 Install:andUse("MenubarFlag",
