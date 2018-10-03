@@ -30,7 +30,7 @@ Install:andUse("URLDispatcher",
                      { "https?://issue.swisscom.ch",                       "org.epichrome.app.SwisscomJira" },
                      { "https?://issue.swisscom.com",                      "org.epichrome.app.SwisscomJira" },
                      { "https?://jira.swisscom.com",                       "org.epichrome.app.SwisscomJira" },
-                     { "https?://wiki.swisscom.com",                       "org.epichrome.app.SwisscomW408" },
+                     { "https?://wiki.swisscom.com",                       "org.epichrome.app.SwisscomWiki" },
                      { "https?://collaboration.swisscom.com",              "org.epichrome.app.SwisscomCollab" },
                      { "https?://smca.swisscom.com",                       "org.epichrome.app.SwisscomTWP" },
                      { "https?://portal.corproot.net",                     "com.apple.Safari" },
@@ -79,7 +79,7 @@ Install:andUse("UniversalArchive",
                {
                  config = {
                    evernote_archive_notebook = ".Archive",
-                   outlook_archive_folder = "Archive (On My Computer)",
+                   outlook_archive_folder = "Archive (diego.zamboni@swisscom.com)",
                    archive_notifications = false
                  },
                  hotkeys = { archive = { { "ctrl", "cmd" }, "a" } }
