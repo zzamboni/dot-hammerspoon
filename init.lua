@@ -37,7 +37,8 @@ Install:andUse("URLDispatcher",
                      { "https?://app.opsgenie.com",                        "org.epichrome.app.OpsGenie" },
                      { "https?://app.eu.opsgenie.com",                     "org.epichrome.app.OpsGenie" },
                      { "https?://fiori.swisscom.com",                      "com.apple.Safari" },
-                     { "https?://https://pmpgwd.apps.swisscom.com/fiori",  "com.apple.Safari" },
+                     { "https?://pmpgwd.apps.swisscom.com/fiori",  "com.apple.Safari" },
+                     { "https?://.*webex.com",  "com.google.Chrome" },
                    },
                    -- default_handler = "com.google.Chrome"
                    default_handler = "com.electron.brave"
