@@ -41,7 +41,8 @@ Install:andUse("URLDispatcher",
                      { "https?://.*webex.com",  "com.google.Chrome" },
                    },
                    -- default_handler = "com.google.Chrome"
-                   default_handler = "com.electron.brave"
+                   -- default_handler = "com.electron.brave"
+                   default_handler = "com.brave.Browser.dev"
                  },
                  start = true
                }
@@ -100,6 +101,7 @@ Install:andUse("SendToOmniFocus",
                    s:registerApplication("Swisscom Collab", { apptype = "chromeapp", itemname = "tab" })
                    s:registerApplication("Swisscom Wiki", { apptype = "chromeapp", itemname = "wiki page" })
                    s:registerApplication("Swisscom Jira", { apptype = "chromeapp", itemname = "issue" })
+                   s:registerApplication("Brave Browser Dev", { apptype = "chromeapp", itemname = "page" })
                  end
                }
 )
