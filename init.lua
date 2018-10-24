@@ -91,7 +91,7 @@ Install:andUse("UniversalArchive",
 Install:andUse("SendToOmniFocus",
                {
                  config = {
-                   quickentrydialog = true,
+                   quickentrydialog = false,
                    notifications = false
                  },
                  hotkeys = {
