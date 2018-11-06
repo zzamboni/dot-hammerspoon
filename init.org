@@ -133,7 +133,7 @@ The [[http://www.hammerspoon.org/Spoons/WindowHalfsAndThirds.html][WindowHalfAnd
   )
 #+end_src
 
-The [[http://zzamboni.org/zzSpoons/WindowScreenLeftAndRight.html][WindowScreenLeftAndRight]] spoon sets up key bindings for moving windows between multiple screens.
+The [[http://www.hammerspoon.org/Spoons/WindowScreenLeftAndRight.html][WindowScreenLeftAndRight]] spoon sets up key bindings for moving windows between multiple screens.
 
 #+begin_src lua
   Install:andUse("WindowScreenLeftAndRight",
