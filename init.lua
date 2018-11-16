@@ -33,14 +33,15 @@ Install:andUse("URLDispatcher",
                      { "https?://issue.swisscom.ch",                       "org.epichrome.app.SwisscomJira" },
                      { "https?://issue.swisscom.com",                      "org.epichrome.app.SwisscomJira" },
                      { "https?://jira.swisscom.com",                       "org.epichrome.app.SwisscomJira" },
-                     { "https?://wiki.swisscom.com",                       "org.epichrome.app.SwisscomW408" },
+                     { "https?://wiki.swisscom.com",                       "org.epichrome.app.SwisscomWiki" },
                      { "https?://collaboration.swisscom.com",              "org.epichrome.app.SwisscomCollab" },
                      { "https?://smca.swisscom.com",                       "org.epichrome.app.SwisscomTWP" },
                      { "https?://portal.corproot.net",                     "com.apple.Safari" },
                      { "https?://app.opsgenie.com",                        "org.epichrome.app.OpsGenie" },
                      { "https?://app.eu.opsgenie.com",                     "org.epichrome.app.OpsGenie" },
                      { "https?://fiori.swisscom.com",                      "com.apple.Safari" },
-                     { "https?://https://pmpgwd.apps.swisscom.com/fiori",  "com.apple.Safari" },
+                     { "https?://pmpgwd.apps.swisscom.com/fiori",  "com.apple.Safari" },
+                     { "https?://.*webex.com",  "com.google.Chrome" },
                    },
                    -- default_handler = "com.google.Chrome"
                    -- default_handler = "com.electron.brave"
@@ -83,7 +84,7 @@ Install:andUse("UniversalArchive",
                {
                  config = {
                    evernote_archive_notebook = ".Archive",
-                   outlook_archive_folder = "Archive (On My Computer)",
+                   outlook_archive_folder = "Archive (diego.zamboni@swisscom.com)",
                    archive_notifications = false
                  },
                  hotkeys = { archive = { { "ctrl", "cmd" }, "a" } }
@@ -93,7 +94,7 @@ Install:andUse("UniversalArchive",
 Install:andUse("SendToOmniFocus",
                {
                  config = {
-                   quickentrydialog = true,
+                   quickentrydialog = false,
                    notifications = false
                  },
                  hotkeys = {
@@ -103,6 +104,7 @@ Install:andUse("SendToOmniFocus",
                    s:registerApplication("Swisscom Collab", { apptype = "chromeapp", itemname = "tab" })
                    s:registerApplication("Swisscom Wiki", { apptype = "chromeapp", itemname = "wiki page" })
                    s:registerApplication("Swisscom Jira", { apptype = "chromeapp", itemname = "issue" })
+                   s:registerApplication("Brave Browser Dev", { apptype = "chromeapp", itemname = "page" })
                  end
                }
 )

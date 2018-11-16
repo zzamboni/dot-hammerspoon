@@ -109,14 +109,15 @@ The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoo
                        { "https?://issue.swisscom.ch",                       "org.epichrome.app.SwisscomJira" },
                        { "https?://issue.swisscom.com",                      "org.epichrome.app.SwisscomJira" },
                        { "https?://jira.swisscom.com",                       "org.epichrome.app.SwisscomJira" },
-                       { "https?://wiki.swisscom.com",                       "org.epichrome.app.SwisscomW408" },
+                       { "https?://wiki.swisscom.com",                       "org.epichrome.app.SwisscomWiki" },
                        { "https?://collaboration.swisscom.com",              "org.epichrome.app.SwisscomCollab" },
                        { "https?://smca.swisscom.com",                       "org.epichrome.app.SwisscomTWP" },
                        { "https?://portal.corproot.net",                     "com.apple.Safari" },
                        { "https?://app.opsgenie.com",                        "org.epichrome.app.OpsGenie" },
                        { "https?://app.eu.opsgenie.com",                     "org.epichrome.app.OpsGenie" },
                        { "https?://fiori.swisscom.com",                      "com.apple.Safari" },
-                       { "https?://https://pmpgwd.apps.swisscom.com/fiori",  "com.apple.Safari" },
+                       { "https?://pmpgwd.apps.swisscom.com/fiori",  "com.apple.Safari" },
+                       { "https?://.*webex.com",  "com.google.Chrome" },
                      },
                      -- default_handler = "com.google.Chrome"
                      -- default_handler = "com.electron.brave"
@@ -142,7 +143,7 @@ The [[http://www.hammerspoon.org/Spoons/WindowHalfsAndThirds.html][WindowHalfAnd
   )
 #+end_src
 
-The [[http://zzamboni.org/zzSpoons/WindowScreenLeftAndRight.html][WindowScreenLeftAndRight]] spoon sets up key bindings for moving windows between multiple screens.
+The [[http://www.hammerspoon.org/Spoons/WindowScreenLeftAndRight.html][WindowScreenLeftAndRight]] spoon sets up key bindings for moving windows between multiple screens.
 
 #+begin_src lua
   Install:andUse("WindowScreenLeftAndRight",
@@ -183,7 +184,7 @@ The [[http://www.hammerspoon.org/Spoons/UniversalArchive.html][UniversalArchive]
                  {
                    config = {
                      evernote_archive_notebook = ".Archive",
-                     outlook_archive_folder = "Archive (On My Computer)",
+                     outlook_archive_folder = "Archive (diego.zamboni@swisscom.com)",
                      archive_notifications = false
                    },
                    hotkeys = { archive = { { "ctrl", "cmd" }, "a" } }
@@ -197,7 +198,7 @@ The [[http://www.hammerspoon.org/Spoons/SendToOmniFocus.html][SendToOmniFocus]] 
   Install:andUse("SendToOmniFocus",
                  {
                    config = {
-                     quickentrydialog = true,
+                     quickentrydialog = false,
                      notifications = false
                    },
                    hotkeys = {
@@ -207,6 +208,7 @@ The [[http://www.hammerspoon.org/Spoons/SendToOmniFocus.html][SendToOmniFocus]] 
                      s:registerApplication("Swisscom Collab", { apptype = "chromeapp", itemname = "tab" })
                      s:registerApplication("Swisscom Wiki", { apptype = "chromeapp", itemname = "wiki page" })
                      s:registerApplication("Swisscom Jira", { apptype = "chromeapp", itemname = "issue" })
+                     s:registerApplication("Brave Browser Dev", { apptype = "chromeapp", itemname = "page" })
                    end
                  }
   )
