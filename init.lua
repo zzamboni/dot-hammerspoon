@@ -375,6 +375,7 @@ Install:andUse("WiFiTransitions",
 local wm=hs.webview.windowMasks
 Install:andUse("PopupTranslateSelection",
                {
+                 disable = true,
                  config = {
                    popup_style = wm.utility|wm.HUD|wm.titled|wm.closable|wm.resizable,
                  },
@@ -384,6 +385,17 @@ Install:andUse("PopupTranslateSelection",
                    translate_to_es = { hyper, "s" },
                    translate_de_en = { shift_hyper, "e" },
                    translate_en_de = { shift_hyper, "d" },
+                 }
+               }
+)
+
+Install:andUse("DeepLTranslate",
+               {
+                 config = {
+                   popup_style = wm.utility|wm.HUD|wm.titled|wm.closable|wm.resizable,
+                 },
+                 hotkeys = {
+                   translate = { hyper, "e" },
                  }
                }
 )

@@ -585,6 +585,7 @@ I live in Switzerland, and my German is far from perfect, so the [[http://www.ha
   local wm=hs.webview.windowMasks
   Install:andUse("PopupTranslateSelection",
                  {
+                   disable = true,
                    config = {
                      popup_style = wm.utility|wm.HUD|wm.titled|wm.closable|wm.resizable,
                    },
@@ -594,6 +595,21 @@ I live in Switzerland, and my German is far from perfect, so the [[http://www.ha
                      translate_to_es = { hyper, "s" },
                      translate_de_en = { shift_hyper, "e" },
                      translate_en_de = { shift_hyper, "d" },
+                   }
+                 }
+  )
+#+end_src
+
+I am now testing [[http://www.hammerspoon.org/Spoons/DeepLTranslate.html][DeepLTranslate]], based on PopupTranslateSelection but which uses the [[https://www.deepl.com/en/translator][DeepL translator]].
+
+#+begin_src lua
+  Install:andUse("DeepLTranslate",
+                 {
+                   config = {
+                     popup_style = wm.utility|wm.HUD|wm.titled|wm.closable|wm.resizable,
+                   },
+                   hotkeys = {
+                     translate = { hyper, "e" },
                    }
                  }
   )
