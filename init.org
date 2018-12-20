@@ -17,6 +17,8 @@ This is my [[http://www.hammerspoon.org/][Hammerspoon]] configuration file.
 
 This file is written in [[http://www.howardism.org/Technical/Emacs/literate-programming-tutorial.html][literate programming style]] using [[https://orgmode.org/][org-mode]]. See [[file:init.lua][init.lua]] for the generated file. You can see this in a nicer format on my blog post [[http://zzamboni.org/post/my-hammerspoon-configuration-with-commentary/][My Hammerspoon Configuration, With Commentary]].
 
+If you want to learn more about Hammerspoon, check out my book [[https://leanpub.com/learning-hammerspoon][Learning Hammerspoon]]!
+
 * Table of Contents                                          :TOC_3:noexport:
 - [[#general-variables-and-configuration][General variables and configuration]]
 - [[#spoon-management][Spoon Management]]
