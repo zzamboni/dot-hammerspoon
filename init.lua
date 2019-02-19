@@ -331,7 +331,9 @@ end
 
 function reconfigAdiumProxy(proxy)
   --   hs.notify.show("Reconfiguring Adium", string.format("Proxy %s", (proxy and "enabled" or "disabled")), "")
-  local script = string.format([[
+  app = hs.application.find("Adium")
+  if app and app:isRunning() then
+    local script = string.format([[
 tell application "Adium"
   repeat with a in accounts
     if (enabled of a) is true then
@@ -342,7 +344,8 @@ tell application "Adium"
   go online
 end tell
 ]], hs.inspect(proxy))
-  hs.osascript.applescript(script)
+    hs.osascript.applescript(script)
+  end
 end
 
 Install:andUse("WiFiTransitions",

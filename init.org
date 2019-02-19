@@ -528,12 +528,14 @@ The =reconfigSpotifyProxy= function quits Spotify, updates the proxy settings in
   end
 #+end_src
 
-The =reconfigAdiumProxy= function uses AppleScript to tell Adium about the change without having to restart it.
+The =reconfigAdiumProxy= function uses AppleScript to tell Adium about the change without having to restart it - only if Adium is already running.
 
 #+begin_src lua
   function reconfigAdiumProxy(proxy)
     --   hs.notify.show("Reconfiguring Adium", string.format("Proxy %s", (proxy and "enabled" or "disabled")), "")
-    local script = string.format([[
+    app = hs.application.find("Adium")
+    if app and app:isRunning() then
+      local script = string.format([[
   tell application "Adium"
     repeat with a in accounts
       if (enabled of a) is true then
@@ -544,7 +546,8 @@ The =reconfigAdiumProxy= function uses AppleScript to tell Adium about the chang
     go online
   end tell
   ]], hs.inspect(proxy))
-    hs.osascript.applescript(script)
+      hs.osascript.applescript(script)
+    end
   end
 #+end_src
 
