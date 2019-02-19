@@ -19,7 +19,7 @@ This file is written in [[http://www.howardism.org/Technical/Emacs/literate-prog
 
 If you want to learn more about Hammerspoon, check out my book [[https://leanpub.com/learning-hammerspoon][Learning Hammerspoon]]!
 
-* Table of Contents                                          :TOC_3:noexport:
+* Table of Contents :TOC_3:noexport:
 - [[#general-variables-and-configuration][General variables and configuration]]
 - [[#spoon-management][Spoon Management]]
 - [[#bettertouchtool][BetterTouchTool]]
@@ -92,7 +92,7 @@ This is just a shortcut to make the declarations below look more readable, i.e. 
 
 * BetterTouchTool
 
-I'm currently working on a new [[https://github.com/zzamboni/Spoons/tree/spoon/BetterTouchTool/Source/BetterTouchTool.spoon][BetterTouchTool.spoon]] which provides integration with the [[https://docs.bettertouchtool.net/docs/apple_script.html][BetterTouchTool AppleScript API]]. This is in heavy development! See the configuration for the Hammer spoon in [[#system-and-ui][System and UI]] for an example of how to use it.
+I'm currently working on a new [[https://github.com/zzamboni/Spoons/tree/spoon/BetterTouchTool/Source/BetterTouchTool.spoon][BetterTouchTool.spoon]] which provides integration with the [[https://docs.bettertouchtool.net/docs/apple_script.html][BetterTouchTool AppleScript API]]. This is in heavy development! See the configuration for the Hammer spoon in [[System and UI][System and UI]] for an example of how to use it.
 
 #+begin_src lua
   Install:andUse("BetterTouchTool", { loglevel = 'debug' })
@@ -281,40 +281,40 @@ The [[https://zzamboni.github.io/zzSpoons/Hammer.html][Hammer]] spoon (get it? h
 The [[http://www.hammerspoon.org/Spoons/Caffeine.html][Caffeine]] spoon allows preventing the display and the machine from sleeping. I use it frequently when playing music from my machine, to avoid having to unlock the screen whenever I want to change the music.
 
 #+begin_src lua
-    Install:andUse("Caffeine", {
-                     start = true,
-                     hotkeys = {
-                       toggle = { hyper, "1" }
-                     },
-                     fn = function(s)
-                       BTT:bindSpoonActions(s, {
-                                              toggle = {
-                                                kind = 'touchbarWidget',
-                                                uuid = '72A96332-E908-4872-A6B4-8A6ED2E3586F',
-                                                name = 'Caffeine',
-                                                widget_code = [[
-    do
-      title = " "
-      icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-off.pdf")
-      if (hs.caffeinate.get('displayIdle')) then
-        icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-on.pdf")
-      end
-      print(hs.json.encode({ text = title, icon_data = BTT:hsimageToBTTIconData(icon) }))
+  Install:andUse("Caffeine", {
+                   start = true,
+                   hotkeys = {
+                     toggle = { hyper, "1" }
+                   },
+                   fn = function(s)
+                     BTT:bindSpoonActions(s, {
+                                            toggle = {
+                                              kind = 'touchbarWidget',
+                                              uuid = '72A96332-E908-4872-A6B4-8A6ED2E3586F',
+                                              name = 'Caffeine',
+                                              widget_code = [[
+  do
+    title = " "
+    icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-off.pdf")
+    if (hs.caffeinate.get('displayIdle')) then
+      icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-on.pdf")
     end
-      ]],
-                                                code = "spoon.Caffeine.clicked()",
-                                                widget_interval = 1,
-                                                color = hs.drawing.color.x11.black,
-                                                icon_only = true,
-                                                icon_size = hs.geometry.size(15,15),
-                                                BTTTriggerConfig = {
-                                                  BTTTouchBarFreeSpaceAfterButton = 0,
-                                                  BTTTouchBarItemPadding = -6,
-                                                },
-                                              }
-                       })
-                     end
-    })
+    print(hs.json.encode({ text = title, icon_data = BTT:hsimageToBTTIconData(icon) }))
+  end
+    ]],
+                                              code = "spoon.Caffeine.clicked()",
+                                              widget_interval = 1,
+                                              color = hs.drawing.color.x11.black,
+                                              icon_only = true,
+                                              icon_size = hs.geometry.size(15,15),
+                                              BTTTriggerConfig = {
+                                                BTTTouchBarFreeSpaceAfterButton = 0,
+                                                BTTTouchBarItemPadding = -6,
+                                              },
+                                            }
+                     })
+                   end
+  })
 #+end_src
 
 The [[http://www.hammerspoon.org/Spoons/MenubarFlag.html][MenubarFlag]] spoon colorizes the menubar according to the selected keyboard language or layout (functionality inspired by [[https://pqrs.org/osx/ShowyEdge/index.html.en][ShowyEdge]]). I use English, Spanish and German, so those are the colors I have defined.
