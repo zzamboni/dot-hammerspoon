@@ -31,6 +31,7 @@ If you want to learn more about Hammerspoon, check out my book [[https://leanpub
 - [[#seal][Seal]]
 - [[#network-transitions][Network transitions]]
 - [[#pop-up-translation][Pop-up translation]]
+- [[#leanpub-integration][Leanpub integration]]
 - [[#miscellaneous-stuff][Miscellaneous stuff]]
 - [[#end-of-config-animation][End-of-config animation]]
 
@@ -463,7 +464,7 @@ The =useractions= Seal plugin allows me to define my own shortcuts. For example,
 
 #+begin_src lua :tangle no :noweb-ref useraction-definitions
   ["Hammerspoon docs webpage"] = {
-    url = "http://hammerspoon.org/docs/",
+    url = "https://hammerspoon.org/docs/",
     icon = hs.image.imageFromName(hs.image.systemImageNames.ApplicationIcon),
   },
 #+end_src
@@ -618,6 +619,26 @@ I am now testing [[http://www.hammerspoon.org/Spoons/DeepLTranslate.html][DeepLT
                    }
                  }
   )
+#+end_src
+
+* Leanpub integration
+
+The Leanpub spoon provides monitoring of book build jobs.
+
+#+begin_src lua
+  Install:andUse("Leanpub",
+                 {
+                   config = {
+                     watch_books = {
+                       -- api_key gets set in init-local.lua like this:
+                       -- spoon.Leanpub.api_key = "my-api-key"
+                       { slug = "learning-hammerspoon" },
+                       { slug = "learning-cfengine" }
+                     }
+                   },
+                   start = true,
+                   loglevel = 'info'
+  })
 #+end_src
 
 * Miscellaneous stuff

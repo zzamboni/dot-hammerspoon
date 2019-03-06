@@ -277,7 +277,7 @@ Install:andUse("Seal",
                    s.plugins.useractions.actions =
                      {
                          ["Hammerspoon docs webpage"] = {
-                           url = "http://hammerspoon.org/docs/",
+                           url = "https://hammerspoon.org/docs/",
                            icon = hs.image.imageFromName(hs.image.systemImageNames.ApplicationIcon),
                          },
                          ["Leave corpnet"] = {
@@ -402,6 +402,20 @@ Install:andUse("DeepLTranslate",
                  }
                }
 )
+
+Install:andUse("Leanpub",
+               {
+                 config = {
+                   watch_books = {
+                     -- api_key gets set in init-local.lua like this:
+                     -- spoon.Leanpub.api_key = "my-api-key"
+                     { slug = "learning-hammerspoon" },
+                     { slug = "learning-cfengine" }
+                   }
+                 },
+                 start = true,
+                 loglevel = 'info'
+})
 
 local localstuff=loadfile(hs.configdir .. "/init-local.lua")
 if localstuff then
