@@ -646,9 +646,14 @@ The Leanpub spoon provides monitoring of book build jobs.
 In my =init-local.lua= file I keep some experimental or private stuff that I don't want to publish in my main config.
 
 #+begin_src lua
-  local localstuff=loadfile(hs.configdir .. "/init-local.lua")
-  if localstuff then
-    localstuff()
+  local localfile = hs.configdir .. "/init-local.lua"
+  if hs.fs.attributes(localfile) then
+    local localcode,localerror=loadfile(localfile)
+    if localcode then
+      localcode()
+    else
+      hs.showError(localerror)
+    end
   end
 #+end_src
 

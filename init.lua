@@ -417,9 +417,14 @@ Install:andUse("Leanpub",
                  loglevel = 'info'
 })
 
-local localstuff=loadfile(hs.configdir .. "/init-local.lua")
-if localstuff then
-  localstuff()
+local localfile = hs.configdir .. "/init-local.lua"
+if hs.fs.attributes(localfile) then
+  local localcode,localerror=loadfile(localfile)
+  if localcode then
+    localcode()
+  else
+    hs.showError(localerror)
+  end
 end
 
 Install:andUse("FadeLogo",
