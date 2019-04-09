@@ -648,12 +648,7 @@ In my =init-local.lua= file I keep some experimental or private stuff that I don
 #+begin_src lua
   local localfile = hs.configdir .. "/init-local.lua"
   if hs.fs.attributes(localfile) then
-    local localcode,localerror=loadfile(localfile)
-    if localcode then
-      localcode()
-    else
-      hs.showError(localerror)
-    end
+    dofile(localfile)
   end
 #+end_src
 
