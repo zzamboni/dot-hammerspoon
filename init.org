@@ -32,7 +32,7 @@ If you want to learn more about Hammerspoon, check out my book [[https://leanpub
 - [[#network-transitions][Network transitions]]
 - [[#pop-up-translation][Pop-up translation]]
 - [[#leanpub-integration][Leanpub integration]]
-- [[#miscellaneous-stuff][Miscellaneous stuff]]
+- [[#loading-private-configuration][Loading private configuration]]
 - [[#end-of-config-animation][End-of-config animation]]
 
 * General variables and configuration
@@ -641,9 +641,9 @@ The Leanpub spoon provides monitoring of book build jobs.
   })
 #+end_src
 
-* Miscellaneous stuff
+* Loading private configuration
 
-In my =init-local.lua= file I keep some experimental or private stuff that I don't want to publish in my main config.
+In =init-local.lua= I keep experimental or private stuff (like API tokens) that I don't want to publish in my main config. This file is not committed to any publicly-accessible git repositories.
 
 #+begin_src lua
   local localfile = hs.configdir .. "/init-local.lua"
