@@ -133,7 +133,7 @@ The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoo
 
 * Window and screen manipulation
 
-The [[http://www.hammerspoon.org/Spoons/WindowHalfsAndThirds.html][WindowHalfAndThirds]] spoon sets up multiple key bindings for manipulating the size and position of windows.
+The [[http://www.hammerspoon.org/Spoons/WindowHalfsAndThirds.html][WindowHalfsAndThirds]] spoon sets up multiple key bindings for manipulating the size and position of windows.
 
 #+begin_src lua
   Install:andUse("WindowHalfsAndThirds",
