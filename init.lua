@@ -410,7 +410,8 @@ Install:andUse("Leanpub",
                      -- api_key gets set in init-local.lua like this:
                      -- spoon.Leanpub.api_key = "my-api-key"
                      { slug = "learning-hammerspoon" },
-                     { slug = "learning-cfengine" }
+                     { slug = "learning-cfengine" },
+                     { slug = "zztestbook" },
                    }
                  },
                  start = true,
