@@ -26,14 +26,16 @@ Install=spoon.SpoonInstall
 Install:andUse("BetterTouchTool", { loglevel = 'debug' })
 BTT = spoon.BetterTouchTool
 
+JiraApp = "org.epichrome.app.SwisscomJ995"
+WikiApp = "org.epichrome.app.SwisscomWiki"
 Install:andUse("URLDispatcher",
                {
                  config = {
                    url_patterns = {
-                     { "https?://issue.swisscom.ch",                       "org.epichrome.app.SwisscomJira" },
-                     { "https?://issue.swisscom.com",                      "org.epichrome.app.SwisscomJira" },
-                     { "https?://jira.swisscom.com",                       "org.epichrome.app.SwisscomJira" },
-                     { "https?://wiki.swisscom.com",                       "org.epichrome.app.SwisscomW408" },
+                     { "https?://issue.swisscom.ch",                       JiraApp },
+                     { "https?://issue.swisscom.com",                      JiraApp },
+                     { "https?://jira.swisscom.com",                       JiraApp },
+                     { "https?://wiki.swisscom.com",                       WikiApp },
                      { "https?://collaboration.swisscom.com",              "org.epichrome.app.SwisscomCollab" },
                      { "https?://smca.swisscom.com",                       "org.epichrome.app.SwisscomTWP" },
                      { "https?://portal.corproot.net",                     "com.apple.Safari" },
