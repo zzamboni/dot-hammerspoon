@@ -417,7 +417,6 @@ Install:andUse("Leanpub",
                    }
                  },
                  start = true,
-                 loglevel = 'info'
 })
 
 local localfile = hs.configdir .. "/init-local.lua"

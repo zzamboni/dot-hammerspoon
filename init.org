@@ -640,7 +640,6 @@ The Leanpub spoon provides monitoring of book build jobs.
                      }
                    },
                    start = true,
-                   loglevel = 'info'
   })
 #+end_src
 
