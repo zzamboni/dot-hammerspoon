@@ -350,6 +350,17 @@ end tell
   end
 end
 
+function stopApp(name)
+  app = hs.application.get(name)
+  if app and app:isRunning() then
+    app:kill()
+  end
+end
+
+function startApp(name)
+  hs.application.open(name)
+end
+
 Install:andUse("WiFiTransitions",
                {
                  config = {
@@ -363,12 +374,15 @@ Install:andUse("WiFiTransitions",
                        to = "corpnet01",
                        fn = {hs.fnutils.partial(reconfigSpotifyProxy, true),
                              hs.fnutils.partial(reconfigAdiumProxy, true),
+                             hs.fnutils.partial(stopApp, "Dropbox"),
+                             hs.fnutils.partial(stopApp, "Evernote"),
                        }
                      },
                      { -- Disable proxy in Spotify and Adium config when leaving corp network
                        from = "corpnet01",
                        fn = {hs.fnutils.partial(reconfigSpotifyProxy, false),
                              hs.fnutils.partial(reconfigAdiumProxy, false),
+                             hs.fnutils.partial(startApp, "Dropbox"),
                        }
                      },
                    }

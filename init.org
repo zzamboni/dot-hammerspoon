@@ -554,6 +554,21 @@ The =reconfigAdiumProxy= function uses AppleScript to tell Adium about the chang
   end
 #+end_src
 
+Functions to stop applications that  are disallowed in the work network.
+
+#+begin_src lua
+  function stopApp(name)
+    app = hs.application.get(name)
+    if app and app:isRunning() then
+      app:kill()
+    end
+  end
+
+  function startApp(name)
+    hs.application.open(name)
+  end
+#+end_src
+
 The configuration for the WiFiTransitions spoon invoked these functions with the appropriate parameters.
 
 #+begin_src lua
@@ -570,12 +585,15 @@ The configuration for the WiFiTransitions spoon invoked these functions with the
                          to = "corpnet01",
                          fn = {hs.fnutils.partial(reconfigSpotifyProxy, true),
                                hs.fnutils.partial(reconfigAdiumProxy, true),
+                               hs.fnutils.partial(stopApp, "Dropbox"),
+                               hs.fnutils.partial(stopApp, "Evernote"),
                          }
                        },
                        { -- Disable proxy in Spotify and Adium config when leaving corp network
                          from = "corpnet01",
                          fn = {hs.fnutils.partial(reconfigSpotifyProxy, false),
                                hs.fnutils.partial(reconfigAdiumProxy, false),
+                               hs.fnutils.partial(startApp, "Dropbox"),
                          }
                        },
                      }
