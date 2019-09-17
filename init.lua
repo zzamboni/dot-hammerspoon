@@ -427,6 +427,7 @@ Install:andUse("Leanpub",
                      -- spoon.Leanpub.api_key = "my-api-key"
                      { slug = "learning-hammerspoon" },
                      { slug = "learning-cfengine" },
+                     { slug = "lit-config"  },
                      { slug = "zztestbook" },
                    }
                  },
