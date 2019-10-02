@@ -357,6 +357,10 @@ function stopApp(name)
   end
 end
 
+function forceKillProcess(name)
+  hs.execute("pkill " .. name)
+end
+
 function startApp(name)
   hs.application.open(name)
 end
@@ -374,7 +378,7 @@ Install:andUse("WiFiTransitions",
                        to = "corpnet01",
                        fn = {hs.fnutils.partial(reconfigSpotifyProxy, true),
                              hs.fnutils.partial(reconfigAdiumProxy, true),
-                             hs.fnutils.partial(stopApp, "Dropbox"),
+                             hs.fnutils.partial(forceKillProcess, "Dropbox"),
                              hs.fnutils.partial(stopApp, "Evernote"),
                        }
                      },

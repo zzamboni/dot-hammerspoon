@@ -564,6 +564,10 @@ Functions to stop applications that  are disallowed in the work network.
     end
   end
 
+  function forceKillProcess(name)
+    hs.execute("pkill " .. name)
+  end
+
   function startApp(name)
     hs.application.open(name)
   end
@@ -585,7 +589,7 @@ The configuration for the WiFiTransitions spoon invoked these functions with the
                          to = "corpnet01",
                          fn = {hs.fnutils.partial(reconfigSpotifyProxy, true),
                                hs.fnutils.partial(reconfigAdiumProxy, true),
-                               hs.fnutils.partial(stopApp, "Dropbox"),
+                               hs.fnutils.partial(forceKillProcess, "Dropbox"),
                                hs.fnutils.partial(stopApp, "Evernote"),
                          }
                        },
