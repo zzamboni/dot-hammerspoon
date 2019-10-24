@@ -124,9 +124,9 @@ The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoo
                        { "https?://pmpgwd.apps.swisscom.com/fiori",  "com.apple.Safari" },
                        { "https?://.*webex.com",  "com.google.Chrome" },
                      },
-                     -- default_handler = "com.google.Chrome"
+                     default_handler = "com.google.Chrome"
                      -- default_handler = "com.electron.brave"
-                     default_handler = "com.brave.Browser.dev"
+                     -- default_handler = "com.brave.Browser.dev"
                    },
                    start = true
                  }
@@ -226,9 +226,9 @@ The [[http://www.hammerspoon.org/Spoons/EvernoteOpenAndTag.html][EvernoteOpenAnd
                  {
                    hotkeys = {
                      open_note = { hyper, "o" },
-                     ["open_and_tag-+work,+swisscom"] = { hyper, "w" },
-                     ["open_and_tag-+personal"] = { hyper, "p" },
-                     ["tag-@zzdone"] = { hyper, "z" }
+--                     ["open_and_tag-+work,+swisscom"] = { hyper, "w" },
+--                     ["open_and_tag-+personal"] = { hyper, "p" },
+--                     ["tag-@zzdone"] = { hyper, "z" }
                    }
                  }
   )
@@ -358,9 +358,8 @@ One of my original bits of Hammerspoon code, now made into a spoon (although I k
 #+begin_src lua
   Install:andUse("ColorPicker",
                  {
-                   disable = true,
                    hotkeys = {
-                     show = { shift_hyper, "c" }
+                     show = { hyper, "z" }
                    },
                    config = {
                      show_in_menubar = false,

@@ -45,9 +45,9 @@ Install:andUse("URLDispatcher",
                      { "https?://pmpgwd.apps.swisscom.com/fiori",  "com.apple.Safari" },
                      { "https?://.*webex.com",  "com.google.Chrome" },
                    },
-                   -- default_handler = "com.google.Chrome"
+                   default_handler = "com.google.Chrome"
                    -- default_handler = "com.electron.brave"
-                   default_handler = "com.brave.Browser.dev"
+                   -- default_handler = "com.brave.Browser.dev"
                  },
                  start = true
                }
@@ -112,15 +112,15 @@ Install:andUse("SendToOmniFocus",
 )
 
 Install:andUse("EvernoteOpenAndTag",
-               {
-                 hotkeys = {
-                   open_note = { hyper, "o" },
-                   ["open_and_tag-+work,+swisscom"] = { hyper, "w" },
-                   ["open_and_tag-+personal"] = { hyper, "p" },
-                   ["tag-@zzdone"] = { hyper, "z" }
+                 {
+                   hotkeys = {
+                     open_note = { hyper, "o" },
+--                     ["open_and_tag-+work,+swisscom"] = { hyper, "w" },
+--                     ["open_and_tag-+personal"] = { hyper, "p" },
+--                     ["tag-@zzdone"] = { hyper, "z" }
+                   }
                  }
-               }
-)
+  )
 
 Install:andUse("TextClipboardHistory",
                {
@@ -219,9 +219,8 @@ Install:andUse("MouseCircle",
 
 Install:andUse("ColorPicker",
                {
-                 disable = true,
                  hotkeys = {
-                   show = { shift_hyper, "c" }
+                   show = { hyper, "z" }
                  },
                  config = {
                    show_in_menubar = false,
