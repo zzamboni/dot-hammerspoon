@@ -614,7 +614,6 @@ I live in Switzerland, and my German is far from perfect, so the [[http://www.ha
   local wm=hs.webview.windowMasks
   Install:andUse("PopupTranslateSelection",
                  {
-                   disable = true,
                    config = {
                      popup_style = wm.utility|wm.HUD|wm.titled|wm.closable|wm.resizable,
                    },
@@ -634,6 +633,7 @@ I am now testing [[http://www.hammerspoon.org/Spoons/DeepLTranslate.html][DeepLT
 #+begin_src lua
   Install:andUse("DeepLTranslate",
                  {
+                   disable = true,
                    config = {
                      popup_style = wm.utility|wm.HUD|wm.titled|wm.closable|wm.resizable,
                    },
