@@ -10,7 +10,7 @@ shift_hyper = {"cmd","alt","ctrl","shift"}
 
 col = hs.drawing.color.x11
 
-swisscom_logo = hs.image.imageFromPath(hs.configdir .. "/files/swisscom_logo_2x.png")
+work_logo = hs.image.imageFromPath(hs.configdir .. "/files/work_logo_2x.png")
 
 hs.loadSpoon("SpoonInstall")
 
@@ -86,7 +86,6 @@ Install:andUse("UniversalArchive",
                {
                  config = {
                    evernote_archive_notebook = ".Archive",
-                   outlook_archive_folder = "Archive (diego.zamboni@swisscom.com)",
                    archive_notifications = false
                  },
                  hotkeys = { archive = { { "ctrl", "cmd" }, "a" } }
@@ -115,7 +114,7 @@ Install:andUse("EvernoteOpenAndTag",
                  {
                    hotkeys = {
                      open_note = { hyper, "o" },
---                     ["open_and_tag-+work,+swisscom"] = { hyper, "w" },
+--                     ["open_and_tag-+work"] = { hyper, "w" },
 --                     ["open_and_tag-+personal"] = { hyper, "p" },
 --                     ["tag-@zzdone"] = { hyper, "z" }
                    }
@@ -285,13 +284,13 @@ Install:andUse("Seal",
                            fn = function()
                              spoon.WiFiTransitions:processTransition('foo', 'corpnet01')
                            end,
-                           icon = swisscom_logo,
+                           icon = work_logo,
                          },
                          ["Arrive in corpnet"] = {
                            fn = function()
                              spoon.WiFiTransitions:processTransition('corpnet01', 'foo')
                            end,
-                           icon = swisscom_logo,
+                           icon = work_logo,
                          },
                          ["Translate using Leo"] = {
                            url = "http://dict.leo.org/englisch-deutsch/${query}",

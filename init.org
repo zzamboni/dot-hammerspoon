@@ -59,7 +59,7 @@ Set up an abbreviation for =hs.drawing.color.x11= since I use it repeatedly late
 Work's logo, which I use in some of my Seal shortcuts later on.
 
 #+begin_src lua
-  swisscom_logo = hs.image.imageFromPath(hs.configdir .. "/files/swisscom_logo_2x.png")
+  work_logo = hs.image.imageFromPath(hs.configdir .. "/files/work_logo_2x.png")
 #+end_src
 
 * Spoon Management
@@ -189,7 +189,6 @@ The [[http://www.hammerspoon.org/Spoons/UniversalArchive.html][UniversalArchive]
                  {
                    config = {
                      evernote_archive_notebook = ".Archive",
-                     outlook_archive_folder = "Archive (diego.zamboni@swisscom.com)",
                      archive_notifications = false
                    },
                    hotkeys = { archive = { { "ctrl", "cmd" }, "a" } }
@@ -226,7 +225,7 @@ The [[http://www.hammerspoon.org/Spoons/EvernoteOpenAndTag.html][EvernoteOpenAnd
                  {
                    hotkeys = {
                      open_note = { hyper, "o" },
---                     ["open_and_tag-+work,+swisscom"] = { hyper, "w" },
+--                     ["open_and_tag-+work"] = { hyper, "w" },
 --                     ["open_and_tag-+personal"] = { hyper, "p" },
 --                     ["tag-@zzdone"] = { hyper, "z" }
                    }
@@ -477,13 +476,13 @@ Or to manually trigger my work/non-work transition scripts (see below):
     fn = function()
       spoon.WiFiTransitions:processTransition('foo', 'corpnet01')
     end,
-    icon = swisscom_logo,
+    icon = work_logo,
   },
   ["Arrive in corpnet"] = {
     fn = function()
       spoon.WiFiTransitions:processTransition('corpnet01', 'foo')
     end,
-    icon = swisscom_logo,
+    icon = work_logo,
   },
 #+end_src
 
