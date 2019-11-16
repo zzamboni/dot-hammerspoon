@@ -28,22 +28,22 @@ BTT = spoon.BetterTouchTool
 
 JiraApp = "org.epichrome.app.SwisscomJ995"
 WikiApp = "org.epichrome.app.SwisscomWiki"
+CollabApp = "org.epichrome.app.SwisscomCollab"
+SmcaApp = "org.epichrome.app.SwisscomSMCA"
+OpsGenieApp = "org.epichrome.app.OpsGenie"
+
 Install:andUse("URLDispatcher",
                {
                  config = {
                    url_patterns = {
-                     { "https?://issue.swisscom.ch",                       JiraApp },
-                     { "https?://issue.swisscom.com",                      JiraApp },
-                     { "https?://jira.swisscom.com",                       JiraApp },
-                     { "https?://wiki.swisscom.com",                       WikiApp },
-                     { "https?://collaboration.swisscom.com",              "org.epichrome.app.SwisscomCollab" },
-                     { "https?://smca.swisscom.com",                       "org.epichrome.app.SwisscomTWP" },
-                     { "https?://portal.corproot.net",                     "com.apple.Safari" },
-                     { "https?://app.opsgenie.com",                        "org.epichrome.app.OpsGenie" },
-                     { "https?://app.eu.opsgenie.com",                     "org.epichrome.app.OpsGenie" },
-                     { "https?://fiori.swisscom.com",                      "com.apple.Safari" },
-                     { "https?://pmpgwd.apps.swisscom.com/fiori",  "com.apple.Safari" },
-                     { "https?://.*webex.com",  "com.google.Chrome" },
+                     { "https?://issue.swisscom.ch",          JiraApp },
+                     { "https?://issue.swisscom.com",         JiraApp },
+                     { "https?://jira.swisscom.com",          JiraApp },
+                     { "https?://wiki.swisscom.com",          WikiApp },
+                     { "https?://collaboration.swisscom.com", CollabApp },
+                     { "https?://smca.swisscom.com",          SmcaApp },
+                     { "https?://app.opsgenie.com",           OpsGenieApp },
+                     { "https?://app.eu.opsgenie.com",        OpsGenieApp },
                    },
                    default_handler = "com.google.Chrome"
                    -- default_handler = "com.electron.brave"
@@ -92,6 +92,9 @@ Install:andUse("UniversalArchive",
                }
 )
 
+function chrome_item(n)
+  return { apptype = "chromeapp", itemname = n }
+end
 Install:andUse("SendToOmniFocus",
                {
                  config = {
@@ -102,10 +105,10 @@ Install:andUse("SendToOmniFocus",
                    send_to_omnifocus = { hyper, "t" }
                  },
                  fn = function(s)
-                   s:registerApplication("Swisscom Collab", { apptype = "chromeapp", itemname = "tab" })
-                   s:registerApplication("Swisscom Wiki", { apptype = "chromeapp", itemname = "wiki page" })
-                   s:registerApplication("Swisscom Jira", { apptype = "chromeapp", itemname = "issue" })
-                   s:registerApplication("Brave Browser Dev", { apptype = "chromeapp", itemname = "page" })
+                   s:registerApplication("Swisscom Collab", chrome_item("tab"))
+                   s:registerApplication("Swisscom Wiki", chrome_item("wiki page"))
+                   s:registerApplication("Swisscom Jira", chrome_item("issue"))
+                   s:registerApplication("Brave Browser Dev", chrome_item("page"))
                  end
                }
 )
@@ -133,6 +136,18 @@ Install:andUse("TextClipboardHistory",
                }
 )
 
+function BTT_restart_hammerspoon(s)
+  BTT:bindSpoonActions(
+    s,
+    { config_reload = {
+        kind = 'touchbarButton',
+        uuid = "FF8DA717-737F-4C42-BF91-E8826E586FA1",
+        name = "Restart",
+        icon = hs.image.imageFromName(hs.image.systemImageNames.ApplicationIcon),
+        color = hs.drawing.color.x11.orange,
+  }})
+end
+
 Install:andUse("Hammer",
                {
                  repo = 'zzspoons',
@@ -141,54 +156,47 @@ Install:andUse("Hammer",
                    config_reload = {hyper, "r"},
                    toggle_console = {hyper, "y"}
                  },
-                 fn = function(s)
-                   BTT:bindSpoonActions(s,
-                                        { config_reload = {
-                                            kind = 'touchbarButton',
-                                            uuid = "FF8DA717-737F-4C42-BF91-E8826E586FA1",
-                                            name = "Restart",
-                                            icon = hs.image.imageFromName(hs.image.systemImageNames.ApplicationIcon),
-                                            color = hs.drawing.color.x11.orange,
-                                        }
-                   })
-                 end,
+                 fn = BTT_restart_Hammerspoon,
                  start = true
                }
 )
+
+function BTT_caffeine_widget(s)
+  BTT:bindSpoonActions(s, {
+                         toggle = {
+                           kind = 'touchbarWidget',
+                           uuid = '72A96332-E908-4872-A6B4-8A6ED2E3586F',
+                           name = 'Caffeine',
+                           widget_code = [[
+  do
+    title = " "
+    icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-off.pdf")
+    if (hs.caffeinate.get('displayIdle')) then
+      icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-on.pdf")
+    end
+    print(hs.json.encode({ text = title,
+                           icon_data = BTT:hsimageToBTTIconData(icon) }))
+  end
+    ]],
+                           code = "spoon.Caffeine.clicked()",
+                           widget_interval = 1,
+                           color = hs.drawing.color.x11.black,
+                           icon_only = true,
+                           icon_size = hs.geometry.size(15,15),
+                           BTTTriggerConfig = {
+                             BTTTouchBarFreeSpaceAfterButton = 0,
+                             BTTTouchBarItemPadding = -6,
+                           },
+                         }
+  })
+end
 
 Install:andUse("Caffeine", {
                  start = true,
                  hotkeys = {
                    toggle = { hyper, "1" }
                  },
-                 fn = function(s)
-                   BTT:bindSpoonActions(s, {
-                                          toggle = {
-                                            kind = 'touchbarWidget',
-                                            uuid = '72A96332-E908-4872-A6B4-8A6ED2E3586F',
-                                            name = 'Caffeine',
-                                            widget_code = [[
-do
-  title = " "
-  icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-off.pdf")
-  if (hs.caffeinate.get('displayIdle')) then
-    icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-on.pdf")
-  end
-  print(hs.json.encode({ text = title, icon_data = BTT:hsimageToBTTIconData(icon) }))
-end
-  ]],
-                                            code = "spoon.Caffeine.clicked()",
-                                            widget_interval = 1,
-                                            color = hs.drawing.color.x11.black,
-                                            icon_only = true,
-                                            icon_size = hs.geometry.size(15,15),
-                                            BTTTriggerConfig = {
-                                              BTTTouchBarFreeSpaceAfterButton = 0,
-                                              BTTTouchBarItemPadding = -6,
-                                            },
-                                          }
-                   })
-                 end
+                 fn = BTT_caffeine_widget,
 })
 
 Install:andUse("MenubarFlag",

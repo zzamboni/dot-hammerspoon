@@ -107,22 +107,22 @@ The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoo
 #+begin_src lua
   JiraApp = "org.epichrome.app.SwisscomJ995"
   WikiApp = "org.epichrome.app.SwisscomWiki"
+  CollabApp = "org.epichrome.app.SwisscomCollab"
+  SmcaApp = "org.epichrome.app.SwisscomSMCA"
+  OpsGenieApp = "org.epichrome.app.OpsGenie"
+
   Install:andUse("URLDispatcher",
                  {
                    config = {
                      url_patterns = {
-                       { "https?://issue.swisscom.ch",                       JiraApp },
-                       { "https?://issue.swisscom.com",                      JiraApp },
-                       { "https?://jira.swisscom.com",                       JiraApp },
-                       { "https?://wiki.swisscom.com",                       WikiApp },
-                       { "https?://collaboration.swisscom.com",              "org.epichrome.app.SwisscomCollab" },
-                       { "https?://smca.swisscom.com",                       "org.epichrome.app.SwisscomTWP" },
-                       { "https?://portal.corproot.net",                     "com.apple.Safari" },
-                       { "https?://app.opsgenie.com",                        "org.epichrome.app.OpsGenie" },
-                       { "https?://app.eu.opsgenie.com",                     "org.epichrome.app.OpsGenie" },
-                       { "https?://fiori.swisscom.com",                      "com.apple.Safari" },
-                       { "https?://pmpgwd.apps.swisscom.com/fiori",  "com.apple.Safari" },
-                       { "https?://.*webex.com",  "com.google.Chrome" },
+                       { "https?://issue.swisscom.ch",          JiraApp },
+                       { "https?://issue.swisscom.com",         JiraApp },
+                       { "https?://jira.swisscom.com",          JiraApp },
+                       { "https?://wiki.swisscom.com",          WikiApp },
+                       { "https?://collaboration.swisscom.com", CollabApp },
+                       { "https?://smca.swisscom.com",          SmcaApp },
+                       { "https?://app.opsgenie.com",           OpsGenieApp },
+                       { "https?://app.eu.opsgenie.com",        OpsGenieApp },
                      },
                      default_handler = "com.google.Chrome"
                      -- default_handler = "com.electron.brave"
@@ -199,6 +199,9 @@ The [[http://www.hammerspoon.org/Spoons/UniversalArchive.html][UniversalArchive]
 The [[http://www.hammerspoon.org/Spoons/SendToOmniFocus.html][SendToOmniFocus]] spoon sets up a single key binding (=Hyper-t=) to send the current item to OmniFocus from multiple applications.
 
 #+begin_src lua
+  function chrome_item(n)
+    return { apptype = "chromeapp", itemname = n }
+  end
   Install:andUse("SendToOmniFocus",
                  {
                    config = {
@@ -209,16 +212,16 @@ The [[http://www.hammerspoon.org/Spoons/SendToOmniFocus.html][SendToOmniFocus]] 
                      send_to_omnifocus = { hyper, "t" }
                    },
                    fn = function(s)
-                     s:registerApplication("Swisscom Collab", { apptype = "chromeapp", itemname = "tab" })
-                     s:registerApplication("Swisscom Wiki", { apptype = "chromeapp", itemname = "wiki page" })
-                     s:registerApplication("Swisscom Jira", { apptype = "chromeapp", itemname = "issue" })
-                     s:registerApplication("Brave Browser Dev", { apptype = "chromeapp", itemname = "page" })
+                     s:registerApplication("Swisscom Collab", chrome_item("tab"))
+                     s:registerApplication("Swisscom Wiki", chrome_item("wiki page"))
+                     s:registerApplication("Swisscom Jira", chrome_item("issue"))
+                     s:registerApplication("Brave Browser Dev", chrome_item("page"))
                    end
                  }
   )
 #+end_src
 
-The [[http://www.hammerspoon.org/Spoons/EvernoteOpenAndTag.html][EvernoteOpenAndTag]] spoon sets up some missing key bindings for note manipulation in Evernote.
+The [[http://www.hammerspoon.org/Spoons/EvernoteOpenAndTag.html][EvernoteOpenAndTag]] spoon sets up some missing key bindings for note manipulation in Evernote. I no longer use Evernote for GTD, so I have disabled the shortcuts for tagging notes.
 
 #+begin_src lua
   Install:andUse("EvernoteOpenAndTag",
@@ -253,6 +256,24 @@ This is disabled for the moment as I experiment with BetterTouchTool's built-in 
 
 * System and UI
 
+The =BTT_restart_Hammerspoon= function sets up a BetterTouchTool widget which also executes the =config_reload= action from the spoon. This gets assigned to the =fn= config parameter in the configuration of the Hammer spoon below, which has the effect of calling the function with the Spoon object as its parameter.
+
+This is still very manual - the =uuid= parameter contains the ID of the BTT widget to configure, and for now you have to get it by hand from BTT and paste it here.
+
+#+begin_src lua
+  function BTT_restart_hammerspoon(s)
+    BTT:bindSpoonActions(
+      s,
+      { config_reload = {
+          kind = 'touchbarButton',
+          uuid = "FF8DA717-737F-4C42-BF91-E8826E586FA1",
+          name = "Restart",
+          icon = hs.image.imageFromName(hs.image.systemImageNames.ApplicationIcon),
+          color = hs.drawing.color.x11.orange,
+    }})
+  end
+#+end_src
+
 The [[https://zzamboni.github.io/zzSpoons/Hammer.html][Hammer]] spoon (get it? hehe) is a simple wrapper around some common Hamerspoon configuration variables. Note that this gets loaded from my personal repo, since it's not in the official repository.
 
 #+begin_src lua
@@ -264,23 +285,45 @@ The [[https://zzamboni.github.io/zzSpoons/Hammer.html][Hammer]] spoon (get it? h
                      config_reload = {hyper, "r"},
                      toggle_console = {hyper, "y"}
                    },
-                   fn = function(s)
-                     BTT:bindSpoonActions(s,
-                                          { config_reload = {
-                                              kind = 'touchbarButton',
-                                              uuid = "FF8DA717-737F-4C42-BF91-E8826E586FA1",
-                                              name = "Restart",
-                                              icon = hs.image.imageFromName(hs.image.systemImageNames.ApplicationIcon),
-                                              color = hs.drawing.color.x11.orange,
-                                          }
-                     })
-                   end,
+                   fn = BTT_restart_Hammerspoon,
                    start = true
                  }
   )
 #+end_src
 
-The [[http://www.hammerspoon.org/Spoons/Caffeine.html][Caffeine]] spoon allows preventing the display and the machine from sleeping. I use it frequently when playing music from my machine, to avoid having to unlock the screen whenever I want to change the music.
+The [[http://www.hammerspoon.org/Spoons/Caffeine.html][Caffeine]] spoon allows preventing the display and the machine from sleeping. I use it frequently when playing music from my machine, to avoid having to unlock the screen whenever I want to change the music. In this case we also create a function =BTT_caffeine_widget= to configure the widget to both execute the corresponding function, and to set its icon according to the current state.
+
+#+begin_src lua
+  function BTT_caffeine_widget(s)
+    BTT:bindSpoonActions(s, {
+                           toggle = {
+                             kind = 'touchbarWidget',
+                             uuid = '72A96332-E908-4872-A6B4-8A6ED2E3586F',
+                             name = 'Caffeine',
+                             widget_code = [[
+    do
+      title = " "
+      icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-off.pdf")
+      if (hs.caffeinate.get('displayIdle')) then
+        icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-on.pdf")
+      end
+      print(hs.json.encode({ text = title,
+                             icon_data = BTT:hsimageToBTTIconData(icon) }))
+    end
+      ]],
+                             code = "spoon.Caffeine.clicked()",
+                             widget_interval = 1,
+                             color = hs.drawing.color.x11.black,
+                             icon_only = true,
+                             icon_size = hs.geometry.size(15,15),
+                             BTTTriggerConfig = {
+                               BTTTouchBarFreeSpaceAfterButton = 0,
+                               BTTTouchBarItemPadding = -6,
+                             },
+                           }
+    })
+  end
+#+end_src
 
 #+begin_src lua
   Install:andUse("Caffeine", {
@@ -288,34 +331,7 @@ The [[http://www.hammerspoon.org/Spoons/Caffeine.html][Caffeine]] spoon allows p
                    hotkeys = {
                      toggle = { hyper, "1" }
                    },
-                   fn = function(s)
-                     BTT:bindSpoonActions(s, {
-                                            toggle = {
-                                              kind = 'touchbarWidget',
-                                              uuid = '72A96332-E908-4872-A6B4-8A6ED2E3586F',
-                                              name = 'Caffeine',
-                                              widget_code = [[
-  do
-    title = " "
-    icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-off.pdf")
-    if (hs.caffeinate.get('displayIdle')) then
-      icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-on.pdf")
-    end
-    print(hs.json.encode({ text = title, icon_data = BTT:hsimageToBTTIconData(icon) }))
-  end
-    ]],
-                                              code = "spoon.Caffeine.clicked()",
-                                              widget_interval = 1,
-                                              color = hs.drawing.color.x11.black,
-                                              icon_only = true,
-                                              icon_size = hs.geometry.size(15,15),
-                                              BTTTriggerConfig = {
-                                                BTTTouchBarFreeSpaceAfterButton = 0,
-                                                BTTTouchBarItemPadding = -6,
-                                              },
-                                            }
-                     })
-                   end
+                   fn = BTT_caffeine_widget,
   })
 #+end_src
 
