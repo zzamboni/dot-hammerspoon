@@ -95,6 +95,14 @@ Install:andUse("UniversalArchive",
 function chrome_item(n)
   return { apptype = "chromeapp", itemname = n }
 end
+
+function OF_register_additional_apps(s)
+  s:registerApplication("Swisscom Collab", chrome_item("tab"))
+  s:registerApplication("Swisscom Wiki", chrome_item("wiki page"))
+  s:registerApplication("Swisscom Jira", chrome_item("issue"))
+  s:registerApplication("Brave Browser Dev", chrome_item("page"))
+end
+
 Install:andUse("SendToOmniFocus",
                {
                  config = {
@@ -104,12 +112,7 @@ Install:andUse("SendToOmniFocus",
                  hotkeys = {
                    send_to_omnifocus = { hyper, "t" }
                  },
-                 fn = function(s)
-                   s:registerApplication("Swisscom Collab", chrome_item("tab"))
-                   s:registerApplication("Swisscom Wiki", chrome_item("wiki page"))
-                   s:registerApplication("Swisscom Jira", chrome_item("issue"))
-                   s:registerApplication("Brave Browser Dev", chrome_item("page"))
-                 end
+                 fn = OF_register_additional_apps,
                }
 )
 

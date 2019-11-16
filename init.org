@@ -104,7 +104,8 @@ I'm currently working on a new [[https://github.com/zzamboni/Spoons/tree/spoon/B
 
 The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoon makes it possible to open URLs with different browsers. I have created different site-specific browsers using [[https://github.com/dmarmor/epichrome][Epichrome]], which allows me to keep site-specific bookmarks, search settings, etc.
 
-#+begin_src lua
+# This is the real code that gets tangled out to my config file
+#+begin_src lua :exports none
   JiraApp = "org.epichrome.app.SwisscomJ995"
   WikiApp = "org.epichrome.app.SwisscomWiki"
   CollabApp = "org.epichrome.app.SwisscomCollab"
@@ -123,6 +124,33 @@ The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoo
                        { "https?://smca.swisscom.com",          SmcaApp },
                        { "https?://app.opsgenie.com",           OpsGenieApp },
                        { "https?://app.eu.opsgenie.com",        OpsGenieApp },
+                     },
+                     default_handler = "com.google.Chrome"
+                     -- default_handler = "com.electron.brave"
+                     -- default_handler = "com.brave.Browser.dev"
+                   },
+                   start = true
+                 }
+  )
+#+end_src
+
+# This block is the one that gets exported when this config file is typeset in books or blog posts, to prevent the company name from showing up there.
+#+begin_src lua :exports code :tangle no
+  JiraApp = "org.epichrome.app.Jira"
+  WikiApp = "org.epichrome.app.Wiki"
+  CollabApp = "org.epichrome.app.Collab"
+  OpsGenieApp = "org.epichrome.app.OpsGenie"
+
+  Install:andUse("URLDispatcher",
+                 {
+                   config = {
+                     url_patterns = {
+                       { "https?://issue.work.com",         JiraApp },
+                       { "https?://jira.work.com",          JiraApp },
+                       { "https?://wiki.work.com",          WikiApp },
+                       { "https?://collaboration.work.com", CollabApp },
+                       { "https?://app.opsgenie.com",       OpsGenieApp },
+                       { "https?://app.eu.opsgenie.com",    OpsGenieApp },
                      },
                      default_handler = "com.google.Chrome"
                      -- default_handler = "com.electron.brave"
@@ -196,12 +224,34 @@ The [[http://www.hammerspoon.org/Spoons/UniversalArchive.html][UniversalArchive]
   )
 #+end_src
 
-The [[http://www.hammerspoon.org/Spoons/SendToOmniFocus.html][SendToOmniFocus]] spoon sets up a single key binding (=Hyper-t=) to send the current item to OmniFocus from multiple applications.
+The [[http://www.hammerspoon.org/Spoons/SendToOmniFocus.html][SendToOmniFocus]] spoon sets up a single key binding (=Hyper-t=) to send the current item to OmniFocus from multiple applications. We use the =fn= attribute of =Install:andUse= to call a function which registers some of the Epichrome site-specific-browsers I use, so that the Spoon knows how to collect items from them.
 
 #+begin_src lua
   function chrome_item(n)
     return { apptype = "chromeapp", itemname = n }
   end
+  #+end_src
+
+#+begin_src lua :exports none
+  function OF_register_additional_apps(s)
+    s:registerApplication("Swisscom Collab", chrome_item("tab"))
+    s:registerApplication("Swisscom Wiki", chrome_item("wiki page"))
+    s:registerApplication("Swisscom Jira", chrome_item("issue"))
+    s:registerApplication("Brave Browser Dev", chrome_item("page"))
+  end
+#+end_src
+
+#+begin_src lua :tangle no
+  function OF_register_additional_apps(s)
+    s:registerApplication("Collab", chrome_item("tab"))
+    s:registerApplication("Wiki", chrome_item("wiki page"))
+    s:registerApplication("Jira", chrome_item("issue"))
+    s:registerApplication("Brave Browser Dev", chrome_item("page"))
+  end
+#+end_src
+
+
+  #+begin_src lua
   Install:andUse("SendToOmniFocus",
                  {
                    config = {
@@ -211,12 +261,7 @@ The [[http://www.hammerspoon.org/Spoons/SendToOmniFocus.html][SendToOmniFocus]] 
                    hotkeys = {
                      send_to_omnifocus = { hyper, "t" }
                    },
-                   fn = function(s)
-                     s:registerApplication("Swisscom Collab", chrome_item("tab"))
-                     s:registerApplication("Swisscom Wiki", chrome_item("wiki page"))
-                     s:registerApplication("Swisscom Jira", chrome_item("issue"))
-                     s:registerApplication("Brave Browser Dev", chrome_item("page"))
-                   end
+                   fn = OF_register_additional_apps,
                  }
   )
 #+end_src
