@@ -140,14 +140,13 @@ Install:andUse("TextClipboardHistory",
 )
 
 function BTT_restart_hammerspoon(s)
-  BTT:bindSpoonActions(
-    s,
-    { config_reload = {
-        kind = 'touchbarButton',
-        uuid = "FF8DA717-737F-4C42-BF91-E8826E586FA1",
-        name = "Restart",
-        icon = hs.image.imageFromName(hs.image.systemImageNames.ApplicationIcon),
-        color = hs.drawing.color.x11.orange,
+  BTT:bindSpoonActions(s, {
+   config_reload = {
+     kind = 'touchbarButton',
+     uuid = "FF8DA717-737F-4C42-BF91-E8826E586FA1",
+     name = "Restart",
+     icon = hs.image.imageFromName(hs.image.systemImageNames.ApplicationIcon),
+     color = hs.drawing.color.x11.orange,
   }})
 end
 
@@ -171,15 +170,15 @@ function BTT_caffeine_widget(s)
                            uuid = '72A96332-E908-4872-A6B4-8A6ED2E3586F',
                            name = 'Caffeine',
                            widget_code = [[
-  do
-    title = " "
-    icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-off.pdf")
-    if (hs.caffeinate.get('displayIdle')) then
-      icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-on.pdf")
-    end
-    print(hs.json.encode({ text = title,
-                           icon_data = BTT:hsimageToBTTIconData(icon) }))
+do
+  title = " "
+  icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-off.pdf")
+  if (hs.caffeinate.get('displayIdle')) then
+    icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-on.pdf")
   end
+  print(hs.json.encode({ text = title,
+                         icon_data = BTT:hsimageToBTTIconData(icon) }))
+end
     ]],
                            code = "spoon.Caffeine.clicked()",
                            widget_interval = 1,
@@ -229,6 +228,7 @@ Install:andUse("MouseCircle",
 
 Install:andUse("ColorPicker",
                {
+                 disable = true,
                  hotkeys = {
                    show = { hyper, "z" }
                  },
@@ -283,7 +283,8 @@ Install:andUse("Seal",
                {
                  hotkeys = { show = { {"cmd"}, "space" } },
                  fn = function(s)
-                   s:loadPlugins({"apps", "calc", "safari_bookmarks", "screencapture", "useractions"})
+                   s:loadPlugins({"apps", "calc", "safari_bookmarks",
+                                  "screencapture", "useractions"})
                    s.plugins.safari_bookmarks.always_open_with_safari = false
                    s.plugins.useractions.actions =
                      {
@@ -323,25 +324,26 @@ function reconfigSpotifyProxy(proxy)
     spotify:kill()
     hs.timer.usleep(40000)
   end
-  --   hs.notify.show(string.format("Reconfiguring %sSpotify", ((spotify~=nil) and "and restarting " or "")), string.format("Proxy %s", (proxy and "enabled" or "disabled")), "")
   -- I use CFEngine to reconfigure the Spotify preferences
-  cmd = string.format("/usr/local/bin/cf-agent -K -f %s/files/spotify-proxymode.cf%s", hs.configdir, (proxy and " -DPROXY" or " -DNOPROXY"))
+  cmd = string.format(
+    "/usr/local/bin/cf-agent -K -f %s/files/spotify-proxymode.cf%s",
+    hs.configdir, (proxy and " -DPROXY" or " -DNOPROXY"))
   output, status, t, rc = hs.execute(cmd)
   if spotify and lastapp then
-    hs.timer.doAfter(3,
-                     function()
-                       if not hs.application.launchOrFocus("Spotify") then
-                         hs.notify.show("Error launching Spotify", "", "")
-                       end
-                       if lastapp then
-                         hs.timer.doAfter(0.5, hs.fnutils.partial(lastapp.activate, lastapp))
-                       end
+    hs.timer.doAfter(
+      3,
+      function()
+        if not hs.application.launchOrFocus("Spotify") then
+          hs.notify.show("Error launching Spotify", "", "")
+        end
+        if lastapp then
+          hs.timer.doAfter(0.5, hs.fnutils.partial(lastapp.activate, lastapp))
+        end
     end)
   end
 end
 
 function reconfigAdiumProxy(proxy)
-  --   hs.notify.show("Reconfiguring Adium", string.format("Proxy %s", (proxy and "enabled" or "disabled")), "")
   app = hs.application.find("Adium")
   if app and app:isRunning() then
     local script = string.format([[
@@ -380,10 +382,12 @@ Install:andUse("WiFiTransitions",
                    actions = {
                      -- { -- Test action just to see the SSID transitions
                      --    fn = function(_, _, prev_ssid, new_ssid)
-                     --       hs.notify.show("SSID change", string.format("From '%s' to '%s'", prev_ssid, new_ssid), "")
+                     --       hs.notify.show("SSID change",
+                     --          string.format("From '%s' to '%s'",
+                     --          prev_ssid, new_ssid), "")
                      --    end
                      -- },
-                     { -- Enable proxy in Spotify and Adium config when joining corp network
+                     { -- Enable proxy config when joining corp network
                        to = "corpnet01",
                        fn = {hs.fnutils.partial(reconfigSpotifyProxy, true),
                              hs.fnutils.partial(reconfigAdiumProxy, true),
@@ -391,7 +395,7 @@ Install:andUse("WiFiTransitions",
                              hs.fnutils.partial(stopApp, "Evernote"),
                        }
                      },
-                     { -- Disable proxy in Spotify and Adium config when leaving corp network
+                     { -- Disable proxy config when leaving corp network
                        from = "corpnet01",
                        fn = {hs.fnutils.partial(reconfigSpotifyProxy, false),
                              hs.fnutils.partial(reconfigAdiumProxy, false),
@@ -408,7 +412,8 @@ local wm=hs.webview.windowMasks
 Install:andUse("PopupTranslateSelection",
                {
                  config = {
-                   popup_style = wm.utility|wm.HUD|wm.titled|wm.closable|wm.resizable,
+                   popup_style = wm.utility|wm.HUD|wm.titled|
+                     wm.closable|wm.resizable,
                  },
                  hotkeys = {
                    translate_to_en = { hyper, "e" },
@@ -424,7 +429,8 @@ Install:andUse("DeepLTranslate",
                {
                  disable = true,
                  config = {
-                   popup_style = wm.utility|wm.HUD|wm.titled|wm.closable|wm.resizable,
+                   popup_style = wm.utility|wm.HUD|wm.titled|
+                     wm.closable|wm.resizable,
                  },
                  hotkeys = {
                    translate = { hyper, "e" },
