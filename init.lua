@@ -26,9 +26,10 @@ Install=spoon.SpoonInstall
 Install:andUse("BetterTouchTool", { loglevel = 'debug' })
 BTT = spoon.BetterTouchTool
 
-JiraApp = "org.epichrome.app.SwisscomJ995"
-WikiApp = "org.epichrome.app.SwisscomWiki"
-CollabApp = "org.epichrome.app.SwisscomCollab"
+DefaultBrowser = "org.mozilla.firefox"
+JiraApp = "org.zzamboni.Jira"
+WikiApp = "org.zzamboni.Wiki"
+CollabApp = DefaultBrowser
 SmcaApp = "org.epichrome.app.SwisscomSMCA"
 OpsGenieApp = "org.epichrome.app.OpsGenie"
 
@@ -45,7 +46,8 @@ Install:andUse("URLDispatcher",
                      { "https?://app.opsgenie.com",           OpsGenieApp },
                      { "https?://app.eu.opsgenie.com",        OpsGenieApp },
                    },
-                   default_handler = "com.google.Chrome"
+                   default_handler = DefaultBrowser
+                   -- default_handler = "com.google.Chrome"
                    -- default_handler = "com.electron.brave"
                    -- default_handler = "com.brave.Browser.dev"
                  },

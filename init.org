@@ -106,9 +106,10 @@ The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoo
 
 # This is the real code that gets tangled out to my config file
 #+begin_src lua :exports none
-  JiraApp = "org.epichrome.app.SwisscomJ995"
-  WikiApp = "org.epichrome.app.SwisscomWiki"
-  CollabApp = "org.epichrome.app.SwisscomCollab"
+  DefaultBrowser = "org.mozilla.firefox"
+  JiraApp = "org.zzamboni.Jira"
+  WikiApp = "org.zzamboni.Wiki"
+  CollabApp = DefaultBrowser
   SmcaApp = "org.epichrome.app.SwisscomSMCA"
   OpsGenieApp = "org.epichrome.app.OpsGenie"
 
@@ -125,7 +126,8 @@ The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoo
                        { "https?://app.opsgenie.com",           OpsGenieApp },
                        { "https?://app.eu.opsgenie.com",        OpsGenieApp },
                      },
-                     default_handler = "com.google.Chrome"
+                     default_handler = DefaultBrowser
+                     -- default_handler = "com.google.Chrome"
                      -- default_handler = "com.electron.brave"
                      -- default_handler = "com.brave.Browser.dev"
                    },
@@ -136,10 +138,10 @@ The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoo
 
 # This block is the one that gets exported when this config file is typeset in books or blog posts, to prevent the company name from showing up there.
 #+begin_src lua :exports code :tangle no
-  JiraApp = "org.epichrome.app.Jira"
-  WikiApp = "org.epichrome.app.Wiki"
-  CollabApp = "org.epichrome.app.Collab"
-  OpsGenieApp = "org.epichrome.app.OpsGenie"
+  DefaultBrowser = "org.mozilla.firefox"
+  JiraApp = "org.zzamboni.Jira"
+  WikiApp = "org.zzamboni.Wiki"
+  OpsGenieApp = "org.zzamboni.OpsGenie"
 
   Install:andUse("URLDispatcher",
                  {
@@ -148,11 +150,10 @@ The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoo
                        { "https?://issue.work.com",         JiraApp },
                        { "https?://jira.work.com",          JiraApp },
                        { "https?://wiki.work.com",          WikiApp },
-                       { "https?://collaboration.work.com", CollabApp },
                        { "https?://app.opsgenie.com",       OpsGenieApp },
                        { "https?://app.eu.opsgenie.com",    OpsGenieApp },
                      },
-                     default_handler = "com.google.Chrome"
+                     default_handler = DefaultBrowser
                      -- default_handler = "com.electron.brave"
                      -- default_handler = "com.brave.Browser.dev"
                    },
