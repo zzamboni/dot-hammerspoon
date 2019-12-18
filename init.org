@@ -102,7 +102,7 @@ I'm currently working on a new [[https://github.com/zzamboni/Spoons/tree/spoon/B
 
 * URL Dispatching to site-specific browsers
 
-The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoon makes it possible to open URLs with different browsers. I have created different site-specific browsers using [[https://github.com/dmarmor/epichrome][Epichrome]], which allows me to keep site-specific bookmarks, search settings, etc.
+The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoon makes it possible to open URLs with different browsers. I have created different site-specific browsers using +[[https://github.com/dmarmor/epichrome][Epichrome]],+ using [[https://github.com/zzamboni/firefox-ssb][a script I wrote to create Firefox-based SSBs]], which allows me to keep site-specific bookmarks, search settings, etc.
 
 # This is the real code that gets tangled out to my config file
 #+begin_src lua :exports none
