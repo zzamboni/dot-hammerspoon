@@ -291,7 +291,7 @@ Install:andUse("Seal",
                    s.plugins.useractions.actions =
                      {
                          ["Hammerspoon docs webpage"] = {
-                           url = "https://hammerspoon.org/docs/",
+                           url = "http://hammerspoon.org/docs/",
                            icon = hs.image.imageFromName(hs.image.systemImageNames.ApplicationIcon),
                          },
                          ["Leave corpnet"] = {

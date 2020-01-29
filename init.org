@@ -527,7 +527,7 @@ The =useractions= Seal plugin allows me to define my own shortcuts. For example,
 
 #+begin_src lua :tangle no :noweb-ref useraction-definitions
   ["Hammerspoon docs webpage"] = {
-    url = "https://hammerspoon.org/docs/",
+    url = "http://hammerspoon.org/docs/",
     icon = hs.image.imageFromName(hs.image.systemImageNames.ApplicationIcon),
   },
 #+end_src
