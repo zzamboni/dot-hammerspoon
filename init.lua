@@ -209,6 +209,7 @@ Install:andUse("MenubarFlag",
                    colors = {
                      ["U.S."] = { },
                      Spanish = {col.green, col.white, col.red},
+                     ["Latin American"] = {col.green, col.white, col.red},
                      German = {col.black, col.red, col.yellow},
                    }
                  },
