@@ -106,12 +106,13 @@ The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoo
 
 # This is the real code that gets tangled out to my config file
 #+begin_src lua :exports none
-  DefaultBrowser = "org.mozilla.firefox"
-  JiraApp = "org.zzamboni.Jira"
-  WikiApp = "org.zzamboni.Wiki"
+  DefaultBrowser = "com.brave.Browser.dev"
+  -- DefaultBrowser = "com.google.Chrome"
+  JiraApp = "org.epichrome.app.Jira"
+  WikiApp = "org.epichrome.app.Wiki"
   CollabApp = DefaultBrowser
-  SmcaApp = "org.epichrome.app.SwisscomSMCA"
-  OpsGenieApp = "org.epichrome.app.OpsGenie"
+  SmcaApp = DefaultBrowser
+  OpsGenieApp = DefaultBrowser
 
   Install:andUse("URLDispatcher",
                  {
@@ -127,9 +128,6 @@ The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoo
                        { "https?://app.eu.opsgenie.com",        OpsGenieApp },
                      },
                      default_handler = DefaultBrowser
-                     -- default_handler = "com.google.Chrome"
-                     -- default_handler = "com.electron.brave"
-                     -- default_handler = "com.brave.Browser.dev"
                    },
                    start = true
                  }
@@ -138,10 +136,10 @@ The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoo
 
 # This block is the one that gets exported when this config file is typeset in books or blog posts, to prevent the company name from showing up there.
 #+begin_src lua :exports code :tangle no
-  DefaultBrowser = "org.mozilla.firefox"
-  JiraApp = "org.zzamboni.Jira"
-  WikiApp = "org.zzamboni.Wiki"
-  OpsGenieApp = "org.zzamboni.OpsGenie"
+  DefaultBrowser = "com.brave.Browser.dev"
+  JiraApp = "org.epichrome.app.Jira"
+  WikiApp = "org.epichrome.app.Wiki"
+  OpsGenieApp = DefaultBrowser
 
   Install:andUse("URLDispatcher",
                  {
@@ -154,8 +152,6 @@ The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoo
                        { "https?://app.eu.opsgenie.com",    OpsGenieApp },
                      },
                      default_handler = DefaultBrowser
-                     -- default_handler = "com.electron.brave"
-                     -- default_handler = "com.brave.Browser.dev"
                    },
                    start = true
                  }
