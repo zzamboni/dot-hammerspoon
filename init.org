@@ -129,7 +129,8 @@ The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoo
                      },
                      default_handler = DefaultBrowser
                    },
-                   start = true
+                   start = true,
+                   loglevel = 'debug'
                  }
   )
 #+end_src
