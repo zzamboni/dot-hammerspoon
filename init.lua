@@ -268,6 +268,7 @@ Install:andUse("TimeMachineProgress",
 
 Install:andUse("ToggleSkypeMute",
                {
+                 disable = true,
                  hotkeys = {
                    toggle_skype = { shift_hyper, "v" },
                    toggle_skype_for_business = { shift_hyper, "f" }
