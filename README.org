@@ -1,7 +1,3 @@
-* Note: this repository has moved to GitLab: https://gitlab.com/zzamboni/dot-hammerspoon.git
-
-The files here are no longer guaranteed to be up to date.
-
 * My Hammerspoon configuration
   :PROPERTIES:
   :CUSTOM_ID: my-hammerspoon-configuration
