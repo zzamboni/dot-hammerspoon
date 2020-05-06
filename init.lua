@@ -28,8 +28,8 @@ BTT = spoon.BetterTouchTool
 
 DefaultBrowser = "com.brave.Browser.dev"
 -- DefaultBrowser = "com.google.Chrome"
-JiraApp = "org.epichrome.app.Jira"
-WikiApp = "org.epichrome.app.Wiki"
+JiraApp = "org.epichrome.eng.Jira"
+WikiApp = "org.epichrome.eng.Wiki"
 CollabApp = DefaultBrowser
 SmcaApp = DefaultBrowser
 OpsGenieApp = DefaultBrowser
