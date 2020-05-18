@@ -22,13 +22,22 @@ If you want to learn more about Hammerspoon, check out my book [[https://leanpub
 * Table of Contents :TOC_3:noexport:
 - [[#general-variables-and-configuration][General variables and configuration]]
 - [[#spoon-management][Spoon Management]]
-- [[#bettertouchtool][BetterTouchTool]]
+- [[#bettertouchtool-integration-experimental][BetterTouchTool integration (experimental)]]
 - [[#url-dispatching-to-site-specific-browsers][URL Dispatching to site-specific browsers]]
 - [[#window-and-screen-manipulation][Window and screen manipulation]]
 - [[#organization-and-productivity][Organization and Productivity]]
 - [[#system-and-ui][System and UI]]
+  - [[#general-hammerspoon-utilities][General Hammerspoon utilities]]
+  - [[#caffeine-control-systemdisplay-sleep][Caffeine: Control system/display sleep]]
+  - [[#colorize-menubar-according-to-keyboard-layout][Colorize menubar according to keyboard layout]]
+  - [[#locating-the-mouse][Locating the mouse]]
+  - [[#finding-colors][Finding colors]]
+  - [[#homebrew-information-popups][Homebrew information popups]]
+  - [[#displaying-keyboard-shortcuts][Displaying keyboard shortcuts]]
+  - [[#timemachine-backup-monitoring][TimeMachine backup monitoring]]
+  - [[#disabling-turbo-boost][Disabling Turbo Boost]]
 - [[#other-applications][Other applications]]
-- [[#seal][Seal]]
+- [[#seal-application-launchercontroller][Seal application launcher/controller]]
 - [[#network-transitions][Network transitions]]
 - [[#pop-up-translation][Pop-up translation]]
 - [[#leanpub-integration][Leanpub integration]]
@@ -91,7 +100,7 @@ This is just a shortcut to make the declarations below look more readable, i.e. 
   Install=spoon.SpoonInstall
 #+end_src
 
-* BetterTouchTool
+* BetterTouchTool integration (experimental)
 
 I'm currently working on a new [[https://github.com/zzamboni/Spoons/tree/spoon/BetterTouchTool/Source/BetterTouchTool.spoon][BetterTouchTool.spoon]] which provides integration with the [[https://docs.bettertouchtool.net/docs/apple_script.html][BetterTouchTool AppleScript API]]. This is in heavy development! See the configuration for the Hammer spoon in [[System and UI][System and UI]] for an example of how to use it.
 
@@ -106,33 +115,33 @@ The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoo
 
 # This is the real code that gets tangled out to my config file
 #+begin_src lua :exports none
-  DefaultBrowser = "com.brave.Browser.dev"
-  -- DefaultBrowser = "com.google.Chrome"
-  JiraApp = "org.epichrome.eng.Jira"
-  WikiApp = "org.epichrome.eng.Wiki"
-  CollabApp = DefaultBrowser
-  SmcaApp = DefaultBrowser
-  OpsGenieApp = DefaultBrowser
+    DefaultBrowser = "com.brave.Browser.dev"
+    -- DefaultBrowser = "com.google.Chrome"
+    JiraApp = "org.epichrome.eng.Jira"
+    WikiApp = "org.epichrome.eng.Wiki"
+    CollabApp = DefaultBrowser
+    SmcaApp = DefaultBrowser
+    OpsGenieApp = DefaultBrowser
 
-  Install:andUse("URLDispatcher",
-                 {
-                   config = {
-                     url_patterns = {
-                       { "https?://issue.swisscom.ch",          JiraApp },
-                       { "https?://issue.swisscom.com",         JiraApp },
-                       { "https?://jira.swisscom.com",          JiraApp },
-                       { "https?://wiki.swisscom.com",          WikiApp },
-                       { "https?://collaboration.swisscom.com", CollabApp },
-                       { "https?://smca.swisscom.com",          SmcaApp },
-                       { "https?://app.opsgenie.com",           OpsGenieApp },
-                       { "https?://app.eu.opsgenie.com",        OpsGenieApp },
+    Install:andUse("URLDispatcher",
+                   {
+                     config = {
+                       url_patterns = {
+                         { "https?://issue.swisscom.ch",          JiraApp },
+                         { "https?://issue.swisscom.com",         JiraApp },
+                         { "https?://jira.swisscom.com",          JiraApp },
+                         { "https?://wiki.swisscom.com",          WikiApp },
+                         { "https?://collaboration.swisscom.com", CollabApp },
+                         { "https?://smca.swisscom.com",          SmcaApp },
+                         { "https?://app.opsgenie.com",           OpsGenieApp },
+                         { "https?://app.eu.opsgenie.com",        OpsGenieApp },
+                       },
+                       default_handler = DefaultBrowser
                      },
-                     default_handler = DefaultBrowser
-                   },
-                   start = true,
-                   loglevel = 'debug'
-                 }
-  )
+                     start = true,
+  --                   loglevel = 'debug'
+                   }
+    )
 #+end_src
 
 # This block is the one that gets exported when this config file is typeset in books or blog posts, to prevent the company name from showing up there.
@@ -228,7 +237,7 @@ The [[http://www.hammerspoon.org/Spoons/SendToOmniFocus.html][SendToOmniFocus]] 
   function chrome_item(n)
     return { apptype = "chromeapp", itemname = n }
   end
-  #+end_src
+#+end_src
 
 #+begin_src lua :exports none
   function OF_register_additional_apps(s)
@@ -249,7 +258,7 @@ The [[http://www.hammerspoon.org/Spoons/SendToOmniFocus.html][SendToOmniFocus]] 
 #+end_src
 
 
-  #+begin_src lua
+#+begin_src lua
   Install:andUse("SendToOmniFocus",
                  {
                    config = {
@@ -267,16 +276,16 @@ The [[http://www.hammerspoon.org/Spoons/SendToOmniFocus.html][SendToOmniFocus]] 
 The [[http://www.hammerspoon.org/Spoons/EvernoteOpenAndTag.html][EvernoteOpenAndTag]] spoon sets up some missing key bindings for note manipulation in Evernote. I no longer use Evernote for GTD, so I have disabled the shortcuts for tagging notes.
 
 #+begin_src lua
-  Install:andUse("EvernoteOpenAndTag",
-                 {
-                   hotkeys = {
-                     open_note = { hyper, "o" },
---                     ["open_and_tag-+work"] = { hyper, "w" },
---                     ["open_and_tag-+personal"] = { hyper, "p" },
---                     ["tag-@zzdone"] = { hyper, "z" }
+    Install:andUse("EvernoteOpenAndTag",
+                   {
+                     hotkeys = {
+                       open_note = { hyper, "o" },
+  --                     ["open_and_tag-+work"] = { hyper, "w" },
+  --                     ["open_and_tag-+personal"] = { hyper, "p" },
+  --                     ["tag-@zzdone"] = { hyper, "z" }
+                     }
                    }
-                 }
-  )
+    )
 #+end_src
 
 The [[http://www.hammerspoon.org/Spoons/TextClipboardHistory.html][TextClipboardHistory]] spoon implements a clipboard history, only for text items. It is invoked with =Cmd-Shift-v=.
@@ -298,6 +307,8 @@ This is disabled for the moment as I experiment with BetterTouchTool's built-in 
 #+end_src
 
 * System and UI
+
+** General Hammerspoon utilities
 
 The =BTT_restart_Hammerspoon= function sets up a BetterTouchTool widget which also executes the =config_reload= action from the spoon. This gets assigned to the =fn= config parameter in the configuration of the Hammer spoon below, which has the effect of calling the function with the Spoon object as its parameter.
 
@@ -332,6 +343,8 @@ The [[https://zzamboni.github.io/zzSpoons/Hammer.html][Hammer]] spoon (get it? h
                  }
   )
 #+end_src
+
+** Caffeine: Control system/display sleep
 
 The [[http://www.hammerspoon.org/Spoons/Caffeine.html][Caffeine]] spoon allows preventing the display and the machine from sleeping. I use it frequently when playing music from my machine, to avoid having to unlock the screen whenever I want to change the music. In this case we also create a function =BTT_caffeine_widget= to configure the widget to both execute the corresponding function, and to set its icon according to the current state.
 
@@ -377,6 +390,8 @@ The [[http://www.hammerspoon.org/Spoons/Caffeine.html][Caffeine]] spoon allows p
   })
 #+end_src
 
+** Colorize menubar according to keyboard layout
+
 The [[http://www.hammerspoon.org/Spoons/MenubarFlag.html][MenubarFlag]] spoon colorizes the menubar according to the selected keyboard language or layout (functionality inspired by [[https://pqrs.org/osx/ShowyEdge/index.html.en][ShowyEdge]]). I use English, Spanish and German, so those are the colors I have defined.
 
 #+begin_src lua
@@ -395,6 +410,8 @@ The [[http://www.hammerspoon.org/Spoons/MenubarFlag.html][MenubarFlag]] spoon co
   )
 #+end_src
 
+** Locating the mouse
+
 The [[http://www.hammerspoon.org/Spoons/MouseCircle.html][MouseCircle]] spoon shows a circle around the mouse pointer when triggered. I have it disabled for now because I have the macOS [[https://support.apple.com/kb/PH25507?locale=en_US&viewlocale=en_US][shake-to-grow feature]] enabled.
 
 #+begin_src lua
@@ -410,6 +427,8 @@ The [[http://www.hammerspoon.org/Spoons/MouseCircle.html][MouseCircle]] spoon sh
                  }
   )
 #+end_src
+
+** Finding colors
 
 One of my original bits of Hammerspoon code, now made into a spoon (although I keep it disabled, since I don't really use it). The [[http://www.hammerspoon.org/Spoons/ColorPicker.html][ColorPicker]] spoon shows a menu of the available color palettes, and when you select one, it draws swatches in all the colors in that palette, covering the whole screen. You can click on any of them to copy its name to the clipboard, or cmd-click to copy its RGB code.
 
@@ -427,6 +446,8 @@ One of my original bits of Hammerspoon code, now made into a spoon (although I k
                  }
   )
 #+end_src
+
+** Homebrew information popups
 
 I use Homebrew, and when I run =brew update=, I often wonder about what some of the formulas shown are (names are not always obvious). The [[http://www.hammerspoon.org/Spoons/BrewInfo.html][BrewInfo]] spoon allows me to point at a Formula or Cask name and press =Hyper-b= or =Hyper-c= (for Casks) to have the output of the =info= command in a popup window, or the same key with =Shift-Hyper= to open the URL of the Formula/Cask.
 
@@ -451,6 +472,8 @@ I use Homebrew, and when I run =brew update=, I often wonder about what some of 
   )
 #+end_src
 
+** Displaying keyboard shortcuts
+
 The [[http://www.hammerspoon.org/Spoons/KSheet.html][KSheet]] spoon traverses the current application's menus and builds a cheatsheet of the keyboard shortcuts, showing it in a nice popup window.
 
 #+begin_src lua :tangle no
@@ -460,6 +483,8 @@ The [[http://www.hammerspoon.org/Spoons/KSheet.html][KSheet]] spoon traverses th
                      toggle = { hyper, "/" }
   }})
 #+end_src
+
+** TimeMachine backup monitoring
 
 The [[http://www.hammerspoon.org/Spoons/TimeMachineProgress.html][TimeMachineProgress]] spoon shows an indicator about the progress of the ongoing Time Machine backup. The indicator disappears when there is no backup going on.
 
@@ -517,7 +542,7 @@ The [[http://www.hammerspoon.org/Spoons/HeadphoneAutoPause.html][HeadphoneAutoPa
   )
 #+end_src
 
-* Seal
+* Seal application launcher/controller
 
 The [[http://www.hammerspoon.org/Spoons/Seal.html][Seal]] spoon is a powerhouse - it implements a Spotlight-like launcher, but which allows for infinite configurability of what can be done or searched from the launcher window. I use Seal as my default launcher, triggered with =Cmd-space=, although I still keep Spotlight around under =Hyper-space=, mainly for its search capabilities.
 
@@ -732,7 +757,7 @@ I am now testing [[http://www.hammerspoon.org/Spoons/DeepLTranslate.html][DeepLT
 
 * Leanpub integration
 
-The Leanpub spoon provides monitoring of book build jobs.
+The Leanpub spoon provides monitoring of book build jobs. You can read more about how I use this in my blog post [[https://zzamboni.org/post/automating-leanpub-book-publishing-with-hammerspoon-and-circleci/][Automating Leanpub book publishing with Hammerspoon and CircleCI]].
 
 #+begin_src lua
   Install:andUse("Leanpub",
