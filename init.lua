@@ -266,6 +266,20 @@ Install:andUse("TimeMachineProgress",
                }
 )
 
+Install:andUse("TurboBoost",
+                 {
+                   repo = 'zzspoons',
+                   config = {
+                     disable_on_start = true
+                   },
+                   hotkeys = {
+                     toggle = { hyper, "0" }
+                   },
+                   start = true,
+--                   loglevel = 'debug'
+                 }
+  )
+
 Install:andUse("ToggleSkypeMute",
                {
                  disable = true,

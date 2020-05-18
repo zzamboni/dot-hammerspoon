@@ -471,6 +471,26 @@ The [[http://www.hammerspoon.org/Spoons/TimeMachineProgress.html][TimeMachinePro
   )
 #+end_src
 
+** Disabling Turbo Boost
+
+The TurboBoost spoon shows an indicator of the CPU's Turbo Boost status, and allows disabling/enabling. This requires [[https://github.com/rugarciap/Turbo-Boost-Switcher][Turbo Boost Switcher]] to be installed.
+
+#+begin_src lua
+    Install:andUse("TurboBoost",
+                   {
+                     repo = 'zzspoons',
+                     config = {
+                       disable_on_start = true
+                     },
+                     hotkeys = {
+                       toggle = { hyper, "0" }
+                     },
+                     start = true,
+  --                   loglevel = 'debug'
+                   }
+    )
+#+end_src
+
 * Other applications
 
 The [[http://www.hammerspoon.org/Spoons/ToggleSkypeMute.html][ToggleSkypeMute]] spoon sets up the missing keyboard bindings for toggling the mute button on Skype and Skype for Business. I'm not fully happy with this spoon - it should auto-detect the application instead of having separate keys for each application, and it could be extended to more generic use.
