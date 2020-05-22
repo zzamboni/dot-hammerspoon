@@ -41,6 +41,7 @@ If you want to learn more about Hammerspoon, check out my book [[https://leanpub
 - [[#network-transitions][Network transitions]]
 - [[#pop-up-translation][Pop-up translation]]
 - [[#leanpub-integration][Leanpub integration]]
+- [[#showing-application-keybindings][Showing application keybindings]]
 - [[#loading-private-configuration][Loading private configuration]]
 - [[#end-of-config-animation][End-of-config animation]]
 
@@ -773,6 +774,18 @@ The Leanpub spoon provides monitoring of book build jobs. You can read more abou
                      }
                    },
                    start = true,
+  })
+#+end_src
+
+* Showing application keybindings
+
+The KSheet spoon provides for showing the keybindings for the currently active application.
+
+#+begin_src lua
+  Install:andUse("KSheet", {
+                   hotkeys = {
+                     toggle = { hyper, "/" }
+                   }
   })
 #+end_src
 

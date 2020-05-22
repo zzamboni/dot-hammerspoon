@@ -470,6 +470,12 @@ Install:andUse("Leanpub",
                  start = true,
 })
 
+Install:andUse("KSheet", {
+                 hotkeys = {
+                   toggle = { hyper, "/" }
+                 }
+})
+
 local localfile = hs.configdir .. "/init-local.lua"
 if hs.fs.attributes(localfile) then
   dofile(localfile)
