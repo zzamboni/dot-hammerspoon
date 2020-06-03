@@ -27,32 +27,40 @@ Install:andUse("BetterTouchTool", { loglevel = 'debug' })
 BTT = spoon.BetterTouchTool
 
 DefaultBrowser = "com.brave.Browser.dev"
-  -- DefaultBrowser = "com.google.Chrome"
-  JiraApp = "org.epichrome.eng.Jira"
-  WikiApp = "org.epichrome.eng.Wiki"
-  CollabApp = DefaultBrowser
-  SmcaApp = DefaultBrowser
-  OpsGenieApp = DefaultBrowser
+-- DefaultBrowser = "com.google.Chrome"
+JiraApp = "org.epichrome.eng.Jira"
+WikiApp = "org.epichrome.eng.Wiki"
+CollabApp = DefaultBrowser
+SmcaApp = DefaultBrowser
+OpsGenieApp = DefaultBrowser
 
-  Install:andUse("URLDispatcher",
-                 {
-                   config = {
-                     url_patterns = {
-                       { "https?://issue.swisscom.ch",          JiraApp },
-                       { "https?://issue.swisscom.com",         JiraApp },
-                       { "https?://jira.swisscom.com",          JiraApp },
-                       { "https?://wiki.swisscom.com",          WikiApp },
-                       { "https?://collaboration.swisscom.com", CollabApp },
-                       { "https?://smca.swisscom.com",          SmcaApp },
-                       { "https?://app.opsgenie.com",           OpsGenieApp },
-                       { "https?://app.eu.opsgenie.com",        OpsGenieApp },
-                     },
-                     default_handler = DefaultBrowser
+Install:andUse("URLDispatcher",
+               {
+                 config = {
+                   url_patterns = {
+                     { "https?://issue.swisscom.ch",          JiraApp },
+                     { "https?://issue.swisscom.com",         JiraApp },
+                     { "https?://jira.swisscom.com",          JiraApp },
+                     { "https?://wiki.swisscom.com",          WikiApp },
+                     { "https?://collaboration.swisscom.com", CollabApp },
+                     { "https?://smca.swisscom.com",          SmcaApp },
+                     { "https?://app.opsgenie.com",           OpsGenieApp },
+                     { "https?://app.eu.opsgenie.com",        OpsGenieApp },
+                     { "msteams:",                            "com.microsoft.teams" }
                    },
-                   start = true,
---                   loglevel = 'debug'
-                 }
-  )
+                   url_redir_decoders = {
+                     { "Office 365 safelinks check",
+                       "https://eur03.safelinks.protection.outlook.com/(.*)\\?url=(.-)&.*",
+                       "%2" },
+                     { "MS Teams URLs",
+                       "(https://teams.microsoft.com.*)", "msteams:%1", true }
+                   },
+                   default_handler = DefaultBrowser
+                 },
+                 start = true,
+                 --                   loglevel = 'debug'
+               }
+)
 
 Install:andUse("WindowHalfsAndThirds",
                {
