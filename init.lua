@@ -288,6 +288,13 @@ Install:andUse("TurboBoost",
                  }
   )
 
+Install:andUse("EjectVolumes", {
+                 config = {
+                   show_in_menubar = false,
+                 },
+                 start = true,
+})
+
 Install:andUse("ToggleSkypeMute",
                {
                  disable = true,

@@ -36,6 +36,7 @@ If you want to learn more about Hammerspoon, check out my book [[https://leanpub
   - [[#displaying-keyboard-shortcuts][Displaying keyboard shortcuts]]
   - [[#timemachine-backup-monitoring][TimeMachine backup monitoring]]
   - [[#disabling-turbo-boost][Disabling Turbo Boost]]
+  - [[#unmounting-external-disks-on-sleep][Unmounting external disks on sleep]]
 - [[#other-applications][Other applications]]
 - [[#seal-application-launchercontroller][Seal application launcher/controller]]
 - [[#network-transitions][Network transitions]]
@@ -529,6 +530,19 @@ The TurboBoost spoon shows an indicator of the CPU's Turbo Boost status, and all
   --                   loglevel = 'debug'
                    }
     )
+#+end_src
+
+** Unmounting external disks on sleep
+
+The EjectVolumes spoon automatically ejects all external disks before the system goes to sleep. I use this to avoid warnings from macOS when I close my laptop and disconnect it from my hub without explicitly unmounting my backup disk before. I disable the menubar icon, which is shown by default by the Spoon.
+
+#+begin_src lua
+  Install:andUse("EjectVolumes", {
+                   config = {
+                     show_in_menubar = false,
+                   },
+                   start = true,
+  })
 #+end_src
 
 * Other applications
