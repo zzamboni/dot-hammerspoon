@@ -541,7 +541,9 @@ The EjectVolumes spoon automatically ejects all external disks before the system
                    config = {
                      show_in_menubar = false,
                    },
+                   hotkeys = { hyper, "=" },
                    start = true,
+                 loglevel = 'debug'
   })
 #+end_src
 

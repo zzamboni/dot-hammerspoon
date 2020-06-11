@@ -292,7 +292,9 @@ Install:andUse("EjectVolumes", {
                  config = {
                    show_in_menubar = false,
                  },
+                 hotkeys = { hyper, "=" },
                  start = true,
+               loglevel = 'debug'
 })
 
 Install:andUse("ToggleSkypeMute",
