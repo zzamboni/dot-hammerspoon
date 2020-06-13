@@ -799,6 +799,7 @@ The Leanpub spoon provides monitoring of book build jobs. You can read more abou
                        -- spoon.Leanpub.api_key = "my-api-key"
                        { slug = "learning-hammerspoon" },
                        { slug = "learning-cfengine" },
+                       { slug = "emacs-org-leanpub" },
                        { slug = "lit-config"  },
                        { slug = "zztestbook" },
                      }
