@@ -7,6 +7,7 @@ hs.logger.defaultLogLevel="info"
 
 hyper = {"cmd","alt","ctrl"}
 shift_hyper = {"cmd","alt","ctrl","shift"}
+ctrl_cmd = {"cmd","ctrl"}
 
 col = hs.drawing.color.x11
 
@@ -64,10 +65,27 @@ Install:andUse("URLDispatcher",
 
 Install:andUse("WindowHalfsAndThirds",
                {
+                 disable = true,
                  config = {
                    use_frame_correctness = true
                  },
                  hotkeys = 'default'
+               }
+)
+
+myGrid = { w = 6, h = 4 }
+Install:andUse("MiroWindowsManager",
+               {
+                 config = {
+                   GRID = myGrid
+                 },
+                 hotkeys = {
+                   up =         { ctrl_cmd, "up" },
+                   right =      { ctrl_cmd, "right" },
+                   down =       { ctrl_cmd, "down" },
+                   left =       { ctrl_cmd, "left" },
+                   fullscreen = { hyper,    "up" }
+                 }
                }
 )
 
@@ -79,7 +97,7 @@ Install:andUse("WindowScreenLeftAndRight",
 
 Install:andUse("WindowGrid",
                {
-                 config = { gridGeometries = { { "6x4" } } },
+                 config = { gridGeometries = { { myGrid.w .."x" .. myGrid.h } } },
                  hotkeys = {show_grid = {hyper, "g"}},
                  start = true
                }

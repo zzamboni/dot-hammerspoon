@@ -59,6 +59,7 @@ I use =hyper= and =shift_hyper= as the modifiers for most of my key bindings, so
 #+begin_src lua
   hyper = {"cmd","alt","ctrl"}
   shift_hyper = {"cmd","alt","ctrl","shift"}
+  ctrl_cmd = {"cmd","ctrl"}
 #+end_src
 
 Set up an abbreviation for =hs.drawing.color.x11= since I use it repeatedly later on.
@@ -188,13 +189,36 @@ The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoo
 
 The [[http://www.hammerspoon.org/Spoons/WindowHalfsAndThirds.html][WindowHalfsAndThirds]] spoon sets up multiple key bindings for manipulating the size and position of windows.
 
+This was one of the first spoons I wrote, and I used it for window resizing until I discovered [[https://github.com/miromannino/miro-windows-manager][MiroWindowsManager]], which I started using now.
+
 #+begin_src lua
   Install:andUse("WindowHalfsAndThirds",
                  {
+                   disable = true,
                    config = {
                      use_frame_correctness = true
                    },
                    hotkeys = 'default'
+                 }
+  )
+#+end_src
+
+[[https://github.com/miromannino/miro-windows-manager][MiroWindowsManager]] allows more granular window resizing and movement. One thing to keep in mind is that this spoon uses the =hs.grid= module internally. If you also use the =WindowGrid= spoon (see below), make sure both spoons use the same grid size to avoid conflicts.
+
+#+begin_src lua
+  myGrid = { w = 6, h = 4 }
+  Install:andUse("MiroWindowsManager",
+                 {
+                   config = {
+                     GRID = myGrid
+                   },
+                   hotkeys = {
+                     up =         { ctrl_cmd, "up" },
+                     right =      { ctrl_cmd, "right" },
+                     down =       { ctrl_cmd, "down" },
+                     left =       { ctrl_cmd, "left" },
+                     fullscreen = { hyper,    "up" }
+                   }
                  }
   )
 #+end_src
@@ -214,7 +238,7 @@ The [[http://www.hammerspoon.org/Spoons/WindowGrid.html][WindowGrid]] spoon sets
 #+begin_src lua
   Install:andUse("WindowGrid",
                  {
-                   config = { gridGeometries = { { "6x4" } } },
+                   config = { gridGeometries = { { myGrid.w .."x" .. myGrid.h } } },
                    hotkeys = {show_grid = {hyper, "g"}},
                    start = true
                  }
