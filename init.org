@@ -26,6 +26,10 @@ If you want to learn more about Hammerspoon, check out my book [[https://leanpub
 - [[#url-dispatching-to-site-specific-browsers][URL dispatching to site-specific browsers]]
 - [[#window-and-screen-manipulation][Window and screen manipulation]]
 - [[#organization-and-productivity][Organization and Productivity]]
+  - [[#universal-archiving][Universal Archiving]]
+  - [[#filing-to-omnifocus][Filing to Omnifocus]]
+  - [[#evernote-filing-and-tagging][Evernote filing and tagging]]
+  - [[#clipboard-history][Clipboard history]]
 - [[#system-and-ui][System and UI]]
   - [[#general-hammerspoon-utilities][General Hammerspoon utilities]]
   - [[#caffeine-control-systemdisplay-sleep][Caffeine: Control system/display sleep]]
@@ -54,12 +58,12 @@ Global log level. Per-spoon log level can be configured in each =Install:andUse=
   hs.logger.defaultLogLevel="info"
 #+end_src
 
-I use =hyper= and =shift_hyper= as the modifiers for most of my key bindings, so I define them as variables here for easier referencing.
+I use =hyper=, =shift_hyper= and =ctrl_cmd= as the modifiers for most of my key bindings, so I define them as variables here for easier use.
 
 #+begin_src lua
-  hyper = {"cmd","alt","ctrl"}
+  hyper       = {"cmd","alt","ctrl"}
   shift_hyper = {"cmd","alt","ctrl","shift"}
-  ctrl_cmd = {"cmd","ctrl"}
+  ctrl_cmd    = {"cmd","ctrl"}
 #+end_src
 
 Set up an abbreviation for =hs.drawing.color.x11= since I use it repeatedly later on.
@@ -189,7 +193,7 @@ The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoo
 
 The [[http://www.hammerspoon.org/Spoons/WindowHalfsAndThirds.html][WindowHalfsAndThirds]] spoon sets up multiple key bindings for manipulating the size and position of windows.
 
-This was one of the first spoons I wrote, and I used it for window resizing until I discovered [[https://github.com/miromannino/miro-windows-manager][MiroWindowsManager]], which I started using now.
+This was one of the first spoons I wrote, and I used it for window resizing until I discovered [[https://github.com/miromannino/miro-windows-manager][MiroWindowsManager]] (see below), which I started using now.
 
 #+begin_src lua
   Install:andUse("WindowHalfsAndThirds",
@@ -223,16 +227,6 @@ This was one of the first spoons I wrote, and I used it for window resizing unti
   )
 #+end_src
 
-The [[http://www.hammerspoon.org/Spoons/WindowScreenLeftAndRight.html][WindowScreenLeftAndRight]] spoon sets up key bindings for moving windows between multiple screens.
-
-#+begin_src lua
-  Install:andUse("WindowScreenLeftAndRight",
-                 {
-                   hotkeys = 'default'
-                 }
-  )
-#+end_src
-
 The [[http://www.hammerspoon.org/Spoons/WindowGrid.html][WindowGrid]] spoon sets up a key binding (=Hyper-g= here) to overlay a grid that allows resizing windows by specifying their opposite corners.
 
 #+begin_src lua
@@ -241,6 +235,16 @@ The [[http://www.hammerspoon.org/Spoons/WindowGrid.html][WindowGrid]] spoon sets
                    config = { gridGeometries = { { myGrid.w .."x" .. myGrid.h } } },
                    hotkeys = {show_grid = {hyper, "g"}},
                    start = true
+                 }
+  )
+#+end_src
+
+The [[http://www.hammerspoon.org/Spoons/WindowScreenLeftAndRight.html][WindowScreenLeftAndRight]] spoon sets up key bindings for moving windows between multiple screens.
+
+#+begin_src lua
+  Install:andUse("WindowScreenLeftAndRight",
+                 {
+                   hotkeys = 'default'
                  }
   )
 #+end_src
@@ -257,6 +261,8 @@ The [[http://www.hammerspoon.org/Spoons/ToggleScreenRotation.html][ToggleScreenR
 
 * Organization and Productivity
 
+** Universal Archiving
+
 The [[http://www.hammerspoon.org/Spoons/UniversalArchive.html][UniversalArchive]] spoon sets up a single key binding (=Ctrl-Cmd-a=) to archive the current item in Evernote, Mail and Outlook.
 
 #+begin_src lua
@@ -270,6 +276,10 @@ The [[http://www.hammerspoon.org/Spoons/UniversalArchive.html][UniversalArchive]
                  }
   )
 #+end_src
+
+** Filing to Omnifocus
+
+*Note:* I no longer use OmniFocus so the Spoon below is diabled, but this section is still here as an example.
 
 The [[http://www.hammerspoon.org/Spoons/SendToOmniFocus.html][SendToOmniFocus]] spoon sets up a single key binding (=Hyper-t=) to send the current item to OmniFocus from multiple applications. We use the =fn= attribute of =Install:andUse= to call a function which registers some of the Epichrome site-specific-browsers I use, so that the Spoon knows how to collect items from them.
 
@@ -297,10 +307,10 @@ The [[http://www.hammerspoon.org/Spoons/SendToOmniFocus.html][SendToOmniFocus]] 
   end
 #+end_src
 
-
 #+begin_src lua
   Install:andUse("SendToOmniFocus",
                  {
+                   disable = true,
                    config = {
                      quickentrydialog = false,
                      notifications = false
@@ -312,6 +322,8 @@ The [[http://www.hammerspoon.org/Spoons/SendToOmniFocus.html][SendToOmniFocus]] 
                  }
   )
 #+end_src
+
+** Evernote filing and tagging
 
 The [[http://www.hammerspoon.org/Spoons/EvernoteOpenAndTag.html][EvernoteOpenAndTag]] spoon sets up some missing key bindings for note manipulation in Evernote. I no longer use Evernote for GTD, so I have disabled the shortcuts for tagging notes.
 
@@ -328,9 +340,11 @@ The [[http://www.hammerspoon.org/Spoons/EvernoteOpenAndTag.html][EvernoteOpenAnd
     )
 #+end_src
 
+** Clipboard history
+
 The [[http://www.hammerspoon.org/Spoons/TextClipboardHistory.html][TextClipboardHistory]] spoon implements a clipboard history, only for text items. It is invoked with =Cmd-Shift-v=.
 
-This is disabled for the moment as I experiment with BetterTouchTool's built-in clipboard history, which I have bound to the same key combination for consistency in my workflow.
+*Note:* This is disabled for the moment as I experiment with BetterTouchTool's built-in clipboard history, which I have bound to the same key combination for consistency in my workflow.
 
 #+begin_src lua
   Install:andUse("TextClipboardHistory",
@@ -543,7 +557,6 @@ The TurboBoost spoon shows an indicator of the CPU's Turbo Boost status, and all
 #+begin_src lua
     Install:andUse("TurboBoost",
                    {
-                     repo = 'zzspoons',
                      config = {
                        disable_on_start = true
                      },
@@ -574,21 +587,7 @@ The =EjectMenu= spoon automatically ejects all external disks before the system 
 
 * Other applications
 
-The [[http://www.hammerspoon.org/Spoons/ToggleSkypeMute.html][ToggleSkypeMute]] spoon sets up the missing keyboard bindings for toggling the mute button on Skype and Skype for Business. I'm not fully happy with this spoon - it should auto-detect the application instead of having separate keys for each application, and it could be extended to more generic use.
-
-#+begin_src lua
-  Install:andUse("ToggleSkypeMute",
-                 {
-                   disable = true,
-                   hotkeys = {
-                     toggle_skype = { shift_hyper, "v" },
-                     toggle_skype_for_business = { shift_hyper, "f" }
-                   }
-                 }
-  )
-#+end_src
-
-The [[http://www.hammerspoon.org/Spoons/HeadphoneAutoPause.html][HeadphoneAutoPause]] spoon implements auto-pause/resume for iTunes, Spotify and others when the headphones are unplugged.
+The [[http://www.hammerspoon.org/Spoons/HeadphoneAutoPause.html][HeadphoneAutoPause]] spoon implements auto-pause/resume for iTunes, Spotify and others when the headphones are unplugged. Note that this goes unused since I started using wireless headphones.
 
 #+begin_src lua
   Install:andUse("HeadphoneAutoPause",
@@ -600,7 +599,7 @@ The [[http://www.hammerspoon.org/Spoons/HeadphoneAutoPause.html][HeadphoneAutoPa
 
 * Seal application launcher/controller
 
-The [[http://www.hammerspoon.org/Spoons/Seal.html][Seal]] spoon is a powerhouse - it implements a Spotlight-like launcher, but which allows for infinite configurability of what can be done or searched from the launcher window. I use Seal as my default launcher, triggered with =Cmd-space=, although I still keep Spotlight around under =Hyper-space=, mainly for its search capabilities.
+The [[http://www.hammerspoon.org/Spoons/Seal.html][Seal]] spoon is a powerhouse. It implements a Spotlight-like launcher, but which allows for infinite configurability of what can be done or searched from the launcher window. I use Seal as my default launcher, triggered with =Cmd-space=, although I still keep Spotlight around under =Hyper-space=, mainly for its search capabilities.
 
 We start by loading the spoon, and specifying which plugins we want.
 
@@ -794,7 +793,7 @@ I live in Switzerland, and my German is far from perfect, so the [[http://www.ha
   )
 #+end_src
 
-I am now testing [[http://www.hammerspoon.org/Spoons/DeepLTranslate.html][DeepLTranslate]], based on PopupTranslateSelection but which uses the [[https://www.deepl.com/en/translator][DeepL translator]].
+I am now testing [[http://www.hammerspoon.org/Spoons/DeepLTranslate.html][DeepLTranslate]], based on PopupTranslateSelection but which uses the [[https://www.deepl.com/en/translator][DeepL translator]] (this is disabled because I have the DeepL app installed, which binds its own global hotkeys).
 
 #+begin_src lua
   Install:andUse("DeepLTranslate",

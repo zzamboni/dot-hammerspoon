@@ -5,9 +5,9 @@
 
 hs.logger.defaultLogLevel="info"
 
-hyper = {"cmd","alt","ctrl"}
+hyper       = {"cmd","alt","ctrl"}
 shift_hyper = {"cmd","alt","ctrl","shift"}
-ctrl_cmd = {"cmd","ctrl"}
+ctrl_cmd    = {"cmd","ctrl"}
 
 col = hs.drawing.color.x11
 
@@ -89,17 +89,17 @@ Install:andUse("MiroWindowsManager",
                }
 )
 
-Install:andUse("WindowScreenLeftAndRight",
-               {
-                 hotkeys = 'default'
-               }
-)
-
 Install:andUse("WindowGrid",
                {
                  config = { gridGeometries = { { myGrid.w .."x" .. myGrid.h } } },
                  hotkeys = {show_grid = {hyper, "g"}},
                  start = true
+               }
+)
+
+Install:andUse("WindowScreenLeftAndRight",
+               {
+                 hotkeys = 'default'
                }
 )
 
@@ -132,6 +132,7 @@ end
 
 Install:andUse("SendToOmniFocus",
                {
+                 disable = true,
                  config = {
                    quickentrydialog = false,
                    notifications = false
@@ -294,7 +295,6 @@ Install:andUse("TimeMachineProgress",
 
 Install:andUse("TurboBoost",
                  {
-                   repo = 'zzspoons',
                    config = {
                      disable_on_start = true
                    },
@@ -315,16 +315,6 @@ Install:andUse("EjectMenu", {
                  start = true,
                loglevel = 'debug'
 })
-
-Install:andUse("ToggleSkypeMute",
-               {
-                 disable = true,
-                 hotkeys = {
-                   toggle_skype = { shift_hyper, "v" },
-                   toggle_skype_for_business = { shift_hyper, "f" }
-                 }
-               }
-)
 
 Install:andUse("HeadphoneAutoPause",
                {
