@@ -306,11 +306,12 @@ Install:andUse("TurboBoost",
                  }
   )
 
-Install:andUse("EjectVolumes", {
+Install:andUse("EjectMenu", {
                  config = {
-                   show_in_menubar = false,
+                   show_in_menubar = true,
+                   notify = true,
                  },
-                 hotkeys = { hyper, "=" },
+                 hotkeys = { ejectAll = { hyper, "=" } },
                  start = true,
                loglevel = 'debug'
 })

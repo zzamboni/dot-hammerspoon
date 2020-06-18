@@ -558,14 +558,15 @@ The TurboBoost spoon shows an indicator of the CPU's Turbo Boost status, and all
 
 ** Unmounting external disks on sleep
 
-The EjectVolumes spoon automatically ejects all external disks before the system goes to sleep. I use this to avoid warnings from macOS when I close my laptop and disconnect it from my hub without explicitly unmounting my backup disk before. I disable the menubar icon, which is shown by default by the Spoon.
+The =EjectMenu= spoon automatically ejects all external disks before the system goes to sleep. I use this to avoid warnings from macOS when I close my laptop and disconnect it from my hub without explicitly unmounting my backup disk before. I disable the menubar icon, which is shown by default by the Spoon.
 
 #+begin_src lua
-  Install:andUse("EjectVolumes", {
+  Install:andUse("EjectMenu", {
                    config = {
-                     show_in_menubar = false,
+                     show_in_menubar = true,
+                     notify = true,
                    },
-                   hotkeys = { hyper, "=" },
+                   hotkeys = { ejectAll = { hyper, "=" } },
                    start = true,
                  loglevel = 'debug'
   })
