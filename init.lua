@@ -99,6 +99,9 @@ Install:andUse("WindowGrid",
 
 Install:andUse("WindowScreenLeftAndRight",
                {
+                 config = {
+                   animationDuration = 0
+                 },
                  hotkeys = 'default'
                }
 )
@@ -308,12 +311,13 @@ Install:andUse("TurboBoost",
 
 Install:andUse("EjectMenu", {
                  config = {
+                   eject_on_lid_close = true,
                    show_in_menubar = true,
                    notify = true,
                  },
                  hotkeys = { ejectAll = { hyper, "=" } },
                  start = true,
-               loglevel = 'debug'
+                 loglevel = 'debug'
 })
 
 Install:andUse("HeadphoneAutoPause",
@@ -492,7 +496,8 @@ Install:andUse("Leanpub",
                      { slug = "emacs-org-leanpub" },
                      { slug = "lit-config"  },
                      { slug = "zztestbook" },
-                   }
+                   },
+                   books_sync_to_dropbox = true,
                  },
                  start = true,
 })

@@ -244,6 +244,9 @@ The [[http://www.hammerspoon.org/Spoons/WindowScreenLeftAndRight.html][WindowScr
 #+begin_src lua
   Install:andUse("WindowScreenLeftAndRight",
                  {
+                   config = {
+                     animationDuration = 0
+                   },
                    hotkeys = 'default'
                  }
   )
@@ -576,12 +579,13 @@ The =EjectMenu= spoon automatically ejects all external disks before the system 
 #+begin_src lua
   Install:andUse("EjectMenu", {
                    config = {
+                     eject_on_lid_close = true,
                      show_in_menubar = true,
                      notify = true,
                    },
                    hotkeys = { ejectAll = { hyper, "=" } },
                    start = true,
-                 loglevel = 'debug'
+                   loglevel = 'debug'
   })
 #+end_src
 
@@ -826,7 +830,8 @@ The Leanpub spoon provides monitoring of book build jobs. You can read more abou
                        { slug = "emacs-org-leanpub" },
                        { slug = "lit-config"  },
                        { slug = "zztestbook" },
-                     }
+                     },
+                     books_sync_to_dropbox = true,
                    },
                    start = true,
   })
