@@ -65,7 +65,6 @@ Install:andUse("URLDispatcher",
 
 Install:andUse("WindowHalfsAndThirds",
                {
-                 disable = true,
                  config = {
                    use_frame_correctness = true
                  },
@@ -76,6 +75,7 @@ Install:andUse("WindowHalfsAndThirds",
 myGrid = { w = 6, h = 4 }
 Install:andUse("MiroWindowsManager",
                {
+                 disable = true,
                  config = {
                    GRID = myGrid
                  },

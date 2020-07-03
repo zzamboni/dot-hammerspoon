@@ -198,7 +198,6 @@ This was one of the first spoons I wrote, and I used it for window resizing unti
 #+begin_src lua
   Install:andUse("WindowHalfsAndThirds",
                  {
-                   disable = true,
                    config = {
                      use_frame_correctness = true
                    },
@@ -213,6 +212,7 @@ This was one of the first spoons I wrote, and I used it for window resizing unti
   myGrid = { w = 6, h = 4 }
   Install:andUse("MiroWindowsManager",
                  {
+                   disable = true,
                    config = {
                      GRID = myGrid
                    },
@@ -250,6 +250,7 @@ The [[http://www.hammerspoon.org/Spoons/WindowScreenLeftAndRight.html][WindowScr
                    hotkeys = 'default'
                  }
   )
+
 #+end_src
 
 The [[http://www.hammerspoon.org/Spoons/ToggleScreenRotation.html][ToggleScreenRotation]] spoon sets up a key binding to rotate the external screen (the spoon can set up keys for multiple screens if needed, but by default it rotates the first external screen).
