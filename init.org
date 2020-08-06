@@ -149,12 +149,14 @@ The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoo
                          "https://eur03.safelinks.protection.outlook.com/(.*)\\?url=(.-)&.*",
                          "%2" },
                        { "MS Teams URLs",
-                         "(https://teams.microsoft.com.*)", "msteams:%1", true }
+                         "(https://teams.microsoft.com.*)", "msteams:%1", true },
+                       { "Fix broken Preview anchor URLs",
+                         "%%23", "#", false, "Preview" },
                      },
                      default_handler = DefaultBrowser
                    },
                    start = true,
-                   --                   loglevel = 'debug'
+                   -- loglevel = 'debug'
                  }
   )
 #+end_src
@@ -180,7 +182,11 @@ The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoo
                      url_redir_decoders = {
                        -- Send MS Teams URLs directly to the app
                        { "MS Teams URLs",
-                         "(https://teams.microsoft.com.*)", "msteams:%1", true }
+                         "(https://teams.microsoft.com.*)", "msteams:%1", true },
+                       -- Preview incorrectly encodes the anchor
+                       -- character in URLs as %23, we fix it
+                       { "Fix broken Preview anchor URLs",
+                         "%%23", "#", false, "Preview" },
                      },
                      default_handler = DefaultBrowser
                    },

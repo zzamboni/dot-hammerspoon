@@ -54,12 +54,14 @@ Install:andUse("URLDispatcher",
                        "https://eur03.safelinks.protection.outlook.com/(.*)\\?url=(.-)&.*",
                        "%2" },
                      { "MS Teams URLs",
-                       "(https://teams.microsoft.com.*)", "msteams:%1", true }
+                       "(https://teams.microsoft.com.*)", "msteams:%1", true },
+                     { "Fix broken Preview anchor URLs",
+                       "%%23", "#", false, "Preview" },
                    },
                    default_handler = DefaultBrowser
                  },
                  start = true,
-                 --                   loglevel = 'debug'
+                 -- loglevel = 'debug'
                }
 )
 
