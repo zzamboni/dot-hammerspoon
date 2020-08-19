@@ -256,7 +256,6 @@ The [[http://www.hammerspoon.org/Spoons/WindowScreenLeftAndRight.html][WindowScr
                    hotkeys = 'default'
                  }
   )
-
 #+end_src
 
 The [[http://www.hammerspoon.org/Spoons/ToggleScreenRotation.html][ToggleScreenRotation]] spoon sets up a key binding to rotate the external screen (the spoon can set up keys for multiple screens if needed, but by default it rotates the first external screen).
