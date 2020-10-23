@@ -172,12 +172,12 @@ Install:andUse("URLDispatcher",
                {
                  config = {
                    url_patterns = {
-                     { "https?://issue.work.com",         JiraApp },
-                     { "https?://jira.work.com",          JiraApp },
-                     { "https?://wiki.work.com",          WikiApp },
-                     { "https?://app.opsgenie.com",       OpsGenieApp },
-                     { "https?://app.eu.opsgenie.com",    OpsGenieApp },
-                     { "msteams:",                        "com.microsoft.teams" }
+                     { "https?://issue.work.com",      JiraApp },
+                     { "https?://jira.work.com",       JiraApp },
+                     { "https?://wiki.work.com",       WikiApp },
+                     { "https?://app.opsgenie.com",    OpsGenieApp },
+                     { "https?://app.eu.opsgenie.com", OpsGenieApp },
+                     { "msteams:",                     "com.microsoft.teams" }
                    },
                    url_redir_decoders = {
                      -- Send MS Teams URLs directly to the app
@@ -238,7 +238,8 @@ The [[http://www.hammerspoon.org/Spoons/WindowGrid.html][WindowGrid]] spoon sets
 #+begin_src lua
 Install:andUse("WindowGrid",
                {
-                 config = { gridGeometries = { { myGrid.w .."x" .. myGrid.h } } },
+                 config = { gridGeometries =
+                              { { myGrid.w .."x" .. myGrid.h } } },
                  hotkeys = {show_grid = {hyper, "g"}},
                  start = true
                }
@@ -334,16 +335,17 @@ Install:andUse("SendToOmniFocus",
 
 ** Evernote filing and tagging
 
-The [[http://www.hammerspoon.org/Spoons/EvernoteOpenAndTag.html][EvernoteOpenAndTag]] spoon sets up some missing key bindings for note manipulation in Evernote. I no longer use Evernote for GTD, so I have disabled the shortcuts for tagging notes.
+The [[http://www.hammerspoon.org/Spoons/EvernoteOpenAndTag.html][EvernoteOpenAndTag]] spoon sets up some missing key bindings for note manipulation in Evernote. I no longer use Evernote for GTD, so I have it disabled for now.
 
 #+begin_src lua
 Install:andUse("EvernoteOpenAndTag",
                {
+                 disable = true,
                  hotkeys = {
                    open_note = { hyper, "o" },
-                   --                     ["open_and_tag-+work"] = { hyper, "w" },
-                   --                     ["open_and_tag-+personal"] = { hyper, "p" },
-                   --                     ["tag-@zzdone"] = { hyper, "z" }
+                   ["open_and_tag-+work"] = { hyper, "w" },
+                   ["open_and_tag-+personal"] = { hyper, "p" },
+                   ["tag-@zzdone"] = { hyper, "z" }
                  }
                }
 )
@@ -384,13 +386,14 @@ function BTT_restart_hammerspoon(s)
                            kind = 'touchbarButton',
                            uuid = "FF8DA717-737F-4C42-BF91-E8826E586FA1",
                            name = "Restart",
-                           icon = hs.image.imageFromName(hs.image.systemImageNames.ApplicationIcon),
+                           icon = hs.image.imageFromName(
+                             hs.image.systemImageNames.ApplicationIcon),
                            color = hs.drawing.color.x11.orange,
   }})
 end
 #+end_src
 
-The [[https://zzamboni.github.io/zzSpoons/Hammer.html][Hammer]] spoon (get it? hehe) is a simple wrapper around some common Hamerspoon configuration variables. Note that this gets loaded from my personal repo, since it's not in the official repository.
+The [[https://zzamboni.github.io/zzSpoons/Hammer.html][Hammer]] spoon (get it? hehe) is a simple wrapper around some common Hammerspoon configuration variables. Note that this gets loaded from my personal repo, since it's not in the official repository.
 
 #+begin_src lua
 Install:andUse("Hammer",
@@ -419,15 +422,15 @@ function BTT_caffeine_widget(s)
                            uuid = '72A96332-E908-4872-A6B4-8A6ED2E3586F',
                            name = 'Caffeine',
                            widget_code = [[
-  do
-    title = " "
-    icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-off.pdf")
-    if (hs.caffeinate.get('displayIdle')) then
-      icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-on.pdf")
-    end
-    print(hs.json.encode({ text = title,
-                           icon_data = BTT:hsimageToBTTIconData(icon) }))
+do
+  title = " "
+  icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-off.pdf")
+  if (hs.caffeinate.get('displayIdle')) then
+    icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-on.pdf")
   end
+  print(hs.json.encode({ text = title,
+                         icon_data = BTT:hsimageToBTTIconData(icon) }))
+end
       ]],
                            code = "spoon.Caffeine.clicked()",
                            widget_interval = 1,
