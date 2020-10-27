@@ -197,9 +197,7 @@ Install:andUse("URLDispatcher",
 
 * Window and screen manipulation
 
-The [[http://www.hammerspoon.org/Spoons/WindowHalfsAndThirds.html][WindowHalfsAndThirds]] spoon sets up multiple key bindings for manipulating the size and position of windows.
-
-This was one of the first spoons I wrote, and I used it for window resizing until I discovered [[https://github.com/miromannino/miro-windows-manager][MiroWindowsManager]] (see below), which I started using now.
+The [[http://www.hammerspoon.org/Spoons/WindowHalfsAndThirds.html][WindowHalfsAndThirds]] spoon sets up multiple key bindings for manipulating the size and position of windows. This was one of the first spoons I wrote, and I still use it for window resizing.
 
 #+begin_src lua
 Install:andUse("WindowHalfsAndThirds",
@@ -212,30 +210,10 @@ Install:andUse("WindowHalfsAndThirds",
 )
 #+end_src
 
-[[https://github.com/miromannino/miro-windows-manager][MiroWindowsManager]] allows more granular window resizing and movement. One thing to keep in mind is that this spoon uses the =hs.grid= module internally. If you also use the =WindowGrid= spoon (see below), make sure both spoons use the same grid size to avoid conflicts.
-
-#+begin_src lua
-myGrid = { w = 6, h = 4 }
-Install:andUse("MiroWindowsManager",
-               {
-                 disable = true,
-                 config = {
-                   GRID = myGrid
-                 },
-                 hotkeys = {
-                   up =         { ctrl_cmd, "up" },
-                   right =      { ctrl_cmd, "right" },
-                   down =       { ctrl_cmd, "down" },
-                   left =       { ctrl_cmd, "left" },
-                   fullscreen = { hyper,    "up" }
-                 }
-               }
-)
-#+end_src
-
 The [[http://www.hammerspoon.org/Spoons/WindowGrid.html][WindowGrid]] spoon sets up a key binding (=Hyper-g= here) to overlay a grid that allows resizing windows by specifying their opposite corners.
 
 #+begin_src lua
+myGrid = { w = 6, h = 4 }
 Install:andUse("WindowGrid",
                {
                  config = { gridGeometries =

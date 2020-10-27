@@ -75,25 +75,10 @@ Install:andUse("WindowHalfsAndThirds",
 )
 
 myGrid = { w = 6, h = 4 }
-Install:andUse("MiroWindowsManager",
-               {
-                 disable = true,
-                 config = {
-                   GRID = myGrid
-                 },
-                 hotkeys = {
-                   up =         { ctrl_cmd, "up" },
-                   right =      { ctrl_cmd, "right" },
-                   down =       { ctrl_cmd, "down" },
-                   left =       { ctrl_cmd, "left" },
-                   fullscreen = { hyper,    "up" }
-                 }
-               }
-)
-
 Install:andUse("WindowGrid",
                {
-                 config = { gridGeometries = { { myGrid.w .."x" .. myGrid.h } } },
+                 config = { gridGeometries =
+                              { { myGrid.w .."x" .. myGrid.h } } },
                  hotkeys = {show_grid = {hyper, "g"}},
                  start = true
                }
@@ -151,11 +136,12 @@ Install:andUse("SendToOmniFocus",
 
 Install:andUse("EvernoteOpenAndTag",
                {
+                 disable = true,
                  hotkeys = {
                    open_note = { hyper, "o" },
-                   --                     ["open_and_tag-+work"] = { hyper, "w" },
-                   --                     ["open_and_tag-+personal"] = { hyper, "p" },
-                   --                     ["tag-@zzdone"] = { hyper, "z" }
+                   ["open_and_tag-+work"] = { hyper, "w" },
+                   ["open_and_tag-+personal"] = { hyper, "p" },
+                   ["tag-@zzdone"] = { hyper, "z" }
                  }
                }
 )
@@ -178,7 +164,8 @@ function BTT_restart_hammerspoon(s)
                            kind = 'touchbarButton',
                            uuid = "FF8DA717-737F-4C42-BF91-E8826E586FA1",
                            name = "Restart",
-                           icon = hs.image.imageFromName(hs.image.systemImageNames.ApplicationIcon),
+                           icon = hs.image.imageFromName(
+                             hs.image.systemImageNames.ApplicationIcon),
                            color = hs.drawing.color.x11.orange,
   }})
 end
@@ -203,15 +190,15 @@ function BTT_caffeine_widget(s)
                            uuid = '72A96332-E908-4872-A6B4-8A6ED2E3586F',
                            name = 'Caffeine',
                            widget_code = [[
-  do
-    title = " "
-    icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-off.pdf")
-    if (hs.caffeinate.get('displayIdle')) then
-      icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-on.pdf")
-    end
-    print(hs.json.encode({ text = title,
-                           icon_data = BTT:hsimageToBTTIconData(icon) }))
+do
+  title = " "
+  icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-off.pdf")
+  if (hs.caffeinate.get('displayIdle')) then
+    icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-on.pdf")
   end
+  print(hs.json.encode({ text = title,
+                         icon_data = BTT:hsimageToBTTIconData(icon) }))
+end
       ]],
                            code = "spoon.Caffeine.clicked()",
                            widget_interval = 1,
