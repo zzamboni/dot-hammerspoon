@@ -205,7 +205,8 @@ Install:andUse("WindowHalfsAndThirds",
                  config = {
                    use_frame_correctness = true
                  },
-                 hotkeys = 'default'
+                 hotkeys = 'default',
+--                 loglevel = 'debug'
                }
 )
 #+end_src
@@ -232,7 +233,8 @@ Install:andUse("WindowScreenLeftAndRight",
                  config = {
                    animationDuration = 0
                  },
-                 hotkeys = 'default'
+                 hotkeys = 'default',
+--                 loglevel = 'debug'
                }
 )
 #+end_src
@@ -572,7 +574,7 @@ Install:andUse("EjectMenu", {
                  },
                  hotkeys = { ejectAll = { hyper, "=" } },
                  start = true,
-                 loglevel = 'debug'
+--                 loglevel = 'debug'
 })
 #+end_src
 
@@ -840,7 +842,7 @@ Install:andUse("KSheet", {
 
 * Loading private configuration
 
-In =init-local.lua= I keep experimental or private stuff (like API tokens) that I don't want to publish in my main config. This file is not committed to any publicly-accessible git repositories.
+In =init-local.lua= I keep experimental or private stuff (like API tokens) that I don't want to publish in my main config. This file is not committed to any publicly accessible git repositories.
 
 #+begin_src lua
 local localfile = hs.configdir .. "/init-local.lua"

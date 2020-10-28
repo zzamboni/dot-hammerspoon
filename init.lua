@@ -70,7 +70,8 @@ Install:andUse("WindowHalfsAndThirds",
                  config = {
                    use_frame_correctness = true
                  },
-                 hotkeys = 'default'
+                 hotkeys = 'default',
+--                 loglevel = 'debug'
                }
 )
 
@@ -89,7 +90,8 @@ Install:andUse("WindowScreenLeftAndRight",
                  config = {
                    animationDuration = 0
                  },
-                 hotkeys = 'default'
+                 hotkeys = 'default',
+--                 loglevel = 'debug'
                }
 )
 
@@ -306,7 +308,7 @@ Install:andUse("EjectMenu", {
                  },
                  hotkeys = { ejectAll = { hyper, "=" } },
                  start = true,
-                 loglevel = 'debug'
+--                 loglevel = 'debug'
 })
 
 Install:andUse("HeadphoneAutoPause",
