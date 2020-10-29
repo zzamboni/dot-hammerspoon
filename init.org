@@ -357,7 +357,7 @@ Install:andUse("TextClipboardHistory",
 
 The =BTT_restart_Hammerspoon= function sets up a BetterTouchTool widget which also executes the =config_reload= action from the spoon. This gets assigned to the =fn= config parameter in the configuration of the Hammer spoon below, which has the effect of calling the function with the Spoon object as its parameter.
 
-This is still very manual - the =uuid= parameter contains the ID of the BTT widget to configure, and for now you have to get it by hand from BTT and paste it here.
+This is still manual - the =uuid= parameter contains the ID of the BTT widget to configure, and for now you have to get it by hand from BTT and paste it here.
 
 #+begin_src lua
 function BTT_restart_hammerspoon(s)
@@ -568,7 +568,7 @@ The =EjectMenu= spoon automatically ejects all external disks before the system 
 #+begin_src lua
 Install:andUse("EjectMenu", {
                  config = {
-                   eject_on_lid_close = true,
+                   eject_on_lid_close = false,
                    show_in_menubar = true,
                    notify = true,
                  },

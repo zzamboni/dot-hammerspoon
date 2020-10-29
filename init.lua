@@ -302,7 +302,7 @@ Install:andUse("TurboBoost",
 
 Install:andUse("EjectMenu", {
                  config = {
-                   eject_on_lid_close = true,
+                   eject_on_lid_close = false,
                    show_in_menubar = true,
                    notify = true,
                  },
