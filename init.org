@@ -546,9 +546,12 @@ Install:andUse("TimeMachineProgress",
 
 The TurboBoost spoon shows an indicator of the CPU's Turbo Boost status, and allows disabling/enabling. This requires [[https://github.com/rugarciap/Turbo-Boost-Switcher][Turbo Boost Switcher]] to be installed.
 
+(disabled because I ended up buying /Turbo Boost Switcher Pro/ - it's a great utility and offers a few great extra features for an excellent price, it deserves our support)
+
 #+begin_src lua
 Install:andUse("TurboBoost",
                {
+                 disable = true,
                  config = {
                    disable_on_start = true
                  },

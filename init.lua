@@ -289,6 +289,7 @@ Install:andUse("TimeMachineProgress",
 
 Install:andUse("TurboBoost",
                {
+                 disable = true,
                  config = {
                    disable_on_start = true
                  },
