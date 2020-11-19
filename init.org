@@ -145,6 +145,9 @@ Install:andUse("URLDispatcher",
                      { "msteams:",                            "com.microsoft.teams" }
                    },
                    url_redir_decoders = {
+                     { "Fix macOS double-encoding weirdness",
+                       "%%25(%x%x)",   -- This is %xx encoded, the % gets converted to %25
+                       "%%%1", true },
                      { "Office 365 safelinks check",
                        "https://eur03.safelinks.protection.outlook.com/(.*)\\?url=(.-)&.*",
                        "%2" },
