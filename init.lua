@@ -27,8 +27,13 @@ Install=spoon.SpoonInstall
 Install:andUse("BetterTouchTool", { loglevel = 'debug' })
 BTT = spoon.BetterTouchTool
 
-DefaultBrowser = "com.brave.Browser.dev"
--- DefaultBrowser = "com.google.Chrome"
+chromeBrowserApp = "com.google.Chrome"
+edgeBrowserApp = "com.microsoft.edgemac"
+braveBrowserApp = "com.brave.Browser.dev"
+
+DefaultBrowser = braveBrowserApp
+WorkBrowser = edgeBrowserApp
+
 JiraApp = "org.epichrome.eng.Jira"
 WikiApp = "org.epichrome.eng.Wiki"
 CollabApp = DefaultBrowser
@@ -39,15 +44,16 @@ Install:andUse("URLDispatcher",
                {
                  config = {
                    url_patterns = {
-                     { "https?://issue.swisscom.ch",          JiraApp },
-                     { "https?://issue.swisscom.com",         JiraApp },
-                     { "https?://jira.swisscom.com",          JiraApp },
-                     { "https?://wiki.swisscom.com",          WikiApp },
-                     { "https?://collaboration.swisscom.com", CollabApp },
-                     { "https?://smca.swisscom.com",          SmcaApp },
-                     { "https?://app.opsgenie.com",           OpsGenieApp },
-                     { "https?://app.eu.opsgenie.com",        OpsGenieApp },
-                     { "msteams:",                            "com.microsoft.teams" }
+                     { "https?://issue%.swisscom%.ch",     JiraApp },
+                     { "https?://issue%.swisscom%.com",    JiraApp },
+                     { "https?://jira%.swisscom%.com",     JiraApp },
+                     { "https?://wiki%.swisscom%.com",     WikiApp },
+                     { "https?://collab.*%.swisscom%.com", CollabApp },
+                     { "https?://smca%.swisscom%.com",     SmcaApp },
+                     { "https?://app.*%.opsgenie%.com",    OpsGenieApp },
+                     { "msteams:",                         "com.microsoft.teams" },
+                     { "https?://.*%.swisscom%.ch",        WorkBrowser },
+                     { "https?://.*%.swisscom%.com",       WorkBrowser },
                    },
                    url_redir_decoders = {
 --                     { "Fix macOS double-encoding weirdness",
@@ -64,7 +70,7 @@ Install:andUse("URLDispatcher",
                    default_handler = DefaultBrowser
                  },
                  start = true,
-                 -- loglevel = 'debug'
+                 loglevel = 'debug'
                }
 )
 

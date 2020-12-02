@@ -118,12 +118,17 @@ BTT = spoon.BetterTouchTool
 
 * URL dispatching to site-specific browsers
 
-The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoon makes it possible to open URLs with different browsers. I have created different site-specific browsers using [[https://github.com/dmarmor/epichrome][Epichrome]], which allows me to keep site-specific bookmarks, search settings, etc. I also use the =url_redir_decoders= parameter to rewrite some URLs before they are opened, both to redirect certain URLs directly to their corresponding applications (instead of going through the web browser) and to fix a bug I have experienced in opening URLs from PDF documents using Preview.
+The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoon makes it possible to open URLs with different browsers. I have created different site-specific browsers using [[https://github.com/dmarmor/epichrome][Epichrome]], which allows me to keep site-specific bookmarks, search settings, etc. I also use Edge as my work browser (since it integrated with my work account), while using Brave for everything else. I also use the =url_redir_decoders= parameter to rewrite some URLs before they are opened, both to redirect certain URLs directly to their corresponding applications (instead of going through the web browser) and to fix a bug I have experienced in opening URLs from PDF documents using Preview.
 
 # This is the real code that gets tangled out to my config file
 #+begin_src lua :exports none
-DefaultBrowser = "com.brave.Browser.dev"
--- DefaultBrowser = "com.google.Chrome"
+chromeBrowserApp = "com.google.Chrome"
+edgeBrowserApp = "com.microsoft.edgemac"
+braveBrowserApp = "com.brave.Browser.dev"
+
+DefaultBrowser = braveBrowserApp
+WorkBrowser = edgeBrowserApp
+
 JiraApp = "org.epichrome.eng.Jira"
 WikiApp = "org.epichrome.eng.Wiki"
 CollabApp = DefaultBrowser
@@ -134,15 +139,16 @@ Install:andUse("URLDispatcher",
                {
                  config = {
                    url_patterns = {
-                     { "https?://issue.swisscom.ch",          JiraApp },
-                     { "https?://issue.swisscom.com",         JiraApp },
-                     { "https?://jira.swisscom.com",          JiraApp },
-                     { "https?://wiki.swisscom.com",          WikiApp },
-                     { "https?://collaboration.swisscom.com", CollabApp },
-                     { "https?://smca.swisscom.com",          SmcaApp },
-                     { "https?://app.opsgenie.com",           OpsGenieApp },
-                     { "https?://app.eu.opsgenie.com",        OpsGenieApp },
-                     { "msteams:",                            "com.microsoft.teams" }
+                     { "https?://issue%.swisscom%.ch",     JiraApp },
+                     { "https?://issue%.swisscom%.com",    JiraApp },
+                     { "https?://jira%.swisscom%.com",     JiraApp },
+                     { "https?://wiki%.swisscom%.com",     WikiApp },
+                     { "https?://collab.*%.swisscom%.com", CollabApp },
+                     { "https?://smca%.swisscom%.com",     SmcaApp },
+                     { "https?://app.*%.opsgenie%.com",    OpsGenieApp },
+                     { "msteams:",                         "com.microsoft.teams" },
+                     { "https?://.*%.swisscom%.ch",        WorkBrowser },
+                     { "https?://.*%.swisscom%.com",       WorkBrowser },
                    },
                    url_redir_decoders = {
 --                     { "Fix macOS double-encoding weirdness",
@@ -159,14 +165,20 @@ Install:andUse("URLDispatcher",
                    default_handler = DefaultBrowser
                  },
                  start = true,
-                 -- loglevel = 'debug'
+                 loglevel = 'debug'
                }
 )
 #+end_src
 
 # This block is the one that gets exported when this config file is typeset in books or blog posts, to prevent the company name from showing up there.
 #+begin_src lua :exports code :tangle no
-DefaultBrowser = "com.brave.Browser.dev"
+chromeBrowserApp = "com.google.Chrome"
+edgeBrowserApp = "com.microsoft.edgemac"
+braveBrowserApp = "com.brave.Browser.dev"
+
+DefaultBrowser = braveBrowserApp
+WorkBrowser = edgeBrowserApp
+
 JiraApp = "org.epichrome.app.Jira"
 WikiApp = "org.epichrome.app.Wiki"
 OpsGenieApp = DefaultBrowser
@@ -175,12 +187,11 @@ Install:andUse("URLDispatcher",
                {
                  config = {
                    url_patterns = {
-                     { "https?://issue.work.com",      JiraApp },
-                     { "https?://jira.work.com",       JiraApp },
-                     { "https?://wiki.work.com",       WikiApp },
-                     { "https?://app.opsgenie.com",    OpsGenieApp },
-                     { "https?://app.eu.opsgenie.com", OpsGenieApp },
-                     { "msteams:",                     "com.microsoft.teams" }
+                     { "https?://jira%.work%.com",      JiraApp },
+                     { "https?://wiki%.work%.com",      WikiApp },
+                     { "https?://app.*%.opsgenie%.com", OpsGenieApp },
+                     { "msteams:",                      "com.microsoft.teams" },
+                     { "https?://.*%.work%.com",        WorkBrowser }
                    },
                    url_redir_decoders = {
                      -- Send MS Teams URLs directly to the app
