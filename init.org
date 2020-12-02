@@ -165,7 +165,7 @@ Install:andUse("URLDispatcher",
                    default_handler = DefaultBrowser
                  },
                  start = true,
-                 loglevel = 'debug'
+                 -- loglevel = 'debug'
                }
 )
 #+end_src
@@ -204,7 +204,9 @@ Install:andUse("URLDispatcher",
                    },
                    default_handler = DefaultBrowser
                  },
-                 start = true
+                 start = true,
+                 -- Enable debug logging if you get unexpected behavior
+                 -- loglevel = 'debug'
                }
 )
 #+end_src

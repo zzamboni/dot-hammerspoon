@@ -70,7 +70,7 @@ Install:andUse("URLDispatcher",
                    default_handler = DefaultBrowser
                  },
                  start = true,
-                 loglevel = 'debug'
+                 -- loglevel = 'debug'
                }
 )
 
