@@ -54,6 +54,8 @@ Install:andUse("URLDispatcher",
                      { "msteams:",                         "com.microsoft.teams" },
                      { "https?://.*%.swisscom%.ch",        WorkBrowser },
                      { "https?://.*%.swisscom%.com",       WorkBrowser },
+                     { "https?://.*%.sharepoint%.com",     WorkBrowser },
+                     { "https?://.*%.office%.com",         WorkBrowser }
                    },
                    url_redir_decoders = {
 --                     { "Fix macOS double-encoding weirdness",
