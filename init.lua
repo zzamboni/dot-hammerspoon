@@ -36,9 +36,9 @@ WorkBrowser = edgeBrowserApp
 
 JiraApp = "org.epichrome.eng.Jira"
 WikiApp = "org.epichrome.eng.Wiki"
-CollabApp = DefaultBrowser
-SmcaApp = DefaultBrowser
-OpsGenieApp = DefaultBrowser
+CollabApp = WorkBrowser
+SmcaApp = WorkBrowser
+OpsGenieApp = WorkBrowser
 
 Install:andUse("URLDispatcher",
                {
