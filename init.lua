@@ -285,9 +285,9 @@ Install:andUse("BrewInfo",
                    -- brew info
                    show_brew_info = {hyper, "b"},
                    open_brew_url = {shift_hyper, "b"},
-                   -- brew cask info
-                   show_brew_cask_info = {shift_hyper, "c"},
-                   open_brew_cask_url = {hyper, "c"},
+                   -- brew cask info - not needed anymore, the above now do both
+                   -- show_brew_cask_info = {shift_hyper, "c"},
+                   -- open_brew_cask_url = {hyper, "c"},
                  }
                }
 )
