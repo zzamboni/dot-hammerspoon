@@ -34,8 +34,8 @@ braveBrowserApp = "com.brave.Browser.dev"
 DefaultBrowser = braveBrowserApp
 WorkBrowser = edgeBrowserApp
 
-JiraApp = "org.epichrome.eng.Jira"
-WikiApp = "org.epichrome.eng.Wiki"
+JiraApp = "org.epichrome.app.Jira"
+WikiApp = "org.epichrome.app.Wiki"
 CollabApp = WorkBrowser
 SmcaApp = WorkBrowser
 OpsGenieApp = WorkBrowser
