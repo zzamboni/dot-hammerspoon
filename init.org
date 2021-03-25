@@ -122,20 +122,29 @@ BTT = spoon.BetterTouchTool
 
 The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoon makes it possible to open URLs with different browsers. I have created different site-specific browsers using [[https://github.com/dmarmor/epichrome][Epichrome]], which allows me to keep site-specific bookmarks, search settings, etc. I also use Edge as my work browser (since it integrated with my work account), while using Brave for everything else. I also use the =url_redir_decoders= parameter to rewrite some URLs before they are opened, both to redirect certain URLs directly to their corresponding applications (instead of going through the web browser) and to fix a bug I have experienced in opening URLs from PDF documents using Preview.
 
+The =URLDispatcher= spoon requires application IDs, which may change from time to time (e.g. in a recent Epichrome update all its apps changed IDs, which broke the dispatching until I figured it out), so I define a function which gets the path of the application and returns its ID.
+
+#+begin_src lua
+function appID(app)
+  return hs.application.infoForBundlePath(app)['CFBundleIdentifier']
+end
+#+end_src
+
 # This is the real code that gets tangled out to my config file
 #+begin_src lua :exports none
-chromeBrowserApp = "com.google.Chrome"
-edgeBrowserApp = "com.microsoft.edgemac"
-braveBrowserApp = "com.brave.Browser.dev"
+chromeBrowser = appID('/Applications/Google Chrome.app')
+edgeBrowser = appID('/Applications/Microsoft Edge.app')
+braveBrowser = appID('/Applications/Brave Browser Dev.app')
 
-DefaultBrowser = braveBrowserApp
-WorkBrowser = edgeBrowserApp
+DefaultBrowser = braveBrowser
+WorkBrowser = edgeBrowser
 
-JiraApp = "org.epichrome.app.Jira"
-WikiApp = "org.epichrome.app.Wiki"
+JiraApp = appID('~/Applications/Epichrome SSBs/Jira.app')
+WikiApp = appID('~/Applications/Epichrome SSBs/Wiki.app')
 CollabApp = WorkBrowser
 SmcaApp = WorkBrowser
 OpsGenieApp = WorkBrowser
+TeamsApp = appID('/Applications/Microsoft Teams.app')
 
 Install:andUse("URLDispatcher",
                {
@@ -148,7 +157,7 @@ Install:andUse("URLDispatcher",
                      { "https?://collab.*%.swisscom%.com", CollabApp },
                      { "https?://smca%.swisscom%.com",     SmcaApp },
                      { "https?://app.*%.opsgenie%.com",    OpsGenieApp },
-                     { "msteams:",                         "com.microsoft.teams" },
+                     { "msteams:",                         TeamsApp },
                      { "https?://.*%.swisscom%.ch",        WorkBrowser },
                      { "https?://.*%.swisscom%.com",       WorkBrowser },
                      { "https?://.*%.sharepoint%.com",     WorkBrowser },
@@ -156,6 +165,7 @@ Install:andUse("URLDispatcher",
                      { "https?://.*%.corproot%.net",       WorkBrowser }
                    },
                    url_redir_decoders = {
+-- This breaks some things
 --                     { "Fix macOS double-encoding weirdness",
 --                       "%%25(%x%x)",   -- This is %xx encoded, the % gets converted to %25
 --                       "%%%1", true },
@@ -177,15 +187,15 @@ Install:andUse("URLDispatcher",
 
 # This block is the one that gets exported when this config file is typeset in books or blog posts, to prevent the company name from showing up there.
 #+begin_src lua :exports code :tangle no
-chromeBrowserApp = "com.google.Chrome"
-edgeBrowserApp = "com.microsoft.edgemac"
-braveBrowserApp = "com.brave.Browser.dev"
+chromeBrowser = appID('/Applications/Google Chrome.app')
+edgeBrowser = appID('/Applications/Microsoft Edge.app')
+braveBrowser = appID('/Applications/Brave Browser Dev.app')
 
-DefaultBrowser = braveBrowserApp
-WorkBrowser = edgeBrowserApp
+DefaultBrowser = braveBrowser
+WorkBrowser = edgeBrowser
 
-JiraApp = "org.epichrome.app.Jira"
-WikiApp = "org.epichrome.app.Wiki"
+JiraApp = appID('~/Applications/Epichrome SSBs/Jira.app')
+WikiApp = appID('~/Applications/Epichrome SSBs/Wiki.app')
 OpsGenieApp = WorkBrowser
 
 Install:andUse("URLDispatcher",

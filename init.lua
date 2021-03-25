@@ -27,18 +27,23 @@ Install=spoon.SpoonInstall
 Install:andUse("BetterTouchTool", { loglevel = 'debug' })
 BTT = spoon.BetterTouchTool
 
-chromeBrowserApp = "com.google.Chrome"
-edgeBrowserApp = "com.microsoft.edgemac"
-braveBrowserApp = "com.brave.Browser.dev"
+function appID(app)
+  return hs.application.infoForBundlePath(app)['CFBundleIdentifier']
+end
 
-DefaultBrowser = braveBrowserApp
-WorkBrowser = edgeBrowserApp
+chromeBrowser = appID('/Applications/Google Chrome.app')
+edgeBrowser = appID('/Applications/Microsoft Edge.app')
+braveBrowser = appID('/Applications/Brave Browser Dev.app')
 
-JiraApp = "org.epichrome.app.Jira"
-WikiApp = "org.epichrome.app.Wiki"
+DefaultBrowser = braveBrowser
+WorkBrowser = edgeBrowser
+
+JiraApp = appID('~/Applications/Epichrome SSBs/Jira.app')
+WikiApp = appID('~/Applications/Epichrome SSBs/Wiki.app')
 CollabApp = WorkBrowser
 SmcaApp = WorkBrowser
 OpsGenieApp = WorkBrowser
+TeamsApp = appID('/Applications/Microsoft Teams.app')
 
 Install:andUse("URLDispatcher",
                {
@@ -51,7 +56,7 @@ Install:andUse("URLDispatcher",
                      { "https?://collab.*%.swisscom%.com", CollabApp },
                      { "https?://smca%.swisscom%.com",     SmcaApp },
                      { "https?://app.*%.opsgenie%.com",    OpsGenieApp },
-                     { "msteams:",                         "com.microsoft.teams" },
+                     { "msteams:",                         TeamsApp },
                      { "https?://.*%.swisscom%.ch",        WorkBrowser },
                      { "https?://.*%.swisscom%.com",       WorkBrowser },
                      { "https?://.*%.sharepoint%.com",     WorkBrowser },
@@ -59,6 +64,7 @@ Install:andUse("URLDispatcher",
                      { "https?://.*%.corproot%.net",       WorkBrowser }
                    },
                    url_redir_decoders = {
+-- This breaks some things
 --                     { "Fix macOS double-encoding weirdness",
 --                       "%%25(%x%x)",   -- This is %xx encoded, the % gets converted to %25
 --                       "%%%1", true },
