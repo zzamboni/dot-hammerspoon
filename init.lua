@@ -154,6 +154,23 @@ Install:andUse("SendToOmniFocus",
                }
 )
 
+org_capture_path = os.getenv("HOME").."/.hammerspoon/files/org-capture.lua"
+script_file = io.open(org_capture_path, "w")
+script_file:write([[local win = hs.window.frontmostWindow()
+local o,s,t,r = hs.execute("~/.emacs.d/bin/org-capture", true)
+if not s then
+  print("Error when running org-capture: "..o.."\n")
+end
+win:focus()
+]])
+script_file:close()
+
+hs.hotkey.bindSpec({hyper, "t"},
+  function ()
+    hs.task.new("/bin/bash", nil, { "-l", "-c", "/usr/local/bin/hs "..org_capture_path }):start()
+  end
+)
+
 Install:andUse("EvernoteOpenAndTag",
                {
                  disable = true,

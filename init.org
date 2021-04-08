@@ -30,6 +30,7 @@ If you want to learn more about Hammerspoon, check out my book [[https://leanpub
 - [[#organization-and-productivity][Organization and Productivity]]
   - [[#universal-archiving][Universal Archiving]]
   - [[#filing-to-omnifocus][Filing to Omnifocus]]
+  - [[#capturing-to-org-mode][Capturing to Org mode]]
   - [[#evernote-filing-and-tagging][Evernote filing and tagging]]
   - [[#clipboard-history][Clipboard history]]
 - [[#system-and-ui][System and UI]]
@@ -344,6 +345,28 @@ Install:andUse("SendToOmniFocus",
 )
 #+end_src
 
+** Capturing to Org mode
+
+I now use Org-mode for task tracking and capturing. The following snippet runs the =~/.emacs.d/bin/org-capture= script to bring up an Emacs window which allows me to capture things from anywhere in the system. The code is a bit convoluted because it needs to capture the current window and restore it after the org-capture window closes, otherwise Emacs is brought to the front.
+
+#+begin_src lua
+org_capture_path = os.getenv("HOME").."/.hammerspoon/files/org-capture.lua"
+script_file = io.open(org_capture_path, "w")
+script_file:write([[local win = hs.window.frontmostWindow()
+local o,s,t,r = hs.execute("~/.emacs.d/bin/org-capture", true)
+if not s then
+  print("Error when running org-capture: "..o.."\n")
+end
+win:focus()
+]])
+script_file:close()
+
+hs.hotkey.bindSpec({hyper, "t"},
+  function ()
+    hs.task.new("/bin/bash", nil, { "-l", "-c", "/usr/local/bin/hs "..org_capture_path }):start()
+  end
+)
+#+end_src
 ** Evernote filing and tagging
 
 The [[http://www.hammerspoon.org/Spoons/EvernoteOpenAndTag.html][EvernoteOpenAndTag]] spoon sets up some missing key bindings for note manipulation in Evernote. I no longer use Evernote for GTD, so I have it disabled for now.
