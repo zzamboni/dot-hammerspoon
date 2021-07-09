@@ -24,26 +24,26 @@ spoon.SpoonInstall.use_syncinstall = true
 
 Install=spoon.SpoonInstall
 
-Install:andUse("BetterTouchTool", { loglevel = 'debug' })
-BTT = spoon.BetterTouchTool
+-- Install:andUse("BetterTouchTool", { loglevel = 'debug' })
+-- BTT = spoon.BetterTouchTool
 
 function appID(app)
   return hs.application.infoForBundlePath(app)['CFBundleIdentifier']
 end
 
 chromeBrowser = appID('/Applications/Google Chrome.app')
-edgeBrowser = appID('/Applications/Microsoft Edge.app')
+-- edgeBrowser = appID('/Applications/Microsoft Edge.app')
 braveBrowser = appID('/Applications/Brave Browser Dev.app')
 
 DefaultBrowser = braveBrowser
-WorkBrowser = edgeBrowser
+WorkBrowser = chromeBrowser
 
-JiraApp = appID('~/Applications/Epichrome SSBs/Jira.app')
-WikiApp = appID('~/Applications/Epichrome SSBs/Wiki.app')
+JiraApp = DefaultBrowser -- appID('~/Applications/Epichrome SSBs/Jira.app')
+WikiApp = DefaultBrowser -- appID('~/Applications/Epichrome SSBs/Wiki.app')
 CollabApp = WorkBrowser
 SmcaApp = WorkBrowser
 OpsGenieApp = WorkBrowser
-TeamsApp = appID('/Applications/Microsoft Teams.app')
+TeamsApp = DefaultBroser -- appID('/Applications/Microsoft Teams.app')
 
 Install:andUse("URLDispatcher",
                {
@@ -195,17 +195,17 @@ Install:andUse("TextClipboardHistory",
                }
 )
 
-function BTT_restart_hammerspoon(s)
-  BTT:bindSpoonActions(s, {
-                         config_reload = {
-                           kind = 'touchbarButton',
-                           uuid = "FF8DA717-737F-4C42-BF91-E8826E586FA1",
-                           name = "Restart",
-                           icon = hs.image.imageFromName(
-                             hs.image.systemImageNames.ApplicationIcon),
-                           color = hs.drawing.color.x11.orange,
-  }})
-end
+-- function BTT_restart_hammerspoon(s)
+--   BTT:bindSpoonActions(s, {
+--                          config_reload = {
+--                            kind = 'touchbarButton',
+--                            uuid = "FF8DA717-737F-4C42-BF91-E8826E586FA1",
+--                            name = "Restart",
+--                            icon = hs.image.imageFromName(
+--                              hs.image.systemImageNames.ApplicationIcon),
+--                            color = hs.drawing.color.x11.orange,
+--   }})
+-- end
 
 Install:andUse("Hammer",
                {
@@ -215,47 +215,47 @@ Install:andUse("Hammer",
                    config_reload = {hyper, "r"},
                    toggle_console = {hyper, "y"}
                  },
-                 fn = BTT_restart_Hammerspoon,
+--                 fn = BTT_restart_Hammerspoon,
                  start = true
                }
 )
 
-function BTT_caffeine_widget(s)
-  BTT:bindSpoonActions(s, {
-                         toggle = {
-                           kind = 'touchbarWidget',
-                           uuid = '72A96332-E908-4872-A6B4-8A6ED2E3586F',
-                           name = 'Caffeine',
-                           widget_code = [[
-do
-  title = " "
-  icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-off.pdf")
-  if (hs.caffeinate.get('displayIdle')) then
-    icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-on.pdf")
-  end
-  print(hs.json.encode({ text = title,
-                         icon_data = BTT:hsimageToBTTIconData(icon) }))
-end
-      ]],
-                           code = "spoon.Caffeine.clicked()",
-                           widget_interval = 1,
-                           color = hs.drawing.color.x11.black,
-                           icon_only = true,
-                           icon_size = hs.geometry.size(15,15),
-                           BTTTriggerConfig = {
-                             BTTTouchBarFreeSpaceAfterButton = 0,
-                             BTTTouchBarItemPadding = -6,
-                           },
-                         }
-  })
-end
+-- function BTT_caffeine_widget(s)
+--   BTT:bindSpoonActions(s, {
+--                          toggle = {
+--                            kind = 'touchbarWidget',
+--                            uuid = '72A96332-E908-4872-A6B4-8A6ED2E3586F',
+--                            name = 'Caffeine',
+--                            widget_code = [[
+-- do
+--   title = " "
+--   icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-off.pdf")
+--   if (hs.caffeinate.get('displayIdle')) then
+--     icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-on.pdf")
+--   end
+--   print(hs.json.encode({ text = title,
+--                          icon_data = BTT:hsimageToBTTIconData(icon) }))
+-- end
+--       ]],
+--                            code = "spoon.Caffeine.clicked()",
+--                            widget_interval = 1,
+--                            color = hs.drawing.color.x11.black,
+--                            icon_only = true,
+--                            icon_size = hs.geometry.size(15,15),
+--                            BTTTriggerConfig = {
+--                              BTTTouchBarFreeSpaceAfterButton = 0,
+--                              BTTTouchBarItemPadding = -6,
+--                            },
+--                          }
+--   })
+-- end
 
 Install:andUse("Caffeine", {
                  start = true,
                  hotkeys = {
                    toggle = { hyper, "1" }
                  },
-                 fn = BTT_caffeine_widget,
+--                 fn = BTT_caffeine_widget,
 })
 
 Install:andUse("MenubarFlag",
