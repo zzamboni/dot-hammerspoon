@@ -344,7 +344,6 @@ Install:andUse("EjectMenu", {
                  },
                  hotkeys = { ejectAll = { hyper, "=" } },
                  start = true,
-                 disable = true,
 --                 loglevel = 'debug'
 })
 
