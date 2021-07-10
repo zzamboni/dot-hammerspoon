@@ -38,41 +38,41 @@ braveBrowser = appID('/Applications/Brave Browser Dev.app')
 DefaultBrowser = braveBrowser
 WorkBrowser = chromeBrowser
 
-JiraApp = DefaultBrowser -- appID('~/Applications/Epichrome SSBs/Jira.app')
-WikiApp = DefaultBrowser -- appID('~/Applications/Epichrome SSBs/Wiki.app')
-CollabApp = WorkBrowser
-SmcaApp = WorkBrowser
-OpsGenieApp = WorkBrowser
-TeamsApp = DefaultBroser -- appID('/Applications/Microsoft Teams.app')
+-- JiraApp = appID('~/Applications/Epichrome SSBs/Jira.app')
+-- WikiApp = appID('~/Applications/Epichrome SSBs/Wiki.app')
+-- CollabApp = WorkBrowser
+-- SmcaApp = WorkBrowser
+-- OpsGenieApp = WorkBrowser
+-- TeamsApp = appID('/Applications/Microsoft Teams.app')
 
 Install:andUse("URLDispatcher",
                {
                  config = {
                    url_patterns = {
-                     { "https?://issue%.swisscom%.ch",     JiraApp },
-                     { "https?://issue%.swisscom%.com",    JiraApp },
-                     { "https?://jira%.swisscom%.com",     JiraApp },
-                     { "https?://wiki%.swisscom%.com",     WikiApp },
-                     { "https?://collab.*%.swisscom%.com", CollabApp },
-                     { "https?://smca%.swisscom%.com",     SmcaApp },
-                     { "https?://app.*%.opsgenie%.com",    OpsGenieApp },
-                     { "msteams:",                         TeamsApp },
-                     { "https?://.*%.swisscom%.ch",        WorkBrowser },
-                     { "https?://.*%.swisscom%.com",       WorkBrowser },
-                     { "https?://.*%.sharepoint%.com",     WorkBrowser },
-                     { "https?://.*%.office%.com",         WorkBrowser },
-                     { "https?://.*%.corproot%.net",       WorkBrowser }
+                     -- { "https?://issue%.swisscom%.ch",     JiraApp },
+                     -- { "https?://issue%.swisscom%.com",    JiraApp },
+                     -- { "https?://jira%.swisscom%.com",     JiraApp },
+                     -- { "https?://wiki%.swisscom%.com",     WikiApp },
+                     -- { "https?://collab.*%.swisscom%.com", CollabApp },
+                     -- { "https?://smca%.swisscom%.com",     SmcaApp },
+                     -- { "https?://app.*%.opsgenie%.com",    OpsGenieApp },
+                     -- { "msteams:",                         TeamsApp },
+                     -- { "https?://.*%.swisscom%.ch",        WorkBrowser },
+                     -- { "https?://.*%.swisscom%.com",       WorkBrowser },
+                     -- { "https?://.*%.sharepoint%.com",     WorkBrowser },
+                     -- { "https?://.*%.office%.com",         WorkBrowser },
+                     -- { "https?://.*%.corproot%.net",       WorkBrowser }
                    },
                    url_redir_decoders = {
 -- This breaks some things
 --                     { "Fix macOS double-encoding weirdness",
 --                       "%%25(%x%x)",   -- This is %xx encoded, the % gets converted to %25
 --                       "%%%1", true },
-                     { "Office 365 safelinks check",
-                       "https://eur03.safelinks.protection.outlook.com/(.*)\\?url=(.-)&.*",
-                       "%2" },
-                     { "MS Teams URLs",
-                       "(https://teams.microsoft.com.*)", "msteams:%1", true },
+                     -- { "Office 365 safelinks check",
+                     --   "https://eur03.safelinks.protection.outlook.com/(.*)\\?url=(.-)&.*",
+                     --   "%2" },
+                     -- { "MS Teams URLs",
+                     --   "(https://teams.microsoft.com.*)", "msteams:%1", true },
                      { "Fix broken Preview anchor URLs",
                        "%%23", "#", false, "Preview" },
                    },
@@ -195,18 +195,6 @@ Install:andUse("TextClipboardHistory",
                }
 )
 
--- function BTT_restart_hammerspoon(s)
---   BTT:bindSpoonActions(s, {
---                          config_reload = {
---                            kind = 'touchbarButton',
---                            uuid = "FF8DA717-737F-4C42-BF91-E8826E586FA1",
---                            name = "Restart",
---                            icon = hs.image.imageFromName(
---                              hs.image.systemImageNames.ApplicationIcon),
---                            color = hs.drawing.color.x11.orange,
---   }})
--- end
-
 Install:andUse("Hammer",
                {
                  repo = 'zzspoons',
@@ -219,36 +207,6 @@ Install:andUse("Hammer",
                  start = true
                }
 )
-
--- function BTT_caffeine_widget(s)
---   BTT:bindSpoonActions(s, {
---                          toggle = {
---                            kind = 'touchbarWidget',
---                            uuid = '72A96332-E908-4872-A6B4-8A6ED2E3586F',
---                            name = 'Caffeine',
---                            widget_code = [[
--- do
---   title = " "
---   icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-off.pdf")
---   if (hs.caffeinate.get('displayIdle')) then
---     icon = hs.image.imageFromPath(spoon.Caffeine.spoonPath.."/caffeine-on.pdf")
---   end
---   print(hs.json.encode({ text = title,
---                          icon_data = BTT:hsimageToBTTIconData(icon) }))
--- end
---       ]],
---                            code = "spoon.Caffeine.clicked()",
---                            widget_interval = 1,
---                            color = hs.drawing.color.x11.black,
---                            icon_only = true,
---                            icon_size = hs.geometry.size(15,15),
---                            BTTTriggerConfig = {
---                              BTTTouchBarFreeSpaceAfterButton = 0,
---                              BTTTouchBarItemPadding = -6,
---                            },
---                          }
---   })
--- end
 
 Install:andUse("Caffeine", {
                  start = true,

@@ -115,8 +115,8 @@ Install=spoon.SpoonInstall
 I'm currently working on a new [[https://github.com/zzamboni/Spoons/tree/spoon/BetterTouchTool/Source/BetterTouchTool.spoon][BetterTouchTool.spoon]] which provides integration with the [[https://docs.bettertouchtool.net/docs/apple_script.html][BetterTouchTool AppleScript API]]. This is in heavy development! See the configuration for the Hammer spoon in [[System and UI][System and UI]] for an example of how to use it.
 
 #+begin_src lua
-Install:andUse("BetterTouchTool", { loglevel = 'debug' })
-BTT = spoon.BetterTouchTool
+-- Install:andUse("BetterTouchTool", { loglevel = 'debug' })
+-- BTT = spoon.BetterTouchTool
 #+end_src
 
 * URL dispatching to site-specific browsers
@@ -134,47 +134,47 @@ end
 # This is the real code that gets tangled out to my config file
 #+begin_src lua :exports none
 chromeBrowser = appID('/Applications/Google Chrome.app')
-edgeBrowser = appID('/Applications/Microsoft Edge.app')
+-- edgeBrowser = appID('/Applications/Microsoft Edge.app')
 braveBrowser = appID('/Applications/Brave Browser Dev.app')
 
 DefaultBrowser = braveBrowser
-WorkBrowser = edgeBrowser
+WorkBrowser = chromeBrowser
 
-JiraApp = appID('~/Applications/Epichrome SSBs/Jira.app')
-WikiApp = appID('~/Applications/Epichrome SSBs/Wiki.app')
-CollabApp = WorkBrowser
-SmcaApp = WorkBrowser
-OpsGenieApp = WorkBrowser
-TeamsApp = appID('/Applications/Microsoft Teams.app')
+-- JiraApp = appID('~/Applications/Epichrome SSBs/Jira.app')
+-- WikiApp = appID('~/Applications/Epichrome SSBs/Wiki.app')
+-- CollabApp = WorkBrowser
+-- SmcaApp = WorkBrowser
+-- OpsGenieApp = WorkBrowser
+-- TeamsApp = appID('/Applications/Microsoft Teams.app')
 
 Install:andUse("URLDispatcher",
                {
                  config = {
                    url_patterns = {
-                     { "https?://issue%.swisscom%.ch",     JiraApp },
-                     { "https?://issue%.swisscom%.com",    JiraApp },
-                     { "https?://jira%.swisscom%.com",     JiraApp },
-                     { "https?://wiki%.swisscom%.com",     WikiApp },
-                     { "https?://collab.*%.swisscom%.com", CollabApp },
-                     { "https?://smca%.swisscom%.com",     SmcaApp },
-                     { "https?://app.*%.opsgenie%.com",    OpsGenieApp },
-                     { "msteams:",                         TeamsApp },
-                     { "https?://.*%.swisscom%.ch",        WorkBrowser },
-                     { "https?://.*%.swisscom%.com",       WorkBrowser },
-                     { "https?://.*%.sharepoint%.com",     WorkBrowser },
-                     { "https?://.*%.office%.com",         WorkBrowser },
-                     { "https?://.*%.corproot%.net",       WorkBrowser }
+                     -- { "https?://issue%.swisscom%.ch",     JiraApp },
+                     -- { "https?://issue%.swisscom%.com",    JiraApp },
+                     -- { "https?://jira%.swisscom%.com",     JiraApp },
+                     -- { "https?://wiki%.swisscom%.com",     WikiApp },
+                     -- { "https?://collab.*%.swisscom%.com", CollabApp },
+                     -- { "https?://smca%.swisscom%.com",     SmcaApp },
+                     -- { "https?://app.*%.opsgenie%.com",    OpsGenieApp },
+                     -- { "msteams:",                         TeamsApp },
+                     -- { "https?://.*%.swisscom%.ch",        WorkBrowser },
+                     -- { "https?://.*%.swisscom%.com",       WorkBrowser },
+                     -- { "https?://.*%.sharepoint%.com",     WorkBrowser },
+                     -- { "https?://.*%.office%.com",         WorkBrowser },
+                     -- { "https?://.*%.corproot%.net",       WorkBrowser }
                    },
                    url_redir_decoders = {
 -- This breaks some things
 --                     { "Fix macOS double-encoding weirdness",
 --                       "%%25(%x%x)",   -- This is %xx encoded, the % gets converted to %25
 --                       "%%%1", true },
-                     { "Office 365 safelinks check",
-                       "https://eur03.safelinks.protection.outlook.com/(.*)\\?url=(.-)&.*",
-                       "%2" },
-                     { "MS Teams URLs",
-                       "(https://teams.microsoft.com.*)", "msteams:%1", true },
+                     -- { "Office 365 safelinks check",
+                     --   "https://eur03.safelinks.protection.outlook.com/(.*)\\?url=(.-)&.*",
+                     --   "%2" },
+                     -- { "MS Teams URLs",
+                     --   "(https://teams.microsoft.com.*)", "msteams:%1", true },
                      { "Fix broken Preview anchor URLs",
                        "%%23", "#", false, "Preview" },
                    },
@@ -413,7 +413,7 @@ The =BTT_restart_Hammerspoon= function sets up a BetterTouchTool widget which al
 
 This is still manual - the =uuid= parameter contains the ID of the BTT widget to configure, and for now you have to get it by hand from BTT and paste it here.
 
-#+begin_src lua
+#+begin_src lua :tangle no
 function BTT_restart_hammerspoon(s)
   BTT:bindSpoonActions(s, {
                          config_reload = {
@@ -438,7 +438,7 @@ Install:andUse("Hammer",
                    config_reload = {hyper, "r"},
                    toggle_console = {hyper, "y"}
                  },
-                 fn = BTT_restart_Hammerspoon,
+--                 fn = BTT_restart_Hammerspoon,
                  start = true
                }
 )
@@ -448,7 +448,7 @@ Install:andUse("Hammer",
 
 The [[http://www.hammerspoon.org/Spoons/Caffeine.html][Caffeine]] spoon allows preventing the display and the machine from sleeping. I use it frequently when playing music from my machine, to avoid having to unlock the screen whenever I want to change the music. In this case we also create a function =BTT_caffeine_widget= to configure the widget to both execute the corresponding function, and to set its icon according to the current state.
 
-#+begin_src lua
+#+begin_src lua :tangle no
 function BTT_caffeine_widget(s)
   BTT:bindSpoonActions(s, {
                          toggle = {
@@ -486,7 +486,7 @@ Install:andUse("Caffeine", {
                  hotkeys = {
                    toggle = { hyper, "1" }
                  },
-                 fn = BTT_caffeine_widget,
+--                 fn = BTT_caffeine_widget,
 })
 #+end_src
 
