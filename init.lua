@@ -33,9 +33,9 @@ end
 
 chromeBrowser = appID('/Applications/Google Chrome.app')
 -- edgeBrowser = appID('/Applications/Microsoft Edge.app')
-braveBrowser = appID('/Applications/Brave Browser Dev.app')
+braveBrowser = appID('/Applications/Brave Browser.app')
 
-DefaultBrowser = braveBrowser
+DefaultBrowser = chromeBrowser
 WorkBrowser = chromeBrowser
 
 -- JiraApp = appID('~/Applications/Epichrome SSBs/Jira.app')
@@ -123,7 +123,8 @@ Install:andUse("UniversalArchive",
                {
                  config = {
                    evernote_archive_notebook = ".Archive",
-                   archive_notifications = false
+                   archive_notifications = false,
+                   outlook_archive_folder = "Archive (dzamboni@amazon.ch)"
                  },
                  hotkeys = { archive = { { "ctrl", "cmd" }, "a" } }
                }
@@ -137,7 +138,7 @@ function OF_register_additional_apps(s)
   s:registerApplication("Swisscom Collab", chrome_item("tab"))
   s:registerApplication("Swisscom Wiki", chrome_item("wiki page"))
   s:registerApplication("Swisscom Jira", chrome_item("issue"))
-  s:registerApplication("Brave Browser Dev", chrome_item("page"))
+  s:registerApplication("Brave Browser", chrome_item("page"))
 end
 
 Install:andUse("SendToOmniFocus",
@@ -314,7 +315,7 @@ Install:andUse("HeadphoneAutoPause",
 
 Install:andUse("Seal",
                {
-                 hotkeys = { show = { {"cmd"}, "space" } },
+                 hotkeys = { show = { {"alt"}, "space" } },
                  fn = function(s)
                    s:loadPlugins({"apps", "calc", "safari_bookmarks",
                                   "screencapture", "useractions"})
@@ -489,6 +490,7 @@ Install:andUse("Leanpub",
                    books_sync_to_dropbox = true,
                  },
                  start = true,
+                 disable = true
 })
 
 Install:andUse("KSheet", {
