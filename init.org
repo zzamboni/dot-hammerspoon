@@ -293,7 +293,7 @@ Install:andUse("UniversalArchive",
                  config = {
                    evernote_archive_notebook = ".Archive",
                    archive_notifications = false,
-                   outlook_archive_folder = "Archive (dzamboni@amazon.ch)"
+                   outlook_archive_folder = "Archive (dzamboni@amazon.com)"
                  },
                  hotkeys = { archive = { { "ctrl", "cmd" }, "a" } }
                }
