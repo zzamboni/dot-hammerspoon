@@ -644,7 +644,8 @@ The [[http://www.hammerspoon.org/Spoons/HeadphoneAutoPause.html][HeadphoneAutoPa
 #+begin_src lua
 Install:andUse("HeadphoneAutoPause",
                {
-                 start = true
+                 start = true,
+                 disable = true,
                }
 )
 #+end_src

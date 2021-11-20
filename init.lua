@@ -309,7 +309,8 @@ Install:andUse("EjectMenu", {
 
 Install:andUse("HeadphoneAutoPause",
                {
-                 start = true
+                 start = true,
+                 disable = true,
                }
 )
 
