@@ -146,11 +146,13 @@ WorkBrowser = chromeBrowser
 -- SmcaApp = WorkBrowser
 -- OpsGenieApp = WorkBrowser
 -- TeamsApp = appID('/Applications/Microsoft Teams.app')
+QuipApp = appID('/Applications/Quip.app')
 
 Install:andUse("URLDispatcher",
                {
                  config = {
                    url_patterns = {
+                     { "https://quip%-amazon%.com/", QuipApp }
                      -- { "https?://issue%.swisscom%.ch",     JiraApp },
                      -- { "https?://issue%.swisscom%.com",    JiraApp },
                      -- { "https?://jira%.swisscom%.com",     JiraApp },
