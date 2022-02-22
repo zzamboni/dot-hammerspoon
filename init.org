@@ -289,7 +289,8 @@ Install:andUse("ToggleScreenRotation",
 
 The [[http://www.hammerspoon.org/Spoons/UniversalArchive.html][UniversalArchive]] spoon sets up a single key binding (=Ctrl-Cmd-a=) to archive the current item in Evernote, Mail and Outlook.
 
-#+begin_src lua
+# This is the real code that gets tangled out to my config file
+#+begin_src lua :exports none
 Install:andUse("UniversalArchive",
                {
                  config = {
@@ -301,6 +302,22 @@ Install:andUse("UniversalArchive",
                }
 )
 #+end_src
+
+
+# This block is the one that gets exported when this config file is typeset in books or blog posts, to prevent the company name from showing up there.
+#+begin_src lua :exports code :tangle no
+Install:andUse("UniversalArchive",
+               {
+                 config = {
+                   evernote_archive_notebook = ".Archive",
+                   archive_notifications = false,
+                   outlook_archive_folder = "Archive (myemail@work.com)"
+                 },
+                 hotkeys = { archive = { { "ctrl", "cmd" }, "a" } }
+               }
+)
+#+end_src
+
 
 ** Filing to Omnifocus
 
