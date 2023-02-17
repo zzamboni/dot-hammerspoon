@@ -27,12 +27,26 @@ Install=spoon.SpoonInstall
 -- Install:andUse("BetterTouchTool", { loglevel = 'debug' })
 -- BTT = spoon.BetterTouchTool
 
+-- Returns the bundle ID of an application, given its path.
 function appID(app)
   return hs.application.infoForBundlePath(app)['CFBundleIdentifier']
 end
 
+-- Returns a function that takes a URL and opens it in the given Chrome profile
+-- Note: the value of `profile` must be the name of the profile directory under
+-- ~/Library/Application Support/Google/Chrome/
+function chromeProfile(profile)
+  return function(url)
+    hs.task.new("/usr/bin/open", nil, { "-n",
+                                        "-a", "Google Chrome",
+                                        "--args",
+                                        "--profile-directory="..profile,
+                                        url }):start()
+  end
+end
+
+-- Define the IDs of the various applications used to open URLs
 chromeBrowser = appID('/Applications/Google Chrome.app')
--- edgeBrowser = appID('/Applications/Microsoft Edge.app')
 braveBrowser = appID('/Applications/Brave Browser.app')
 
 DefaultBrowser = chromeBrowser

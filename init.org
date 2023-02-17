@@ -126,8 +126,26 @@ The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoo
 The =URLDispatcher= spoon requires application IDs, which may change from time to time (e.g. in a recent Epichrome update all its apps changed IDs, which broke the dispatching until I figured it out), so I define a function which gets the path of the application and returns its ID.
 
 #+begin_src lua
+-- Returns the bundle ID of an application, given its path.
 function appID(app)
   return hs.application.infoForBundlePath(app)['CFBundleIdentifier']
+end
+#+end_src
+
+I use various Chrome Profiles for different subsets of things I do at work, and with URLDispatcher I can define a function to be called for certain URLs. The =chromeProfile= function returns a function which opens a URL with the given Chrome Profile, and which can be used directly as the value in the =url_patterns= parameter below.
+
+#+begin_src lua :exports
+-- Returns a function that takes a URL and opens it in the given Chrome profile
+-- Note: the value of `profile` must be the name of the profile directory under
+-- ~/Library/Application Support/Google/Chrome/
+function chromeProfile(profile)
+  return function(url)
+    hs.task.new("/usr/bin/open", nil, { "-n",
+                                        "-a", "Google Chrome",
+                                        "--args",
+                                        "--profile-directory="..profile,
+                                        url }):start()
+  end
 end
 #+end_src
 
