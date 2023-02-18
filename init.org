@@ -151,59 +151,64 @@ end
 
 # This is the real code that gets tangled out to my config file
 #+begin_src lua :exports none
+-- Define the IDs of the various applications used to open URLs
 chromeBrowser = appID('/Applications/Google Chrome.app')
--- edgeBrowser = appID('/Applications/Microsoft Edge.app')
 braveBrowser = appID('/Applications/Brave Browser.app')
-
-DefaultBrowser = chromeBrowser
-WorkBrowser = chromeBrowser
-
--- JiraApp = appID('~/Applications/Epichrome SSBs/Jira.app')
--- WikiApp = appID('~/Applications/Epichrome SSBs/Wiki.app')
--- CollabApp = WorkBrowser
--- SmcaApp = WorkBrowser
--- OpsGenieApp = WorkBrowser
--- TeamsApp = appID('/Applications/Microsoft Teams.app')
+safariBrowser = appID('/Applications/Safari.app')
+firefoxBrowser = appID('/Applications/Firefox.app')
+TeamsApp = appID('/Applications/Microsoft Teams.app')
 QuipApp = appID('/Applications/Quip.app')
+ChimeApp = appID('/Applications/Amazon Chime.app')
+
+-- Define my default browsers for various purposes
+DefaultBrowser = braveBrowser
+AwsConsoleBrowser = firefoxBrowser
+WorkBrowser = chromeProfile("Default")
+Customer1Browser = chromeProfile("Profile 1")
+
+-- Read URLs from a JSON file
+URLfile = hs.configdir .. "/local/urls.json"
+
+-- This function reads the URL patterns from the file and sets them in the
+-- URLDispatcher configuration.
+function readURLs(paths,flags)
+  URLs = {}
+  if hs.fs.attributes(URLfile) then
+    URLs = hs.json.read(URLfile)
+  end
+  -- Assign URL patterns after reading the file
+  spoon.URLDispatcher.url_patterns = {
+    -- URLs that get redirected to applications
+    { "https://quip%-amazon%.com/"       , QuipApp },
+    { "https://teams%.microsoft%.com/"   , TeamsApp },
+    -- I haven't figured out how to send Chime URLs directly to
+    -- the app in a way that it understands them, so for now we
+    -- send them to WorkBrowser, which in turn redirects to the
+    -- app.
+    { "https://chime%.aws/"              , WorkBrowser },
+    -- Customer-specific URLs open in their own Chrome profile
+    { URLs['Customer1_URLs']             , Customer1Browser },
+    -- Amazon console URLs open in Firefox
+    { ".*%.console%.aws%.amazon%.com/.*" , AwsConsoleBrowser },
+    -- Amazon URLs open in the default Chrome profile
+    { URLs['Work_URLs']                  , WorkBrowser },
+  }
+end
 
 Install:andUse("URLDispatcher",
                {
                  config = {
-                   url_patterns = {
-                     { "https://quip%-amazon%.com/", QuipApp }
-                     -- { "https?://issue%.swisscom%.ch",     JiraApp },
-                     -- { "https?://issue%.swisscom%.com",    JiraApp },
-                     -- { "https?://jira%.swisscom%.com",     JiraApp },
-                     -- { "https?://wiki%.swisscom%.com",     WikiApp },
-                     -- { "https?://collab.*%.swisscom%.com", CollabApp },
-                     -- { "https?://smca%.swisscom%.com",     SmcaApp },
-                     -- { "https?://app.*%.opsgenie%.com",    OpsGenieApp },
-                     -- { "msteams:",                         TeamsApp },
-                     -- { "https?://.*%.swisscom%.ch",        WorkBrowser },
-                     -- { "https?://.*%.swisscom%.com",       WorkBrowser },
-                     -- { "https?://.*%.sharepoint%.com",     WorkBrowser },
-                     -- { "https?://.*%.office%.com",         WorkBrowser },
-                     -- { "https?://.*%.corproot%.net",       WorkBrowser }
-                   },
-                   url_redir_decoders = {
--- This breaks some things
---                     { "Fix macOS double-encoding weirdness",
---                       "%%25(%x%x)",   -- This is %xx encoded, the % gets converted to %25
---                       "%%%1", true },
-                     -- { "Office 365 safelinks check",
-                     --   "https://eur03.safelinks.protection.outlook.com/(.*)\\?url=(.-)&.*",
-                     --   "%2" },
-                     -- { "MS Teams URLs",
-                     --   "(https://teams.microsoft.com.*)", "msteams:%1", true },
-                     { "Fix broken Preview anchor URLs",
-                       "%%23", "#", false, "Preview" },
-                   },
-                   default_handler = DefaultBrowser
+                   default_handler = braveBrowser,
                  },
                  start = true,
-                 -- loglevel = 'debug'
+                 loglevel = 'debug'
                }
 )
+
+-- Read URLs upon startup...
+readURLs()
+-- ...and set up a watcher to reload them automatically when they change
+urlWatcher = hs.pathwatcher.new(URLfile, readURLs):start()
 #+end_src
 
 # This block is the one that gets exported when this config file is typeset in books or blog posts, to prevent the company name from showing up there.
