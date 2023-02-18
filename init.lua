@@ -516,7 +516,7 @@ Install:andUse("KSheet", {
                  }
 })
 
-local localfile = hs.configdir .. "/init-local.lua"
+local localfile = hs.configdir .. "/local/init-local.lua"
 if hs.fs.attributes(localfile) then
   dofile(localfile)
 end

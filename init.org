@@ -944,7 +944,7 @@ Install:andUse("KSheet", {
 In =init-local.lua= I keep experimental or private stuff (like API tokens) that I don't want to publish in my main config. This file is not committed to any publicly accessible git repositories.
 
 #+begin_src lua
-local localfile = hs.configdir .. "/init-local.lua"
+local localfile = hs.configdir .. "/local/init-local.lua"
 if hs.fs.attributes(localfile) then
   dofile(localfile)
 end
