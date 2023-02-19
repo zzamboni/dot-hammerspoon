@@ -46,63 +46,63 @@ function chromeProfile(profile)
 end
 
 -- Define the IDs of the various applications used to open URLs
-chromeBrowser = appID('/Applications/Google Chrome.app')
-braveBrowser = appID('/Applications/Brave Browser.app')
-safariBrowser = appID('/Applications/Safari.app')
+chromeBrowser  = appID('/Applications/Google Chrome.app')
+braveBrowser   = appID('/Applications/Brave Browser.app')
+safariBrowser  = appID('/Applications/Safari.app')
 firefoxBrowser = appID('/Applications/Firefox.app')
-TeamsApp = appID('/Applications/Microsoft Teams.app')
-QuipApp = appID('/Applications/Quip.app')
-ChimeApp = appID('/Applications/Amazon Chime.app')
+teamsApp       = appID('/Applications/Microsoft Teams.app')
+quipApp        = appID('/Applications/Quip.app')
+chimeApp       = appID('/Applications/Amazon Chime.app')
 
 -- Define my default browsers for various purposes
-DefaultBrowser = braveBrowser
-AwsConsoleBrowser = firefoxBrowser
-WorkBrowser = chromeProfile("Default")
-Customer1Browser = chromeProfile("Profile 1")
+browsers = {
+  default    = braveBrowser,
+  awsConsole = firefoxBrowser,
+  work       = chromeProfile("Default"),
+  customer1  = chromeProfile("Profile 1")
+}
 
--- Read URLs from a JSON file
-URLfile = hs.configdir .. "/local/urls.json"
-
--- This function reads the URL patterns from the file and sets them in the
--- URLDispatcher configuration.
-function readURLs(paths,flags)
-  URLs = {}
-  if hs.fs.attributes(URLfile) then
-    URLs = hs.json.read(URLfile)
-  end
-  -- Assign URL patterns after reading the file
-  spoon.URLDispatcher.url_patterns = {
-    -- URLs that get redirected to applications
-    { "https://quip%-amazon%.com/"       , QuipApp },
-    { "https://teams%.microsoft%.com/"   , TeamsApp },
-    -- I haven't figured out how to send Chime URLs directly to
-    -- the app in a way that it understands them, so for now we
-    -- send them to WorkBrowser, which in turn redirects to the
-    -- app.
-    { "https://chime%.aws/"              , WorkBrowser },
-    -- Customer-specific URLs open in their own Chrome profile
-    { URLs['Customer1_URLs']             , Customer1Browser },
-    -- Amazon console URLs open in Firefox
-    { ".*%.console%.aws%.amazon%.com/.*" , AwsConsoleBrowser },
-    -- Amazon URLs open in the default Chrome profile
-    { URLs['Work_URLs']                  , WorkBrowser },
-  }
-end
+-- Read URL patterns from text files
+URLfiles = {
+  work = "local/work_urls.txt",
+  customer1 = "local/customer1_urls.txt"
+}
 
 Install:andUse("URLDispatcher",
                {
                  config = {
-                   default_handler = braveBrowser,
+                   default_handler = browsers['default'],
+                   url_patterns = {
+                     -- URLs that get redirected to applications
+                     { "https://quip%-amazon%.com/"       , quipApp },
+                     { "https://teams%.microsoft%.com/"   , teamsApp },
+                     -- I haven't figured out how to send Chime URLs directly to
+                     -- the app in a way that it understands them, so for now we
+                     -- send them to browsers[work], which in turn redirects to the
+                     -- app.
+                     { "https://chime%.aws/"              , browsers['work'] },
+                     -- Customer-specific URLs open in their own Chrome profile
+                     { URLfiles['customer1']              , browsers['customer1'] },
+                     -- Amazon console URLs open by default in Firefox. This is after customer1
+                     -- URLs because I have patterns for that customer's accounts to open in its
+                     -- corresponding profile.
+                     { ".*%.console%.aws%.amazon%.com/.*" , browsers['awsConsole'] },
+                     -- Amazon URLs open in the default Chrome profile
+                     { URLfiles['work']                   , browsers['work'] },
+                   },
+                   url_redir_decoders = {
+                     -- URLs opened from within MS Teams are normally sent
+                     -- through a redirect which messes the matching, so we
+                     -- extract the final URL before dispatching it.
+                     { "MS Teams links",
+                       "https://statics%.teams%.cdn%.office%.net/evergreen%-assets/safelinks/1/atp%-safelinks%.html%?url=(.-)%&.*", "%1"
+                     }
+                   }
                  },
                  start = true,
                  loglevel = 'debug'
                }
 )
-
--- Read URLs upon startup...
-readURLs()
--- ...and set up a watcher to reload them automatically when they change
-urlWatcher = hs.pathwatcher.new(URLfile, readURLs):start()
 
 Install:andUse("WindowHalfsAndThirds",
                {

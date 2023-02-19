@@ -121,9 +121,12 @@ I'm currently working on a new [[https://github.com/zzamboni/Spoons/tree/spoon/B
 
 * URL dispatching to site-specific browsers
 
-The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoon makes it possible to open URLs with different browsers. I have created different site-specific browsers using [[https://github.com/dmarmor/epichrome][Epichrome]], which allows me to keep site-specific bookmarks, search settings, etc. I also use Edge as my work browser (since it integrated with my work account), while using Brave for everything else. I also use the =url_redir_decoders= parameter to rewrite some URLs before they are opened, both to redirect certain URLs directly to their corresponding applications (instead of going through the web browser) and to fix a bug I have experienced in opening URLs from PDF documents using Preview.
+The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoon makes it possible to open URLs with different browsers. I currently I use:
 
-The =URLDispatcher= spoon requires application IDs, which may change from time to time (e.g. in a recent Epichrome update all its apps changed IDs, which broke the dispatching until I figured it out), so I define a function which gets the path of the application and returns its ID.
+- Different Chrome profiles for various work-related purposes (e.g. one profile for internal sites, another one per customer engagement), which allows me to keep site-specific bookmarks, search settings, etc.;
+- Brave for non-work browsing. I also use the =url_redir_decoders= parameter to rewrite some URLs before they are opened, both to redirect certain URLs directly to their corresponding applications (instead of going through the web browser) and to fix a bug I have experienced in opening URLs from PDF documents using Preview.
+
+The =URLDispatcher= spoon requires application IDs, so I define a function which gets the path of the application and returns its ID.
 
 #+begin_src lua
 -- Returns the bundle ID of an application, given its path.
@@ -134,7 +137,7 @@ end
 
 I use various Chrome Profiles for different subsets of things I do at work, and with URLDispatcher I can define a function to be called for certain URLs. The =chromeProfile= function returns a function which opens a URL with the given Chrome Profile, and which can be used directly as the value in the =url_patterns= parameter below.
 
-#+begin_src lua :exports
+#+begin_src lua
 -- Returns a function that takes a URL and opens it in the given Chrome profile
 -- Note: the value of `profile` must be the name of the profile directory under
 -- ~/Library/Application Support/Google/Chrome/
@@ -150,104 +153,63 @@ end
 #+end_src
 
 # This is the real code that gets tangled out to my config file
-#+begin_src lua :exports none
+#+begin_src lua
 -- Define the IDs of the various applications used to open URLs
-chromeBrowser = appID('/Applications/Google Chrome.app')
-braveBrowser = appID('/Applications/Brave Browser.app')
-safariBrowser = appID('/Applications/Safari.app')
+chromeBrowser  = appID('/Applications/Google Chrome.app')
+braveBrowser   = appID('/Applications/Brave Browser.app')
+safariBrowser  = appID('/Applications/Safari.app')
 firefoxBrowser = appID('/Applications/Firefox.app')
-TeamsApp = appID('/Applications/Microsoft Teams.app')
-QuipApp = appID('/Applications/Quip.app')
-ChimeApp = appID('/Applications/Amazon Chime.app')
+teamsApp       = appID('/Applications/Microsoft Teams.app')
+quipApp        = appID('/Applications/Quip.app')
+chimeApp       = appID('/Applications/Amazon Chime.app')
 
 -- Define my default browsers for various purposes
-DefaultBrowser = braveBrowser
-AwsConsoleBrowser = firefoxBrowser
-WorkBrowser = chromeProfile("Default")
-Customer1Browser = chromeProfile("Profile 1")
+browsers = {
+  default    = braveBrowser,
+  awsConsole = firefoxBrowser,
+  work       = chromeProfile("Default"),
+  customer1  = chromeProfile("Profile 1")
+}
 
--- Read URLs from a JSON file
-URLfile = hs.configdir .. "/local/urls.json"
-
--- This function reads the URL patterns from the file and sets them in the
--- URLDispatcher configuration.
-function readURLs(paths,flags)
-  URLs = {}
-  if hs.fs.attributes(URLfile) then
-    URLs = hs.json.read(URLfile)
-  end
-  -- Assign URL patterns after reading the file
-  spoon.URLDispatcher.url_patterns = {
-    -- URLs that get redirected to applications
-    { "https://quip%-amazon%.com/"       , QuipApp },
-    { "https://teams%.microsoft%.com/"   , TeamsApp },
-    -- I haven't figured out how to send Chime URLs directly to
-    -- the app in a way that it understands them, so for now we
-    -- send them to WorkBrowser, which in turn redirects to the
-    -- app.
-    { "https://chime%.aws/"              , WorkBrowser },
-    -- Customer-specific URLs open in their own Chrome profile
-    { URLs['Customer1_URLs']             , Customer1Browser },
-    -- Amazon console URLs open in Firefox
-    { ".*%.console%.aws%.amazon%.com/.*" , AwsConsoleBrowser },
-    -- Amazon URLs open in the default Chrome profile
-    { URLs['Work_URLs']                  , WorkBrowser },
-  }
-end
+-- Read URL patterns from text files
+URLfiles = {
+  work = "local/work_urls.txt",
+  customer1 = "local/customer1_urls.txt"
+}
 
 Install:andUse("URLDispatcher",
                {
                  config = {
-                   default_handler = braveBrowser,
+                   default_handler = browsers['default'],
+                   url_patterns = {
+                     -- URLs that get redirected to applications
+                     { "https://quip%-amazon%.com/"       , quipApp },
+                     { "https://teams%.microsoft%.com/"   , teamsApp },
+                     -- I haven't figured out how to send Chime URLs directly to
+                     -- the app in a way that it understands them, so for now we
+                     -- send them to browsers[work], which in turn redirects to the
+                     -- app.
+                     { "https://chime%.aws/"              , browsers['work'] },
+                     -- Customer-specific URLs open in their own Chrome profile
+                     { URLfiles['customer1']              , browsers['customer1'] },
+                     -- Amazon console URLs open by default in Firefox. This is after customer1
+                     -- URLs because I have patterns for that customer's accounts to open in its
+                     -- corresponding profile.
+                     { ".*%.console%.aws%.amazon%.com/.*" , browsers['awsConsole'] },
+                     -- Amazon URLs open in the default Chrome profile
+                     { URLfiles['work']                   , browsers['work'] },
+                   },
+                   url_redir_decoders = {
+                     -- URLs opened from within MS Teams are normally sent
+                     -- through a redirect which messes the matching, so we
+                     -- extract the final URL before dispatching it.
+                     { "MS Teams links",
+                       "https://statics%.teams%.cdn%.office%.net/evergreen%-assets/safelinks/1/atp%-safelinks%.html%?url=(.-)%&.*", "%1"
+                     }
+                   }
                  },
                  start = true,
                  loglevel = 'debug'
-               }
-)
-
--- Read URLs upon startup...
-readURLs()
--- ...and set up a watcher to reload them automatically when they change
-urlWatcher = hs.pathwatcher.new(URLfile, readURLs):start()
-#+end_src
-
-# This block is the one that gets exported when this config file is typeset in books or blog posts, to prevent the company name from showing up there.
-#+begin_src lua :exports code :tangle no
-chromeBrowser = appID('/Applications/Google Chrome.app')
-edgeBrowser = appID('/Applications/Microsoft Edge.app')
-braveBrowser = appID('/Applications/Brave Browser Dev.app')
-
-DefaultBrowser = braveBrowser
-WorkBrowser = edgeBrowser
-
-JiraApp = appID('~/Applications/Epichrome SSBs/Jira.app')
-WikiApp = appID('~/Applications/Epichrome SSBs/Wiki.app')
-OpsGenieApp = WorkBrowser
-
-Install:andUse("URLDispatcher",
-               {
-                 config = {
-                   url_patterns = {
-                     { "https?://jira%.work%.com",      JiraApp },
-                     { "https?://wiki%.work%.com",      WikiApp },
-                     { "https?://app.*%.opsgenie%.com", OpsGenieApp },
-                     { "msteams:",                      "com.microsoft.teams" },
-                     { "https?://.*%.work%.com",        WorkBrowser }
-                   },
-                   url_redir_decoders = {
-                     -- Send MS Teams URLs directly to the app
-                     { "MS Teams URLs",
-                       "(https://teams.microsoft.com.*)", "msteams:%1", true },
-                     -- Preview incorrectly encodes the anchor
-                     -- character in URLs as %23, we fix it
-                     { "Fix broken Preview anchor URLs",
-                       "%%23", "#", false, "Preview" },
-                   },
-                   default_handler = DefaultBrowser
-                 },
-                 start = true,
-                 -- Enable debug logging if you get unexpected behavior
-                 -- loglevel = 'debug'
                }
 )
 #+end_src
