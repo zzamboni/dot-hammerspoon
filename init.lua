@@ -29,7 +29,9 @@ Install=spoon.SpoonInstall
 
 -- Returns the bundle ID of an application, given its path.
 function appID(app)
-  return hs.application.infoForBundlePath(app)['CFBundleIdentifier']
+  if hs.application.infoForBundlePath(app) then
+    return hs.application.infoForBundlePath(app)['CFBundleIdentifier']
+  end
 end
 
 -- Returns a function that takes a URL and opens it in the given Chrome profile
