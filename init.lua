@@ -73,32 +73,33 @@ URLfiles = {
 Install:andUse("URLDispatcher",
                {
                  config = {
-                   default_handler = browsers['default'],
+                   default_handler = browsers.default,
                    url_patterns = {
                      -- URLs that get redirected to applications
-                     { "https://quip%-amazon%.com/"       , quipApp },
-                     { "https://teams%.microsoft%.com/"   , teamsApp },
+                     { "https://quip%-amazon%.com/"      , quipApp },
+                     { "https://teams%.microsoft%.com/"  , teamsApp },
                      -- I haven't figured out how to send Chime URLs directly to
                      -- the app in a way that it understands them, so for now we
-                     -- send them to browsers[work], which in turn redirects to the
+                     -- send them to browsers.work, which in turn redirects to the
                      -- app.
-                     { "https://chime%.aws/"              , browsers['work'] },
+                     { "https://chime%.aws/"             , browsers.work },
                      -- Customer-specific URLs open in their own Chrome profile
-                     { URLfiles['customer1']              , browsers['customer1'] },
+                     { URLfiles.customer1                , browsers.customer1 },
                      -- Amazon console URLs open by default in Firefox. This is after customer1
                      -- URLs because I have patterns for that customer's accounts to open in its
                      -- corresponding profile.
-                     { ".*%.console%.aws%.amazon%.com/.*" , browsers['awsConsole'] },
-                     -- Amazon URLs open in the default Chrome profile
-                     { URLfiles['work']                   , browsers['work'] },
+                     { ".*%.console%.aws%.amazon%.com/.*", browsers.awsConsole },
+                     -- Work-related URLs open in the default Chrome profile
+                     { URLfiles.work                     , browsers.work },
                    },
                    url_redir_decoders = {
                      -- URLs opened from within MS Teams are normally sent
                      -- through a redirect which messes the matching, so we
-                     -- extract the final URL before dispatching it.
-                     { "MS Teams links",
-                       "https://statics%.teams%.cdn%.office%.net/evergreen%-assets/safelinks/1/atp%-safelinks%.html%?url=(.-)%&.*", "%1"
-                     }
+                     -- extract the final URL before dispatching it. The final
+                     -- URL is passed as parameter "url" to the redirect URL,
+                     -- which makes it easy to extract it using a function-based
+                     -- decoder.
+                     { "MS Teams links", function(_, _, params) return params.url end, nil, true, "Microsoft Teams" }
                    }
                  },
                  start = true,

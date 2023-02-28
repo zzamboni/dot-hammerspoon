@@ -121,9 +121,9 @@ I'm currently working on a new [[https://github.com/zzamboni/Spoons/tree/spoon/B
 
 * URL dispatching to site-specific browsers
 
-The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoon makes it possible to open URLs with different browsers. I currently I use:
+The [[http://www.hammerspoon.org/Spoons/URLDispatcher.html][URLDispatcher]] spoon makes it possible to open URLs with different browsers. Currently I use the following:
 
-- Different Chrome profiles for various work-related purposes (e.g. one profile for internal sites, another one per customer engagement), which allows me to keep site-specific bookmarks, search settings, etc.;
+- Different Chrome profiles for various work-related purposes (e.g. one profile for each of my customers, another one for internal sites), which allows me to keep site-specific bookmarks, search settings, etc.;
 - Brave for non-work browsing. I also use the =url_redir_decoders= parameter to rewrite some URLs before they are opened, both to redirect certain URLs directly to their corresponding applications (instead of going through the web browser) and to fix a bug I have experienced in opening URLs from PDF documents using Preview.
 
 The =URLDispatcher= spoon requires application IDs, so I define a function which gets the path of the application and returns its ID.
@@ -137,7 +137,7 @@ function appID(app)
 end
 #+end_src
 
-I use various Chrome Profiles for different subsets of things I do at work, and with URLDispatcher I can define a function to be called for certain URLs. The =chromeProfile= function returns a function which opens a URL with the given Chrome Profile, and which can be used directly as the value in the =url_patterns= parameter below.
+The =chromeProfile= function returns a function which opens a URL with the given Chrome Profile, and which can be used directly as the value in the =url_patterns= parameter below.
 
 #+begin_src lua
 -- Returns a function that takes a URL and opens it in the given Chrome profile
@@ -154,7 +154,8 @@ function chromeProfile(profile)
 end
 #+end_src
 
-# This is the real code that gets tangled out to my config file
+We now configure the URLDispatcher spoon.
+
 #+begin_src lua
 -- Define the IDs of the various applications used to open URLs
 chromeBrowser  = appID('/Applications/Google Chrome.app')
@@ -182,32 +183,33 @@ URLfiles = {
 Install:andUse("URLDispatcher",
                {
                  config = {
-                   default_handler = browsers['default'],
+                   default_handler = browsers.default,
                    url_patterns = {
                      -- URLs that get redirected to applications
-                     { "https://quip%-amazon%.com/"       , quipApp },
-                     { "https://teams%.microsoft%.com/"   , teamsApp },
+                     { "https://quip%-amazon%.com/"      , quipApp },
+                     { "https://teams%.microsoft%.com/"  , teamsApp },
                      -- I haven't figured out how to send Chime URLs directly to
                      -- the app in a way that it understands them, so for now we
-                     -- send them to browsers[work], which in turn redirects to the
+                     -- send them to browsers.work, which in turn redirects to the
                      -- app.
-                     { "https://chime%.aws/"              , browsers['work'] },
+                     { "https://chime%.aws/"             , browsers.work },
                      -- Customer-specific URLs open in their own Chrome profile
-                     { URLfiles['customer1']              , browsers['customer1'] },
+                     { URLfiles.customer1                , browsers.customer1 },
                      -- Amazon console URLs open by default in Firefox. This is after customer1
                      -- URLs because I have patterns for that customer's accounts to open in its
                      -- corresponding profile.
-                     { ".*%.console%.aws%.amazon%.com/.*" , browsers['awsConsole'] },
-                     -- Amazon URLs open in the default Chrome profile
-                     { URLfiles['work']                   , browsers['work'] },
+                     { ".*%.console%.aws%.amazon%.com/.*", browsers.awsConsole },
+                     -- Work-related URLs open in the default Chrome profile
+                     { URLfiles.work                     , browsers.work },
                    },
                    url_redir_decoders = {
                      -- URLs opened from within MS Teams are normally sent
                      -- through a redirect which messes the matching, so we
-                     -- extract the final URL before dispatching it.
-                     { "MS Teams links",
-                       "https://statics%.teams%.cdn%.office%.net/evergreen%-assets/safelinks/1/atp%-safelinks%.html%?url=(.-)%&.*", "%1"
-                     }
+                     -- extract the final URL before dispatching it. The final
+                     -- URL is passed as parameter "url" to the redirect URL,
+                     -- which makes it easy to extract it using a function-based
+                     -- decoder.
+                     { "MS Teams links", function(_, _, params) return params.url end, nil, true, "Microsoft Teams" }
                    }
                  },
                  start = true,
