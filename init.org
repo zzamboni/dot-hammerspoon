@@ -176,7 +176,7 @@ browsers = {
 
 -- Read URL patterns from text files
 URLfiles = {
-  work = "local/work_urls.txt",
+  work      = "local/work_urls.txt",
   customer1 = "local/customer1_urls.txt"
 }
 
@@ -188,11 +188,7 @@ Install:andUse("URLDispatcher",
                      -- URLs that get redirected to applications
                      { "https://quip%-amazon%.com/"      , quipApp },
                      { "https://teams%.microsoft%.com/"  , teamsApp },
-                     -- I haven't figured out how to send Chime URLs directly to
-                     -- the app in a way that it understands them, so for now we
-                     -- send them to browsers.work, which in turn redirects to the
-                     -- app.
-                     { "https://chime%.aws/"             , browsers.work },
+                     { "chime://"                        , chimeApp },
                      -- Customer-specific URLs open in their own Chrome profile
                      { URLfiles.customer1                , browsers.customer1 },
                      -- Amazon console URLs open by default in Firefox. This is after customer1
@@ -209,7 +205,9 @@ Install:andUse("URLDispatcher",
                      -- URL is passed as parameter "url" to the redirect URL,
                      -- which makes it easy to extract it using a function-based
                      -- decoder.
-                     { "MS Teams links", function(_, _, params) return params.url end, nil, true, "Microsoft Teams" }
+                     { "MS Teams links", function(_, _, params) return params.url end, nil, true, "Microsoft Teams" },
+                     -- Chime meeting URLs get rewritten to open in the Chime app
+                     { "Chime meeting links", "https://chime%.aws/(%d+)", "chime://meeting?pin=%1" }
                    }
                  },
                  start = true,
