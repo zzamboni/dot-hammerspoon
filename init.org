@@ -154,7 +154,7 @@ function chromeProfile(profile)
 end
 #+end_src
 
-We now configure the URLDispatcher spoon.
+First I define variables containing the application IDs of the various applications that might be used to open URLs (not all of these are currently used, but I leave them here for convenience).
 
 #+begin_src lua
 -- Define the IDs of the various applications used to open URLs
@@ -165,7 +165,11 @@ firefoxBrowser = appID('/Applications/Firefox.app')
 teamsApp       = appID('/Applications/Microsoft Teams.app')
 quipApp        = appID('/Applications/Quip.app')
 chimeApp       = appID('/Applications/Amazon Chime.app')
+#+end_src
 
+The =browsers= array stores the browsers used for different sets of URLs. I store them here mostly for readability and convenience, I can then refer to things like =browsers.work= in the configuration below.
+
+#+begin_src lua
 -- Define my default browsers for various purposes
 browsers = {
   default    = braveBrowser,
@@ -173,13 +177,21 @@ browsers = {
   work       = chromeProfile("Default"),
   customer1  = chromeProfile("Profile 1")
 }
+#+end_src
 
+Similarly, I store in an array the paths (relative to =~/.hammerspoon=) of the files in which I store the lists of URLs to be opened by different browsers. This avoids having to include (potentially private or sensitive) URLs in my public configuration file. Since URLDispatcher automatically reloads the files when they are updated, this also makes it possible to update the lists without restarting Hammerspoon every time.
+
+#+begin_src lua
 -- Read URL patterns from text files
 URLfiles = {
   work      = "local/work_urls.txt",
   customer1 = "local/customer1_urls.txt"
 }
+#+end_src
 
+Finally, I load and configure URLDispatcher.
+
+#+begin_src lua
 Install:andUse("URLDispatcher",
                {
                  config = {
