@@ -81,9 +81,11 @@ Install:andUse("URLDispatcher",
                      { "chime://"                        , chimeApp },
                      -- Customer-specific URLs open in their own Chrome profile
                      { URLfiles.customer1                , browsers.customer1 },
-                     -- Amazon console URLs open by default in Firefox. This is after customer1
-                     -- URLs because I have patterns for that customer's accounts to open in its
-                     -- corresponding profile.
+                     -- AWS console URLs open by default in Firefox because it
+                     -- has better plugins to improve the experience. This comes
+                     -- after customer1 URLs because I have patterns for that
+                     -- customer's accounts to open in its corresponding
+                     -- profile.
                      { ".*%.console%.aws%.amazon%.com/.*", browsers.awsConsole },
                      -- Work-related URLs open in the default Chrome profile
                      { URLfiles.work                     , browsers.work },
