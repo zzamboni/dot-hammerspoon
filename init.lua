@@ -507,15 +507,15 @@ Install:andUse("Leanpub",
                      { slug = "learning-hammerspoon" },
                      { slug = "learning-cfengine" },
                      { slug = "emacs-org-leanpub" },
-                     { slug = "be-safe-on-the-internet" },
+                     -- { slug = "be-safe-on-the-internet" },
                      { slug = "lit-config"  },
                      { slug = "zztestbook" },
-                     { slug = "cisspexampreparationguide" },
+                     -- { slug = "cisspexampreparationguide" },
                    },
                    books_sync_to_dropbox = true,
                  },
                  start = true,
-                 disable = true
+                 -- loglevel = 'debug'
 })
 
 Install:andUse("KSheet", {
