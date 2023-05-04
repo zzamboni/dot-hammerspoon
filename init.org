@@ -220,6 +220,8 @@ Install:andUse("URLDispatcher",
                      -- which makes it easy to extract it using a function-based
                      -- decoder.
                      { "MS Teams links", function(_, _, params) return params.url end, nil, true, "Microsoft Teams" },
+                     -- URLs within a tracking link
+                     { "awstrack.me links", "https://.*%.awstrack%.me/.-/(.*)", "%1" },
                      -- Chime meeting URLs get rewritten to open in the Chime app
                      { "Chime meeting links", "https://chime%.aws/(%d+)", "chime://meeting?pin=%1" }
                    }
