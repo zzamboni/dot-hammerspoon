@@ -52,13 +52,14 @@ chromeBrowser  = appID('/Applications/Google Chrome.app')
 braveBrowser   = appID('/Applications/Brave Browser.app')
 safariBrowser  = appID('/Applications/Safari.app')
 firefoxBrowser = appID('/Applications/Firefox.app')
+arcBrowser     = appID('/Applications/Arc.app')
 teamsApp       = appID('/Applications/Microsoft Teams.app')
 quipApp        = appID('/Applications/Quip.app')
 chimeApp       = appID('/Applications/Amazon Chime.app')
 
 -- Define my default browsers for various purposes
 browsers = {
-  default    = braveBrowser,
+  default    = arcBrowser,
   awsConsole = firefoxBrowser,
   work       = chromeProfile("Default"),
   customer1  = chromeProfile("Profile 1")
