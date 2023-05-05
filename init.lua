@@ -526,7 +526,7 @@ Install:andUse("Leanpub",
                    },
                    books_sync_to_dropbox = true,
                  },
-                 start = true,
+                 start = false,
                  -- loglevel = 'debug'
 })
 
@@ -539,6 +539,10 @@ Install:andUse("KSheet", {
 local localfile = hs.configdir .. "/local/init-local.lua"
 if hs.fs.attributes(localfile) then
   dofile(localfile)
+end
+
+if spoon.Leanpub.api_key and spoon.Leanpub.api_key ~= "" then
+  spoon.Leanpub:start()
 end
 
 Install:andUse("FadeLogo",
