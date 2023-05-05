@@ -92,13 +92,22 @@ Install:andUse("URLDispatcher",
                      { URLfiles.work                     , browsers.work },
                    },
                    url_redir_decoders = {
-                     -- URLs opened from within MS Teams are normally sent
+                     -- Most URLs opened from within MS Teams are normally sent
                      -- through a redirect which messes the matching, so we
                      -- extract the final URL before dispatching it. The final
                      -- URL is passed as parameter "url" to the redirect URL,
                      -- which makes it easy to extract it using a function-based
                      -- decoder.
-                     { "MS Teams links", function(_, _, params) return params.url end, nil, true, "Microsoft Teams" },
+                     -- Some URLs (e.g. Sharepoint) are not sent through the
+                     -- decoder, so if there is no url parameter, we process the
+                     -- full original URL.
+                     { "MS Teams links", function(_, _, params,fullUrl)
+                         if params.url then
+                           return params.url
+                         else
+                           return fullUrl
+                         end
+                     end, nil, true, "Microsoft Teams" },
                      -- URLs within a tracking link
                      { "awstrack.me links", "https://.*%.awstrack%.me/.-/(.*)", "%1" },
                      -- Chime meeting URLs get rewritten to open in the Chime app
