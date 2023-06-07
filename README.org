@@ -1,14 +1,8 @@
 * My Hammerspoon configuration
-  :PROPERTIES:
-  :CUSTOM_ID: my-hammerspoon-configuration
-  :END:
 
 [[http://www.hammerspoon.org/][Hammerspoon]] is one of the most-used utilities on my Mac. This repository contains my personal configuration, which you can use as a starting point and modify to suit your needs and preferences.
 
 ** How to use it
-   :PROPERTIES:
-   :CUSTOM_ID: how-to-use-it
-   :END:
 
 1. Install [[http://www.hammerspoon.org/][Hammerspoon]] (minimum version required: 0.9.55, which introduced the =hs.spoons= module)
 
