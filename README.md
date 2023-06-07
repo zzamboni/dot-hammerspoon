@@ -4,15 +4,9 @@
 1.  [My Hammerspoon configuration](#orgd4e35a6)
     1.  [How to use it](#org65c6462)
 
-
-<a id="orgd4e35a6"></a>
-
 # My Hammerspoon configuration
 
 [Hammerspoon](http://www.hammerspoon.org/) is one of the most-used utilities on my Mac. This repository contains my personal configuration, which you can use as a starting point and modify to suit your needs and preferences.
-
-
-<a id="org65c6462"></a>
 
 ## How to use it
 
