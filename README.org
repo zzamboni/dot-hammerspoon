@@ -5,15 +5,6 @@
 
 [[http://www.hammerspoon.org/][Hammerspoon]] is one of the most-used utilities on my Mac. This repository contains my personal configuration, which you can use as a starting point and modify to suit your needs and preferences.
 
-** What happened to Oh-My-Hammerspoon?
-   :PROPERTIES:
-   :CUSTOM_ID: what-happened-to-oh-my-hammerspoon
-   :END:
-
-With the arrival of [[https://github.com/Hammerspoon/hammerspoon/blob/master/SPOONS.md][Spoons]] in [[http://www.hammerspoon.org/releasenotes/0.9.53.html][Hammerspoon 0.9.53]], the oh-my-hammerspoon plugin mechanism became obsolete. I have converted all the old plugins into Spoons, so this repository offers the same (and some new) functionality, but much easier to understand and configure. Some of them have been merged already in the [[http://www.hammerspoon.org/Spoons/][official Spoons repository]], and others are available in [[https://zzamboni.github.io/zzSpoons/][my personal zzSpoons repository]].
-
-If you still want it, the old oh-my-hammerspoon code has been archived in the [[https://github.com/zzamboni/oh-my-hammerspoon/tree/old-oh-my-hammerspoon][old-oh-my-hammerspoon branch]].
-
 ** How to use it
    :PROPERTIES:
    :CUSTOM_ID: how-to-use-it
@@ -26,7 +17,7 @@ If you still want it, the old oh-my-hammerspoon code has been archived in the [[
        git clone https://github.com/zzamboni/oh-my-hammerspoon.git ~/.hammerspoon
    #+END_EXAMPLE
 
-3. Review [[file:init.lua][init.lua]] and change or disable any Spoons as needed. Note that this file is generated from [[file:init.org][init.org]], where you can read also a full description of the code.
+3. Review [[file:init.lua][init.lua]] and change or disable any Spoons as needed. Note that this file is generated from [[file:init.org][init.org]], where you can read also a full description of the code. If you are an Emacs org-mode user, you can edit =init.org= and generate =init.lua= by tangling the file (=M-x org-babel-tangle=).
 
 4. Run Hammerspoon.
 
