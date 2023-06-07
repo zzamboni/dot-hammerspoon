@@ -1,5 +1,8 @@
-- [My Hammerspoon configuration](#my-hammerspoon-configuration)
-  - [How to use it](#how-to-use-it)
+
+# Table of Contents
+
+1.  [My Hammerspoon configuration](#my-hammerspoon-configuration)
+    1.  [How to use it](#how-to-use-it)
 
 
 <a id="my-hammerspoon-configuration"></a>
@@ -17,9 +20,7 @@
 
 2.  Clone this repository into your `~/.hammerspoon` directory:
     
-    ```
-           git clone https://github.com/zzamboni/oh-my-hammerspoon.git ~/.hammerspoon
-    ```
+        git clone https://github.com/zzamboni/oh-my-hammerspoon.git ~/.hammerspoon
 
 3.  Review [init.lua](init.lua) and change or disable any Spoons as needed. Note that this file is generated from [init.org](init.md), where you can read also a full description of the code. If you are an Emacs org-mode user, you can edit `init.org` and generate `init.lua` by tangling the file (`M-x org-babel-tangle`).
 
@@ -28,3 +29,4 @@
 5.  All the necessary Spoons will be downloaded, installed and configured.
 
 6.  Have fun!
+
