@@ -87,7 +87,7 @@ Install:andUse("URLDispatcher",
                      -- after customer1 URLs because I have patterns for that
                      -- customer's accounts to open in its corresponding
                      -- profile.
-                     { ".*%.console%.aws%.amazon%.com/.*", browsers.awsConsole },
+                     { "console%.aws%.amazon%.com/.*"    , browsers.awsConsole },
                      -- Work-related URLs open in the default Chrome profile
                      { URLfiles.work                     , browsers.work },
                    },
@@ -115,7 +115,7 @@ Install:andUse("URLDispatcher",
                    }
                  },
                  start = true,
-                 loglevel = 'debug'
+                 -- loglevel = 'debug'
                }
 )
 
@@ -126,6 +126,7 @@ Install:andUse("WindowHalfsAndThirds",
                  },
                  hotkeys = 'default',
 --                 loglevel = 'debug'
+                 disable = true
                }
 )
 
@@ -146,6 +147,7 @@ Install:andUse("WindowScreenLeftAndRight",
                  },
                  hotkeys = 'default',
 --                 loglevel = 'debug'
+                 disable = true
                }
 )
 
